@@ -23,11 +23,14 @@ int parse3D(char * fname) {
 
   float x, y, z;
   char * line = (char *) malloc(sizeof(char)*1024);
-  int read;
+
+  if (line == NULL)
+    return 1;
+
   size_t size;
-  while((read = getline(&line, &size, file)) > 0) {
+  while((getline(&line, &size, file)) > 0) {
     int suc = sscanf(line,"%f %f %f",&x,&y,&z);
-    if (suc != 3)
+    if (suc != 3) // if can't get 3 axes, can't parse and return failure;
       return 1;
     Vertex v = (Vertex) malloc(sizeof(struct vertex));
     v->x = x;
@@ -35,6 +38,7 @@ int parse3D(char * fname) {
     v->z = z;
     vertexes.push_back(v);
   }
+  free(line);
 
   return 0;
 }
@@ -55,8 +59,11 @@ int loadXML(char * fname) {
   while(model != NULL) {
     char * fileName = (char *) model->Attribute("file");
     error = parse3D(fileName);
+    if (error) // if error in parsing file 3D, don't parse anymore files
+      return 1;
     model = model->NextSiblingElement("model");
   }
+  return 0;
 }
 
 void changeSize(int w, int h) {
@@ -98,16 +105,12 @@ void renderScene(void) {
 
 
   // put drawing instructions here
-  for(int i = 0; i < vertexes.size()-2; i+= 3) {
-    glBegin(GL_TRIANGLES);
-      Vertex v1 = vertexes.at(i);
-      Vertex v2 = vertexes.at(i+1);
-      Vertex v3 = vertexes.at(i+2);
-      glVertex3f(v1->x,v1->y,v1->z);
-      glVertex3f(v2->x,v2->y,v2->z);
-      glVertex3f(v3->x,v3->y,v3->z);
-    glEnd();
+  glBegin(GL_TRIANGLES);
+  for(int i = 0; i < vertexes.size(); i++) {
+      Vertex v = vertexes.at(i);
+      glVertex3f(v->x,v->y,v->z);
   }
+  glEnd();
 
   // End of frame
   glutSwapBuffers();
@@ -142,6 +145,8 @@ int main(int argc, char** argv) {
   }
 
   int error = loadXML(argv[1]);
-
-  initialize(argc, argv);
+  if (!error)
+    initialize(argc, argv);
+  else
+    return 1;
 }
