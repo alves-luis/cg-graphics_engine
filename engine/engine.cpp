@@ -98,7 +98,16 @@ void renderScene(void) {
 
 
   // put drawing instructions here
-
+  for(int i = 0; i < vertexes.size()-2; i+= 3) {
+    glBegin(GL_TRIANGLES);
+      Vertex v1 = vertexes.at(i);
+      Vertex v2 = vertexes.at(i+1);
+      Vertex v3 = vertexes.at(i+2);
+      glVertex3f(v1->x,v1->y,v1->z);
+      glVertex3f(v2->x,v2->y,v2->z);
+      glVertex3f(v3->x,v3->y,v3->z);
+    glEnd();
+  }
 
   // End of frame
   glutSwapBuffers();
