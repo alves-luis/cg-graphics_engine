@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "Point.h"
+#include "sphere.h"
 
 using namespace std;
 
@@ -30,10 +30,6 @@ void createPlane(float size, string fname) {
 }
 
 void createBox(float x, float y, float z, int div, string fname) {
-
-}
-
-void createSphere(float rad, int slices, int stacks, string fname) {
 
 }
 
