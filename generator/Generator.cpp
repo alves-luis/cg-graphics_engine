@@ -102,7 +102,7 @@ int main(int argc, char** argv) {
       cout << "Invalid arguments!";
       return 1;
     }
-    createSphere(args->floats[0], args->ints[0], args->ints[1],argv[2+SPHERE_ARGS]);
+    int result = createSphere(args->floats[0], args->ints[0], args->ints[1],argv[2+SPHERE_ARGS]);
     free(args);
   }
   else if (prim == "box") {
