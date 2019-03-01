@@ -121,6 +121,7 @@ void renderScene(void) {
   for(int i = 0; i < models.size(); i++) {
       Model m = models.at(i);
       int size = getSize(m);
+
       for(int j = 0; j < size; j++) {
         Vertex v = getVertex(m,j);
         glVertex3f(getX(v), getY(v), getZ(v));

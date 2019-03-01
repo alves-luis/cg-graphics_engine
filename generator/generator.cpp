@@ -118,10 +118,10 @@ int main(int argc, char** argv) {
     Arguments args;
     bool divisions = false;
 
-    if (argc == 2 + BOX_ARGS)  // if no number of divisions
+    if (argc == 3 + BOX_ARGS)  // if no number of divisions
       args = argsUpdate(argv+2, 3, 0);
 
-    else if (argc == 3 + BOX_ARGS) { // if number of divisions specified
+    else if (argc == 4 + BOX_ARGS) { // if number of divisions specified
       args = argsUpdate(argv+2,3,1);
       divisions = true;
     }
