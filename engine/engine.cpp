@@ -105,8 +105,10 @@ void renderScene(void) {
 
 
   // put drawing instructions here
+  int j = 0;
   glBegin(GL_TRIANGLES);
-  for(int i = 0; i < vertexes.size(); i++) {
+  for(int i = 0; i < vertexes.size(); i++,j = (j + 1) % 3) {
+      glColor3f(3*j,0*j,0.2*j);
       Vertex v = vertexes.at(i);
       glVertex3f(v->x,v->y,v->z);
   }
