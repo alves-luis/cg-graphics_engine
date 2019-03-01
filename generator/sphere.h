@@ -1,7 +1,6 @@
-#ifndef GENERATOR_SPHERE_H
-#define GENERATOR_SPHERE_H
+#ifndef SPHERE_H
+#define SPHERE_H
 
-#include <string>
-int createSphere(float rad, int slices, int stacks, std::string fname);
+int createSphere(float rad, int slices, int stacks, char * fname);
 
-#endif //GENERATOR_SPHERE_H
+#endif

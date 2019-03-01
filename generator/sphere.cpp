@@ -2,8 +2,7 @@
 #include "writetofile.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
-
-using namespace std;
+#include <stdio.h>
 
 float calcX(float rad, float beta, float alpha) {
   return rad * sin(beta) * sin(alpha);
@@ -50,7 +49,7 @@ void draw(float rad, float beta, float alpha, int stack, int slice, float baseAl
   printf("%f %f %f\n",xA,yA,zA);
 }
 
-int createSphere(float rad, int slices, int stacks, string fname) {
+int createSphere(float rad, int slices, int stacks, char * fname) {
   // invalid arguments
   if (rad < 0 || slices < 1 || stacks < 1)
     return 1;
@@ -66,6 +65,8 @@ int createSphere(float rad, int slices, int stacks, string fname) {
 
     }
   }
+
+  return 0;
 
 
 }
