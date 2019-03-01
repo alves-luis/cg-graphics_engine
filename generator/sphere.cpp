@@ -52,7 +52,7 @@ void draw(float rad, float beta, float alpha, int stack, int slice, float baseAl
 
 int createSphere(float rad, int slices, int stacks, string fname) {
   // invalid arguments
-  if (rad < 0 || slices < 0 || stacks < 0)
+  if (rad < 0 || slices < 1 || stacks < 1)
     return 1;
 
   float horiStep = static_cast<float>((M_PI * 2) / slices);
