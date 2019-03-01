@@ -5,7 +5,7 @@ PROJECT(generator)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_executable(${PROJECT_NAME} Generator.cpp sphere.h sphere.cpp)
+add_executable(${PROJECT_NAME} Generator.cpp sphere.h sphere.cpp writetofile.cpp writetofile.h)
 
 find_package(OpenGL REQUIRED)
 include_directories(${OpenGL_INCLUDE_DIRS})
