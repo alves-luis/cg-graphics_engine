@@ -1,19 +1,19 @@
-#include "tinyxml/tinyxml2.h"
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
+
+#include "tinyxml/tinyxml2.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <iostream>
 #include <vector>
+#include "vertex.h"
+#include "model.h"
 
 using namespace tinyxml2;
 
-typedef struct vertex {
-  float x;
-  float y;
-  float z;
-} * Vertex;
-
-std::vector<Vertex> vertexes;
+std::vector<Model> models;
 
 int parse3D(char * fname) {
   FILE * file = fopen(fname,"r");
@@ -25,19 +25,28 @@ int parse3D(char * fname) {
   char * line = (char *) malloc(sizeof(char)*1024);
 
   if (line == NULL)
-    return 1;
+    return 2;
 
   size_t size;
+  Model m = newModel(fname);
+
+  if (m == NULL)
+    return 3;
+
+  Vertex v;
   while((getline(&line, &size, file)) > 0) {
     int suc = sscanf(line,"%f %f %f",&x,&y,&z);
-    if (suc != 3) // if can't get 3 axes, can't parse and return failure;
-      return 1;
-    Vertex v = (Vertex) malloc(sizeof(struct vertex));
-    v->x = x;
-    v->y = y;
-    v->z = z;
-    vertexes.push_back(v);
+    if (suc != 3) {// if can't get 3 axes, can't parse and return failure;
+      freeModel(m);
+      return 4;
+    }
+    v = newVertex();
+    setX(v,x);
+    setY(v,y);
+    setZ(v,z);
+    addVertex(m,v);
   }
+  models.push_back(m);
   free(line);
 
   return 0;
@@ -55,12 +64,15 @@ int loadXML(char * fname) {
     return XML_ERROR_PARSING_ELEMENT;
 
   XMLElement* model = scene->FirstChildElement("model");
-  int error;
+
   while(model != NULL) {
+
     char * fileName = (char *) model->Attribute("file");
-    error = parse3D(fileName);
+
+    int error = parse3D(fileName);
     if (error) // if error in parsing file 3D, don't parse anymore files
-      return 1;
+      return error;
+
     model = model->NextSiblingElement("model");
   }
   return 0;
@@ -105,12 +117,14 @@ void renderScene(void) {
 
 
   // put drawing instructions here
-  int j = 0;
   glBegin(GL_TRIANGLES);
-  for(int i = 0; i < vertexes.size(); i++,j = (j + 1) % 3) {
-      glColor3f(3*j,0*j,0.2*j);
-      Vertex v = vertexes.at(i);
-      glVertex3f(v->x,v->y,v->z);
+  for(int i = 0; i < models.size(); i++) {
+      Model m = models.at(i);
+      int size = getSize(m);
+      for(int j = 0; j < size; j++) {
+        Vertex v = getVertex(m,j);
+        glVertex3f(getX(v), getY(v), getZ(v));
+      }
   }
   glEnd();
 
@@ -142,7 +156,7 @@ void initialize(int argc, char** argv) {
 int main(int argc, char** argv) {
 
   if (argc < 2) {
-    std::cout << "Invalid configuration file!\n";
+    printf("Invalid configuration file!\n");
     return 1;
   }
 
