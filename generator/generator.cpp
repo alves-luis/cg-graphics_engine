@@ -6,29 +6,35 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-// Helper struct to parse arguments
+/**
+ * A structure to hold proper types for the arguments
+ * */
 typedef struct args {
-    float floats[3]; // max number of floats as args
-    int ints[2]; // max number of ints as args
+    float floats[3]; /**< max number of floats as args */
+    int ints[2]; /**< max number of ints as args */
 } * Arguments;
 
-// Sphere uses 3 args (radius, slices and stacks)
+/** Sphere uses 3 args (radius, slices and stacks) */
 const int SPHERE_ARGS = 3;
 
-// Box uses 3 args (1 optional) (xDim, yDim, zDim, numDiv)
+/** Box uses 3 args (1 optional) (xDim, yDim, zDim, numDiv) */
 const int BOX_ARGS = 3;
 
-// Cone uses 4 args (botRad, height, slices, stacks)
+/** Cone uses 4 args (botRad, height, slices, stacks) */
 const int CONE_ARGS = 4;
 
-// Plane uses 1 arg (dim)
+/** Plane uses 1 arg (dim) */
 const int PLANE_ARGS = 1;
 
-// Minimum number of args: generator <primitive> ... <filename>
+/** Minimum number of args: generator <primitive> <option <filename> */
 const int MIN_ARGS = 4;
 
 /**
- * Helper function to put args into proper types. Returns NULL if error.
+ * Helper function to put args into proper types.
+ * @param argv vector of args
+ * @param numFloat number of arguments which should be floats
+ * @param numInt number of arguments which should be ints
+ * @return Proper Arguments, or NULL if invalid arguments in argv
  * */
 Arguments argsUpdate(char**argv, int numFloat, int numInt) {
   Arguments result = (Arguments) malloc(sizeof(struct args));
@@ -53,6 +59,11 @@ Arguments argsUpdate(char**argv, int numFloat, int numInt) {
   return result;
 }
 
+/**
+ * Returns 1 and adds error to Invalid .... Then prints it in stdio.
+ * @param error what gets added to print
+ * @return 1
+ * */
 int printError(char * error) {
   printf("Invalid %s!\n",error);
   return 1;
@@ -60,6 +71,9 @@ int printError(char * error) {
 
 /**
  * What is called when using the generator
+ * @param argc number of arguments
+ * @param argv vector of arguments
+ * @return success
  */
 int main(int argc, char** argv) {
 
