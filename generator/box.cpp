@@ -27,15 +27,15 @@ int createBox(float x, float y, float z, int div, char * name) {
   for (t = 0; t < div; t++) {
     for (i = 0; i < div; i++) {
       writeToFile(nx*i -x0 , -y0, -c*t,file);
-      writeToFile(nx*(i+1) - x0, -y0, c*t,file);
       writeToFile(nx*i - x0, -y0, c*t,file);
+      writeToFile(nx*(i+1) - x0, -y0, c*t,file);
     }
   }
   for (t = 0; t < div; t++) {
     for (i = 0; i < div; i++) {
       writeToFile(nx*i - x0, -y0, -c*t,file);
-      writeToFile(nx*(i + 1) - x0, -y0, -c*t,file);
       writeToFile(nx*(i + 1) - x0, -y0, c*t,file);
+      writeToFile(nx*(i + 1) - x0, -y0, -c*t,file);
     }
   }
     //face cima
