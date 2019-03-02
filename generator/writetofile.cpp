@@ -2,16 +2,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int writeToFile(float x, float y, float z, char * fName) {
-  FILE * file;
+int writeToFile(float x, float y, float z, FILE * file) {
 
-  file=fopen(fName,"ab+");
   if(file == NULL)
   {
     printf("Error!");
     exit(1);
   }
   fprintf(file, "%f %f %f\n",x,y,z);
-  fclose(file);
-  return 1;
+  return 0;
+}
+
+FILE * openFile(char * fname) {
+  FILE * f = fopen(fname,"w");
+  return f;
+}
+
+void closeFile(FILE * f) {
+  fclose(f);
 }

@@ -124,7 +124,7 @@ void renderScene(void) {
       int size = getSize(m);
 
       for(int j = 0; j < size; j++) {
-        glColor3f(j*0.01,1-j*0.01,0);
+        glColor3f(j*0.005,1-j*0.001,0);
         Vertex v = getVertex(m,j);
         glVertex3f(getX(v), getY(v), getZ(v));
       }

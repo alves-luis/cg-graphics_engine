@@ -16,7 +16,7 @@ float calcZ(float rad, float beta, float alpha) {
   return rad * sin(beta) * cos(alpha);
 }
 
-void draw(float rad, float beta, float alpha, int stack, int slice, float baseAlpha, float baseBeta) {
+void draw(float rad, float beta, float alpha, int stack, int slice, float baseAlpha, float baseBeta, FILE * file) {
   // start drawing paralelepipedos
   float xA, yA, zA, xB, yB, zB, xC, yC, zC, xD, yD, zD;
 
@@ -41,15 +41,16 @@ void draw(float rad, float beta, float alpha, int stack, int slice, float baseAl
   yB = yC;
   zB = calcZ(rad,beta,alpha);
 
-  printf("%f %f %f\n",xB,yB,zB);
-  printf("%f %f %f\n",xC,yC,zC);
-  printf("%f %f %f\n",xD,yD,zD);
-  printf("%f %f %f\n",xB,yB,zB);
-  printf("%f %f %f\n",xD,yD,zD);
-  printf("%f %f %f\n",xA,yA,zA);
+  writeToFile(xB,yB,zB,file);
+  writeToFile(xC,yC,zC,file);
+  writeToFile(xD,yD,zD,file);
+  writeToFile(xB,yB,zB,file);
+  writeToFile(xD,yD,zD,file);
+  writeToFile(xA,yA,zA,file);
 }
 
 int createSphere(float rad, int slices, int stacks, char * fname) {
+  FILE * file = openFile(fname);
   // invalid arguments
   if (rad < 0 || slices < 1 || stacks < 1)
     return 1;
@@ -61,10 +62,11 @@ int createSphere(float rad, int slices, int stacks, char * fname) {
     float beta = i * vertStep; // current vertical angle
     for(int j = 0; j < slices; j++) {
       float alpha = j * horiStep; // current horizontal angle
-      draw(rad,beta,alpha,i,j,horiStep,vertStep);
+      draw(rad,beta,alpha,i,j,horiStep,vertStep,file);
 
     }
   }
+  closeFile(file);
 
   return 0;
 

@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 int createCone(float botRad, float height, int slices, int stacks, char * fname){
-
+    FILE * file = openFile(fname);
     float angle=(float) 2*M_PI/slices;
     float division=height/stacks;
 
@@ -19,9 +19,9 @@ int createCone(float botRad, float height, int slices, int stacks, char * fname)
         float bz2 = botRad * sin((i + 1) * angle);
 
         // base triangle
-        writeToFile(0.0f, 0.0f, 0.0f, fname);
-        writeToFile(bx1, 0.0f, bz1, fname);
-        writeToFile(bx2, 0.0f, bz2, fname);
+        writeToFile(0.0f, 0.0f, 0.0f, file);
+        writeToFile(bx1, 0.0f, bz1, file);
+        writeToFile(bx2, 0.0f, bz2, file);
 
 
         for (int j = 0; j < stacks; j++) {
@@ -57,14 +57,14 @@ int createCone(float botRad, float height, int slices, int stacks, char * fname)
             float uy = (j + 1) * division;
 
             // one triangle
-            writeToFile(dx1, dy, dz1, fname);
-            writeToFile(ux1, uy, uz1, fname);
-            writeToFile(dx2, dy, dz2, fname);
+            writeToFile(dx1, dy, dz1, file);
+            writeToFile(ux1, uy, uz1, file);
+            writeToFile(dx2, dy, dz2, file);
 
             //another triangle
-            writeToFile(dx2, dy, dz2, fname);
-            writeToFile(ux1, uy, uz1, fname);
-            writeToFile(ux2, uy, uz2, fname);
+            writeToFile(dx2, dy, dz2, file);
+            writeToFile(ux1, uy, uz1, file);
+            writeToFile(ux2, uy, uz2, file);
 
         }
 
