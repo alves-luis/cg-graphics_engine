@@ -13,8 +13,16 @@
 
 using namespace tinyxml2;
 
+/** Stores the models in a vector */
 std::vector<Model> models;
 
+/**
+ * This function, given a filename, reads its vertixes in a .3d format
+ * Then, stores those vertexes in a Model named after the file
+ * and pushes the model to the global variable models.
+ * @param fname file name
+ * @return 0 if success
+ * */
 int parse3D(char * fname) {
   FILE * file = fopen(fname,"r");
 
@@ -52,6 +60,12 @@ int parse3D(char * fname) {
   return 0;
 }
 
+/**
+ * This function, given a file name, loads its XML content using
+ * tinyxml2
+ * @param fname file name
+ * @return 0 if success
+ * */
 int loadXML(char * fname) {
   XMLDocument doc;
 
