@@ -1,5 +1,6 @@
 #include "writetofile.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 int writeToFile(float x, float y, float z, char * fName) {
   FILE * file;
