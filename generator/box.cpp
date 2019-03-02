@@ -56,61 +56,61 @@ int createBox(float x, float y, float z, int div, char * name) {
     // face lado
   for (t = 0; t < div; t++) {
     for (i = 0; i < div; i++) {
-      writeToFile(-x0, -c*t, nz*i-z0,file);
-      writeToFile(-x0, c*t, nz*(i+1)-z0,file);
-      writeToFile(-x0, -c*t, nz*(i+1)-z0,file);
+      writeToFile(-x0, -b*t, nz*i-z0,file);
+      writeToFile(-x0, b*t, nz*(i+1)-z0,file);
+      writeToFile(-x0, -b*t, nz*(i+1)-z0,file);
     }
   }
   for (t = 0; t < div; t++) {
     for (i = 0; i < div; i++) {
-      writeToFile(-x0, -c*t, nz*i-z0,file);
-      writeToFile(-x0, c*t, nz*i-z0,file);
-      writeToFile(-x0, c*t, nz*(i + 1)-z0,file);
+      writeToFile(-x0, -b*t, nz*i-z0,file);
+      writeToFile(-x0, b*t, nz*i-z0,file);
+      writeToFile(-x0, b*t, nz*(i + 1)-z0,file);
     }
   }
     //face lado
   for (t = 0; t < div; t++) {
     for (i = 0; i < div; i++) {
-      writeToFile(x0, -c*t, nz*i-z0,file);
-      writeToFile(x0, c*t, nz*(i + 1)-z0,file);
-      writeToFile(x0, -c*t, nz*(i + 1)-z0,file);
+      writeToFile(x0, -b*t, nz*i-z0,file);
+      writeToFile(x0, b*t, nz*(i + 1)-z0,file);
+      writeToFile(x0, -b*t, nz*(i + 1)-z0,file);
     }
   }
   for (t = 0; t < div; t++) {
     for (i = 0; i < div; i++) {
-      writeToFile(x0, -c*t, nz*i-z0,file);
-      writeToFile(x0, c*t, nz*i-z0,file);
-      writeToFile(x0, c*t, nz*(i + 1)-z0,file);
+      writeToFile(x0, -b*t, nz*i-z0,file);
+      writeToFile(x0, b*t, nz*i-z0,file);
+      writeToFile(x0, b*t, nz*(i + 1)-z0,file);
     }
   }
     //face tras
   for (t = 0; t < div; t++) {
     for (i = 0; i < div; i++) {
-      writeToFile(nx*i - x0, -c*t, -z0,file);
-      writeToFile(nx*(i + 1) - x0, -c*t, -z0,file);
-      writeToFile(nx*i - x0, c*t, -z0,file);
+      writeToFile(nx*i - x0, -b*t, -z0,file);
+      writeToFile(nx*(i + 1) - x0, -b*t, -z0,file);
+      writeToFile(nx*i - x0, b*t, -z0,file);
     }
   }
   for (t = 0; t < div; t++) {
     for (i = 0; i < div; i++) {
-      writeToFile(nx*i - x0, c*t, -z0,file);
-      writeToFile(nx*(i + 1) - x0, -c*t, -z0,file);
-      writeToFile(nx*(i + 1) - x0, c*t, -z0,file);
+      writeToFile(nx*i - x0, b*t, -z0,file);
+      writeToFile(nx*(i + 1) - x0, -b*t, -z0,file);
+      writeToFile(nx*(i + 1) - x0, b*t, -z0,file);
     }
   }
     //face  frente
   for (t = 0; t < div; t++) {
     for (i = 0; i < div; i++) {
-      writeToFile(nx*i-x0, -c*t, z0,file);
-      writeToFile(nx*(i + 1) - x0, -c*t, z0,file);
-      writeToFile(nx*i-x0, c*t, z0,file);
+      writeToFile(nx*i-x0, -b*t, z0,file);
+      writeToFile(nx*(i + 1) - x0, -b*t, z0,file);
+      writeToFile(nx*i-x0, b*t, z0,file);
     }
   }
   for (t = 0; t < div; t++) {
     for (i = 0; i < div; i++) {
-      writeToFile(nx*i-x0, c*t, z0,file);
-      writeToFile(nx*(i + 1) - x0, -c*t, z0,file);
-      writeToFile(nx*(i + 1)-x0, c*t, z0,file);
+      writeToFile(nx*i-x0, b*t, z0,file);
+      writeToFile(nx*(i + 1) - x0, -b*t, z0,file);
+      writeToFile(nx*(i + 1)-x0, b*t, z0,file);
     }
   }
   return 0;
