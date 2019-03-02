@@ -4,20 +4,55 @@
 #include <math.h>
 #include <stdio.h>
 
+/**
+ * This function, given a radius beta and alpha, returns the cartesian X
+ * @param rad radius of the sphere
+ * @param beta vertical displacement
+ * @param alpha horizontal displacement
+ * @return X
+ * */
 float calcX(float rad, float beta, float alpha) {
   return rad * sin(beta) * sin(alpha);
 }
 
+/**
+ * This function, given a radius beta and alpha, returns the cartesian Y
+ * @param rad radius of the sphere
+ * @param beta vertical displacement
+ * @param alpha horizontal displacement
+ * @return Y
+ * */
 float calcY(float rad, float beta) {
   return rad * cos(beta);
 }
 
+/**
+ * This function, given a radius beta and alpha, returns the cartesian Z
+ * @param rad radius of the sphere
+ * @param beta vertical displacement
+ * @param alpha horizontal displacement
+ * @return Z
+ * */
 float calcZ(float rad, float beta, float alpha) {
   return rad * sin(beta) * cos(alpha);
 }
 
+/**
+ * This function draws a rectangle based on current beta, alpha, stack and slice
+ * Rectangle looks like this:
+ * A --- D
+ * B --- C
+ * @param rad radius of sphere
+ * @param beta current vertical displacement
+ * @param alpha current horizontal displacement
+ * @param stack current stack
+ * @param slice current slice
+ * @param baseAlpha size of 1 alfa
+ * @param baseBeta size of 1 beta
+ * @param file file pointer to write the points of the rectangle
+ * */
 void draw(float rad, float beta, float alpha, int stack, int slice, float baseAlpha, float baseBeta, FILE * file) {
-  // start drawing paralelepipedos
+  // start drawing rectangles
   float xA, yA, zA, xB, yB, zB, xC, yC, zC, xD, yD, zD;
 
   // A --- D
@@ -40,7 +75,7 @@ void draw(float rad, float beta, float alpha, int stack, int slice, float baseAl
   xB = calcX(rad,beta,alpha);
   yB = yC;
   zB = calcZ(rad,beta,alpha);
-  
+
   writeToFile(xB,yB,zB,file);
   writeToFile(xC,yC,zC,file);
   writeToFile(xD,yD,zD,file);
