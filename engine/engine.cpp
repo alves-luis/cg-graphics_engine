@@ -117,14 +117,14 @@ void renderScene(void) {
 
 
   // put drawing instructions here
-  //glPolygonMode(GL_FRONT_AND_BACK,GL_POINT);
   glBegin(GL_TRIANGLES);
   for(int i = 0; i < models.size(); i++) {
       Model m = models.at(i);
       int size = getSize(m);
 
       for(int j = 0; j < size; j++) {
-        glColor3f(j*0.005,1-j*0.001,0);
+        if (j > (size - 500)) glColor3f(1,1,0);
+        else glColor3f(0,0,1);
         Vertex v = getVertex(m,j);
         glVertex3f(getX(v), getY(v), getZ(v));
       }

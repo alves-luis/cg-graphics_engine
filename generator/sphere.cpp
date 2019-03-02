@@ -20,8 +20,8 @@ void draw(float rad, float beta, float alpha, int stack, int slice, float baseAl
   // start drawing paralelepipedos
   float xA, yA, zA, xB, yB, zB, xC, yC, zC, xD, yD, zD;
 
-  // C --- B
-  // D --- A
+  // A --- D
+  // B --- C
   xA = calcX(rad,beta,alpha);
   yA = calcY(rad,beta);
   zA = calcZ(rad,beta,alpha);
@@ -40,7 +40,7 @@ void draw(float rad, float beta, float alpha, int stack, int slice, float baseAl
   xB = calcX(rad,beta,alpha);
   yB = yC;
   zB = calcZ(rad,beta,alpha);
-
+  
   writeToFile(xB,yB,zB,file);
   writeToFile(xC,yC,zC,file);
   writeToFile(xD,yD,zD,file);
