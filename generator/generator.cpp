@@ -146,7 +146,7 @@ int main(int argc, char** argv) {
     if (divisions)
       createBox(args->floats[0],args->floats[1],args->floats[2],args->ints[0],argv[3+BOX_ARGS]);
     else
-      createBox(args->floats[0],args->floats[1],args->floats[2],0,argv[2+BOX_ARGS]);
+      createBox(args->floats[0],args->floats[1],args->floats[2],1,argv[2+BOX_ARGS]);
 
     free(args);
   }
