@@ -4,6 +4,22 @@
 #include <math.h>
 #include <stdio.h>
 
+
+
+/**
+ * Esta função, dado um raio, uma altura, um número de slices e de stacks e
+ * um nome de um ficheiro, gera todos os vértices necessários para a
+ * formação de triângulos, que juntos formarão um cone. Os vértices gerados
+ * serão guardados num ficheiro .3d
+ * @param botRad Raio da base do cone;
+ * @param slices Número de slices (cortes verticais) do cone;
+ * @param stacks Número de stacks (cortes horizontais) do cone;
+ * @param fname Nome do ficheiro onde serão guardados os vértices gerados;
+ * O número de triângulos que serão usados para a
+ * base do cone é proporcional ao número de slices fornecidas, enquanto
+ * que o número de triângulos necessários para a superfície lateral é proporcional
+ * ao número de stacks e slices
+ */
 int createCone(float botRad, float height, int slices, int stacks, char * fname){
     FILE * file = openFile(fname);
     float angle=(float) 2*M_PI/slices;
@@ -12,6 +28,9 @@ int createCone(float botRad, float height, int slices, int stacks, char * fname)
 
     for(int i=0; i<slices; i++) {
 
+        //   Centro
+        //  /      \
+        // b2      b1
         float bx1 = botRad * cos(i * angle);
         float bz1 = botRad * sin(i * angle);
 
@@ -36,6 +55,10 @@ int createCone(float botRad, float height, int slices, int stacks, char * fname)
 
             //d -> level j
             //u -> level j+1
+            // ux2 -- ux1
+            //  |      |
+            //  |      |
+            // dx2 -- dx1
 
             // coordinates of the vertex that is on the right and bottom
             float dx1 = radiusD * cos(i * angle);
@@ -56,20 +79,16 @@ int createCone(float botRad, float height, int slices, int stacks, char * fname)
             float dy = j * division;
             float uy = (j + 1) * division;
 
-            // one triangle
+            // one triangle [dx1,ux1,dx2]
             writeToFile(dx1, dy, dz1, file);
             writeToFile(ux1, uy, uz1, file);
             writeToFile(dx2, dy, dz2, file);
 
-            //another triangle
+            //another triangle [dx2,ux1,ux2]
             writeToFile(dx2, dy, dz2, file);
             writeToFile(ux1, uy, uz1, file);
             writeToFile(ux2, uy, uz2, file);
 
         }
-
-
     }
-
-
 }
