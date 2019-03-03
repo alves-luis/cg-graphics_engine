@@ -7,7 +7,7 @@ int writeToFile(float x, float y, float z, FILE * file) {
   if(file == NULL)
   {
     printf("Error!");
-    exit(1);
+    return 1;
   }
   fprintf(file, "%f %f %f\n",x,y,z);
   return 0;

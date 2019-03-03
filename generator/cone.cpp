@@ -22,6 +22,9 @@
  */
 int createCone(float botRad, float height, int slices, int stacks, char * fname){
     FILE * file = openFile(fname);
+    if (slices < 0 || stacks < 0)
+        return 1;
+
     float angle=(float) 2*M_PI/slices;
     float division=height/stacks;
 
@@ -91,4 +94,5 @@ int createCone(float botRad, float height, int slices, int stacks, char * fname)
 
         }
     }
+    return 0;
 }
