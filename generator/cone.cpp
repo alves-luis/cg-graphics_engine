@@ -27,6 +27,7 @@ int createCone(float botRad, float height, int slices, int stacks, char * fname)
 
     float angle=(float) 2*M_PI/slices;
     float division=height/stacks;
+    float baseY = height/2;
 
 
     for(int i=0; i<slices; i++) {
@@ -41,9 +42,9 @@ int createCone(float botRad, float height, int slices, int stacks, char * fname)
         float bz2 = botRad * sin((i + 1) * angle);
 
         // base triangle
-        writeToFile(0.0f, 0.0f, 0.0f, file);
-        writeToFile(bx1, 0.0f, bz1, file);
-        writeToFile(bx2, 0.0f, bz2, file);
+        writeToFile(0.0f, 0.0f - baseY, 0.0f, file);
+        writeToFile(bx1, 0.0f - baseY, bz1, file);
+        writeToFile(bx2, 0.0f - baseY, bz2, file);
 
 
         for (int j = 0; j < stacks; j++) {
@@ -79,8 +80,8 @@ int createCone(float botRad, float height, int slices, int stacks, char * fname)
             float ux2 = radiusU * cos((i + 1) * angle);
             float uz2 = radiusU * sin((i + 1) * angle);
 
-            float dy = j * division;
-            float uy = (j + 1) * division;
+            float dy = j * division - baseY;
+            float uy = (j + 1) * division - baseY;
 
             // one triangle [dx1,ux1,dx2]
             writeToFile(dx1, dy, dz1, file);

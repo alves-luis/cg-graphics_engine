@@ -40,7 +40,7 @@ void drawYZ(float x0, float y0, float z0, float ny, float nz, int div, FILE * fi
 
   for(int t = 0; t < div; t++) {
     float y = ny * t - y0;
-    
+
     for(int i = 0; i < div; i++) {
       float z = nz*i - z0;
 

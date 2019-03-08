@@ -8,6 +8,7 @@ struct model {
     std::vector<Vertex> * vertexes;
     char * modelName;
 };
+
 Model newModel(char * name) {
   Model m = (Model) malloc(sizeof(struct model));
   m->vertexes = new std::vector<Vertex>();
