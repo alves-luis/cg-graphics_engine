@@ -18,7 +18,7 @@ using namespace tinyxml2;
  * @param fname file name
  * @return 0 if success
  * */
-int parse3D(char * fname, Model * model) {
+int parse3D(char * fname, Model m) {
 	FILE * file = fopen(fname,"r");
 
 	if (file == NULL)
@@ -31,7 +31,6 @@ int parse3D(char * fname, Model * model) {
 		return 2;
 
 	size_t size;
-	Model m = newModel(fname);
 
 	if (m == NULL)
 		return 3;
@@ -49,7 +48,6 @@ int parse3D(char * fname, Model * model) {
 		setZ(v,z);
 		addVertex(m,v);
 	}
-	*model = m;
 	free(line);
 
 	return 0;
@@ -62,8 +60,8 @@ int parseModels(XMLElement * models, Group g) {
 	while(model != NULL) {
 
 		char * fileName = (char *) model->Attribute("file");
-		Model m;
-		int error = parse3D(fileName,&m);
+		Model m = newModel(fileName);
+		int error = parse3D(fileName,m);
 		if (error) // if error in parsing file 3D, don't parse anymore files
 			return error;
 
