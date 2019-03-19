@@ -10,9 +10,13 @@
 #include "vertex.h"
 #include "model.h"
 #include "parser.h"
+#include "group.h"
 
 /** Stores the models in a vector */
 std::vector<Model> models;
+
+/** Stores the groups in a vector*/
+std::vector<Group> groups;
 
 
 void changeSize(int w, int h) {
@@ -99,7 +103,7 @@ int main(int argc, char** argv) {
     printf("Invalid configuration file!\n");
     return 1;
   }
-  int error = loadXML(argv[1],&models);
+  int error = loadXML(argv[1],&groups);
   if (!error)
     initialize(argc, argv);
   else

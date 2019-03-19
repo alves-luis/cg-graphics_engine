@@ -2,9 +2,9 @@
 #define PARSER_H
 
 #include "model.h"
+#include "group.h"
 #include <vector>
 
-int parse3D(char * fname, std::vector<Model> * vector);
-int loadXML(char * fname, std::vector<Model> * models);
+int loadXML(char * fname, std::vector<Group> * groups);
 
 #endif
