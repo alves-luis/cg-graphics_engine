@@ -75,6 +75,39 @@ int parseModels(XMLElement * models, Group g) {
 	return 0;
 }
 
+int parseScale(XMLElement * scale, Group g) {
+
+	float x,y,z;
+	x = y = z = 1.0f; // default scale is 1
+	scale->QueryAttribute("X",&x);
+	scale->QueryAttribute("Y",&y);
+	scale->QueryAttribute("Z",&z);
+
+	scale = scale->NextSiblingElement("scale");
+
+	if (scale) // if more scales, it's invalid and don't parse
+		return 2;
+
+	addScale(g,x,y,z);
+	return 0;
+}
+
+int parseTranslate(XMLElement * translate, Group g) {
+	float x,y,z;
+	x = y = z = 0.0f; // default translation is 0
+	translate->QueryAttribute("X",&x);
+	translate->QueryAttribute("Y",&y);
+	translate->QueryAttribute("Z",&z);
+
+	translate = translate->NextSiblingElement("translate");
+
+	if (translate) // if more translates, it's invalid and don't parse
+		return 2;
+
+	addTranslation(g,x,y,z);
+	return 0;
+}
+
 int parseGroup(XMLElement * group, Group g) {
 
 	XMLElement * tag = group->FirstChildElement(NULL);
@@ -84,13 +117,13 @@ int parseGroup(XMLElement * group, Group g) {
 		int error = 0;
 
 		if (strcmp(tagName,"translate") == 0) {
-
+			error = parseTranslate(tag,g);
 		}
 		else if (strcmp(tagName,"rotate") == 0) {
 
 		}
 		else if (strcmp(tagName,"scale") == 0) {
-
+			error = parseScale(tag,g);
 		}
 		else if (strcmp(tagName,"group") == 0) {
 			Group child = newGroup();
