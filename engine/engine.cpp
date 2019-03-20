@@ -7,10 +7,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
-#include "vertex.h"
-#include "model.h"
-#include "parser.h"
-#include "group.h"
+#include "headers/vertex.h"
+#include "headers/model.h"
+#include "headers/parser.h"
+#include "headers/group.h"
 
 /** Stores the models in a vector */
 std::vector<Model> models;

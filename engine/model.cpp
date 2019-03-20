@@ -1,5 +1,5 @@
-#include "model.h"
-#include "vertex.h"
+#include "headers/model.h"
+#include "headers/vertex.h"
 #include <vector>
 #include <stdlib.h>
 #include <string.h>

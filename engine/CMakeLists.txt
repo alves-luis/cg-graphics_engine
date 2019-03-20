@@ -5,7 +5,7 @@ PROJECT(engine)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_executable(${PROJECT_NAME} engine.cpp tinyxml/tinyxml2.cpp tinyxml/tinyxml2.h vertex.h vertex.cpp model.cpp model.h parser.cpp parser.h group.cpp group.h scale.h operation3f.cpp operation3f.h translation.h)
+add_executable(${PROJECT_NAME} engine.cpp tinyxml/tinyxml2.cpp tinyxml/tinyxml2.h headers/vertex.h vertex.cpp model.cpp headers/model.h parser.cpp headers/parser.h group.cpp headers/group.h headers/scale.h operation3f.cpp headers/operation3f.h headers/translation.h)
 
 find_package(OpenGL REQUIRED)
 include_directories(${OpenGL_INCLUDE_DIRS})

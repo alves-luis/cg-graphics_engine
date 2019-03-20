@@ -1,6 +1,6 @@
-#include "group.h"
-#include "scale.h"
-#include "translation.h"
+#include "headers/group.h"
+#include "headers/scale.h"
+#include "headers/translation.h"
 #include <stdlib.h>
 
 struct group {

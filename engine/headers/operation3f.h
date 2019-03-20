@@ -1,7 +1,3 @@
-//
-// Created by alvesluis on 19-03-2019.
-//
-
 #ifndef OPERATION3F_H
 #define OPERATION3F_H
 

@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "parser.h"
-#include "model.h"
-#include "vertex.h"
+#include "headers/parser.h"
+#include "headers/model.h"
+#include "headers/vertex.h"
 #include "tinyxml/tinyxml2.h"
-#include "group.h"
+#include "headers/group.h"
 
 #ifndef XMLCheckResult
 #define XMLCheckResult(a_eResult) if (a_eResult != XML_SUCCESS) { printf("Error: %i\n", a_eResult); return a_eResult; }
