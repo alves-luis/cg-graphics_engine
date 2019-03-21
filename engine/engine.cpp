@@ -6,8 +6,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <vector>
 #include <map>
+#include <cstring>
 #include "headers/vertex.h"
 #include "headers/model.h"
 #include "headers/parser.h"
@@ -15,9 +17,6 @@
 
 /** Stores the groups in a vector*/
 std::vector<Group> groups;
-
-std::map<char *,Model> models;
-
 
 void changeSize(int w, int h) {
 
@@ -64,20 +63,19 @@ void drawGroup(Group g) {
 
     std::vector<Model> * models = getModels(g);
     std::vector<Group> * children = getGroups(g);
+
     Translation translation = getTranslation(g);
     Scale scale = getScale(g);
     Rotation rotation = getRotation(g);
-    int orderTranslation = getOrder(translation);
-    int orderScale = getOrder(scale);
-    int orderRotation = getOrder(rotation);
 
-    if (orderTranslation < orderScale) {
-        glTranslatef(getX(translation), getY(translation), getZ(translation));
-        glScalef(getX(scale), getY(scale), getZ(scale));
-    }
-    else {
-        glScalef(getX(scale), getY(scale), getZ(scale));
-        glTranslatef(getX(translation), getY(translation), getZ(translation));
+    for(int i = 0; i < 2; i++) {
+        char * op = getNthTransformation(g,i);
+        if(strcmp("translation",op) == 0)
+            glTranslatef(getX(translation), getY(translation), getZ(translation));
+        else if(strcmp("rotation",op) == 0)
+            glRotatef(getAngle(rotation), getX(rotation),getY(rotation),getZ(rotation));
+        else if (strcmp("scale",op) == 0)
+            glScalef(getX(scale), getY(scale), getZ(scale));
     }
 
 
@@ -146,7 +144,7 @@ int main(int argc, char** argv) {
     printf("Invalid configuration file!\n");
     return 1;
   }
-  int error = loadXML(argv[1],&groups,&models);
+  int error = loadXML(argv[1],&groups);
   if (!error)
     initialize(argc, argv);
   else

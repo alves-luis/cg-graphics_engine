@@ -60,7 +60,9 @@ int parseModels(XMLElement * models, Group g) {
 	while(model != NULL) {
 
 		char * fileName = (char *) model->Attribute("file");
-		Model m = newModel(fileName);
+		const char * color[256];
+		model->QueryStringAttribute("color",color);
+		Model m = newModel(fileName,(char *) *color);
 		int error = parse3D(fileName,m);
 		if (error) // if error in parsing file 3D, don't parse anymore files
 			return error;
@@ -167,7 +169,7 @@ int parseGroup(XMLElement * group, Group g) {
  * @param fname file name
  * @return 0 if success
  * */
-int loadXML(char * fname, std::vector<Group> * groups, std::map<char*,Model> * models) {
+int loadXML(char * fname, std::vector<Group> * groups) {
 	XMLDocument doc;
 
 	XMLError err = doc.LoadFile(fname);
