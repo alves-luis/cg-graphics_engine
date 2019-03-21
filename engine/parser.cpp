@@ -72,6 +72,7 @@ int parseModels(XMLElement * models, Group g, std::map<char*,Model> * modelsMap)
 			return 3;
 		}
 
+		Model m;
 		if (modelsMap->find(fileName) == modelsMap->end()) {
 
 			char * color = (char *) model->Attribute("color");
@@ -80,20 +81,20 @@ int parseModels(XMLElement * models, Group g, std::map<char*,Model> * modelsMap)
 				color = "white"; // default color
 			}
 
-			Model m = newModel(fileName,color);
-			modelsMap->insert(std::pair<char*,Model>(fileName,m));
+			m = newModel(fileName,color);
 
 			int error = parse3D(fileName,m);
 			if (error) { // if error in parsing file 3D, don't parse anymore files
 				fprintf(stderr,"PARSING FAILURE! Error parsing %s file!\n",fileName);
 				return error;
 			}
-			addModel(g,m);
+			modelsMap->insert(std::pair<char*,Model>(fileName,m));
 		}
 		else {
-			Model m = modelsMap->find(fileName)->second;
-			addModel(g,m);
+			m = modelsMap->find(fileName)->second;
 		}
+
+		addModel(g,m);
 
 		model = model->NextSiblingElement("model");
 	}
@@ -178,7 +179,7 @@ int parseGroup(XMLElement * group, Group g, std::map<char*,Model> * models) {
 			error = parseTranslate(tag,g);
 		}
 		else if (strcmp(tagName,"rotate") == 0) {
-			error=parseRotation(tag,g);
+			error = parseRotation(tag,g);
 		}
 		else if (strcmp(tagName,"scale") == 0) {
 			error = parseScale(tag,g);
