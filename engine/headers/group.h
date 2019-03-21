@@ -5,6 +5,7 @@
 #include "model.h"
 #include "translation.h"
 #include "scale.h"
+#include "rotation.h"
 
 typedef struct group * Group;
 Group newGroup();
@@ -17,6 +18,7 @@ void addRotation(Group g, int angle, float x, float y, float z);
 void addTranslation(Group g, float x, float y, float z);
 Translation getTranslation(Group g);
 Scale getScale(Group g);
+Rotation getRotation(Group g);
 int getTransformationCount(Group g);
 
 #endif

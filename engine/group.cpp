@@ -1,7 +1,4 @@
 #include "headers/group.h"
-#include "headers/scale.h"
-#include "headers/rotation.h"
-#include "headers/translation.h"
 #include <stdlib.h>
 
 struct group {
@@ -110,4 +107,11 @@ Scale getScale(Group g) {
 	else {
 		return NULL;
 	}
+}
+
+Rotation getRotation(Group g) {
+	if (g)
+		return g->rotation;
+	else
+		return NULL;
 }

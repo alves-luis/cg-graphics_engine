@@ -66,8 +66,10 @@ void drawGroup(Group g) {
     std::vector<Group> * children = getGroups(g);
     Translation translation = getTranslation(g);
     Scale scale = getScale(g);
+    Rotation rotation = getRotation(g);
     int orderTranslation = getOrder(translation);
     int orderScale = getOrder(scale);
+    int orderRotation = getOrder(rotation);
 
     if (orderTranslation < orderScale) {
         glTranslatef(getX(translation), getY(translation), getZ(translation));
