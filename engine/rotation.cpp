@@ -42,4 +42,18 @@ void setZ(Rotation r, float z){
     }
 }
 
+void setOrder(Rotation r, int i) {
+    if (r) {
+        setOrder(r->axis,i);
+    }
+}
+
+int getOrder(Rotation r) {
+    if (r) {
+        getOrder(r->axis);
+    }
+    else
+        return -1;
+}
+
 

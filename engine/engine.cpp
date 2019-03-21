@@ -7,16 +7,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
+#include <map>
 #include "headers/vertex.h"
 #include "headers/model.h"
 #include "headers/parser.h"
 #include "headers/group.h"
 
-/** Stores the models in a vector */
-std::vector<Model> models;
-
 /** Stores the groups in a vector*/
 std::vector<Group> groups;
+
+std::map<char *,Model> models;
 
 
 void changeSize(int w, int h) {
@@ -44,6 +44,56 @@ void changeSize(int w, int h) {
   glMatrixMode(GL_MODELVIEW);
 }
 
+void drawModel(Model m) {
+	int size = getSize(m);
+
+    glBegin(GL_TRIANGLES);
+	for(int j = 0; j < size; j++) {
+
+		if (j % 2) glColor3f(1,1,0);
+		else glColor3f(0,0,1);
+
+		Vertex v = getVertex(m,j);
+		glVertex3f(getX(v), getY(v), getZ(v));
+	}
+	glEnd();
+}
+
+void drawGroup(Group g) {
+    glPushMatrix();
+
+    std::vector<Model> * models = getModels(g);
+    std::vector<Group> * children = getGroups(g);
+    Translation translation = getTranslation(g);
+    Scale scale = getScale(g);
+    int orderTranslation = getOrder(translation);
+    int orderScale = getOrder(scale);
+
+    if (orderTranslation < orderScale) {
+        glTranslatef(getX(translation), getY(translation), getZ(translation));
+        glScalef(getX(scale), getY(scale), getZ(scale));
+    }
+    else {
+        glScalef(getX(scale), getY(scale), getZ(scale));
+        glTranslatef(getX(translation), getY(translation), getZ(translation));
+    }
+
+
+    if (models) {
+        for(Model m : *models) {
+            drawModel(m);
+        }
+    }
+
+    if (children) {
+        for(Group g : *children) {
+            drawGroup(g);
+        }
+    }
+
+    glPopMatrix();
+}
+
 
 void renderScene(void) {
 
@@ -58,19 +108,10 @@ void renderScene(void) {
 
 
   // put drawing instructions here
-  glBegin(GL_TRIANGLES);
-  for(int i = 0; i < models.size(); i++) {
-      Model m = models.at(i);
-      int size = getSize(m);
-
-      for(int j = 0; j < size; j++) {
-        if (j % 2) glColor3f(1,1,0);
-        else glColor3f(0,0,1);
-        Vertex v = getVertex(m,j);
-        glVertex3f(getX(v), getY(v), getZ(v));
-      }
+  for(int i = 0; i < groups.size(); i++) {
+      Group g = groups.at(i);
+      drawGroup(g);
   }
-  glEnd();
 
   // End of frame
   glutSwapBuffers();
@@ -103,7 +144,7 @@ int main(int argc, char** argv) {
     printf("Invalid configuration file!\n");
     return 1;
   }
-  int error = loadXML(argv[1],&groups);
+  int error = loadXML(argv[1],&groups,&models);
   if (!error)
     initialize(argc, argv);
   else

@@ -101,7 +101,7 @@ int parseRotation(XMLElement * rotate, Group g){
 	rotate->QueryAttribute("axisY",&y);
 	rotate->QueryAttribute("axisZ",&z);
 
-	rotate= rotate -> NextSiblingElement("rotate");
+	rotate = rotate -> NextSiblingElement("rotate");
 
 	if (rotate) // if more rotates, it's invalid and don't parse
 		return 2;
@@ -167,7 +167,7 @@ int parseGroup(XMLElement * group, Group g) {
  * @param fname file name
  * @return 0 if success
  * */
-int loadXML(char * fname, std::vector<Group> * groups) {
+int loadXML(char * fname, std::vector<Group> * groups, std::map<char*,Model> * models) {
 	XMLDocument doc;
 
 	XMLError err = doc.LoadFile(fname);
