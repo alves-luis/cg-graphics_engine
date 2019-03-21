@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <map>
 #include "headers/parser.h"
 #include "headers/model.h"
 #include "headers/vertex.h"
@@ -53,25 +54,31 @@ int parse3D(char * fname, Model m) {
 	return 0;
 }
 
-int parseModels(XMLElement * models, Group g) {
+int parseModels(XMLElement * models, Group g, std::map<char*,Model> * modelsMap) {
+
 
 	XMLElement * model = models->FirstChildElement("model");
 
 	while(model != NULL) {
 
 		char * fileName = (char *) model->Attribute("file");
-		const char * color[256];
-		model->QueryStringAttribute("color",color);
-		Model m = newModel(fileName,(char *) *color);
-		int error = parse3D(fileName,m);
-		if (error) // if error in parsing file 3D, don't parse anymore files
-			return error;
-
-		addModel(g,m);
+		if ( modelsMap->find(fileName) == modelsMap->end() ) {
+			const char * color[256];
+			model->QueryStringAttribute("color",color);
+			Model m = newModel(fileName,(char *) *color);
+			modelsMap->insert( std::pair<char*,Model>(fileName,m) );
+			int error = parse3D(fileName,m);
+			if (error) // if error in parsing file 3D, don't parse anymore files
+				return error;
+			addModel(g,m);
+		}
+		else {
+			Model m = modelsMap->find(fileName)->second;
+			addModel(g,m);
+		}
 
 		model = model->NextSiblingElement("model");
 	}
-
 	return 0;
 }
 
@@ -130,7 +137,7 @@ int parseTranslate(XMLElement * translate, Group g) {
 	return 0;
 }
 
-int parseGroup(XMLElement * group, Group g) {
+int parseGroup(XMLElement * group, Group g, std::map<char*,Model> * models) {
 
 	XMLElement * tag = group->FirstChildElement(NULL);
 
@@ -149,11 +156,11 @@ int parseGroup(XMLElement * group, Group g) {
 		}
 		else if (strcmp(tagName,"group") == 0) {
 			Group child = newGroup();
-			error = parseGroup(tag,child);
+			error = parseGroup(tag,child,models);
 			addGroup(g,child);
 		}
 		else if (strcmp(tagName,"models") == 0) {
-			error = parseModels(tag,g);
+			error = parseModels(tag,g,models);
 		}
 
 		if (error) // if error stop parsing
@@ -167,10 +174,13 @@ int parseGroup(XMLElement * group, Group g) {
  * This function, given a file name, loads its XML content using
  * tinyxml2
  * @param fname file name
+ * @param groups vetor with all the groups in the file
+ * @param models map whit the name of the model and respective model
  * @return 0 if success
  * */
 int loadXML(char * fname, std::vector<Group> * groups) {
 	XMLDocument doc;
+	std::map<char*,Model> * models= new std::map<char*,Model>();
 
 	XMLError err = doc.LoadFile(fname);
 	if (err)
@@ -184,7 +194,7 @@ int loadXML(char * fname, std::vector<Group> * groups) {
 
 	while(group != NULL) {
 		Group parsedGroup = newGroup();
-		int error = parseGroup(group,parsedGroup);
+		int error = parseGroup(group,parsedGroup,models);
 		if (error) // if error in parsing group, don't parse anymore
 			return error;
 
