@@ -7,40 +7,44 @@
 #include "tinyxml/tinyxml2.h"
 #include "headers/group.h"
 
-#ifndef XMLCheckResult
-#define XMLCheckResult(a_eResult) if (a_eResult != XML_SUCCESS) { printf("Error: %i\n", a_eResult); return a_eResult; }
-#endif
-
 using namespace tinyxml2;
 
 /**
- * This function, given a filename, reads its vertixes in a .3d format
- * Then, stores those vertexes in a Model passed as an argument
+ * This function, given a filename, reads its vertices in a .3d format
+ * Then, stores those vertices in a Model passed as an argument
  * @param fname file name
+ * @param m Model to add the vertices to
  * @return 0 if success
  * */
 int parse3D(char * fname, Model m) {
 	FILE * file = fopen(fname,"r");
 
-	if (file == NULL)
+	if (file == NULL) {
+		fprintf(stderr,"File is NULL!\n");
 		return 1;
+	}
 
 	float x, y, z;
 	char * line = (char *) malloc(sizeof(char)*1024);
 
-	if (line == NULL)
+	if (line == NULL) {
+		fprintf(stderr,"PARSING FAILURE! Could not allocate enough memory for buffering line reading!\n");
 		return 2;
+	}
 
 	size_t size;
 
-	if (m == NULL)
+	if (m == NULL) {
+		fprintf(stderr,"PARSING FAILURE! Cannot add vertices to NULL Model!\n");
 		return 3;
+	}
 
 	Vertex v;
 	while((getline(&line, &size, file)) > 0) {
 		int suc = sscanf(line,"%f %f %f",&x,&y,&z);
-		if (suc != 3) {// if can't get 3 axes, can't parse and return failure;
+		if (suc != 3) {// if can't get 3 axis, can't parse and return failure;
 			freeModel(m);
+			fprintf(stderr,"PARSING FAILURE! Could not retrieve 3 floats!\n");
 			return 4;
 		}
 		v = newVertex();
@@ -62,14 +66,28 @@ int parseModels(XMLElement * models, Group g, std::map<char*,Model> * modelsMap)
 	while(model != NULL) {
 
 		char * fileName = (char *) model->Attribute("file");
-		if ( modelsMap->find(fileName) == modelsMap->end() ) {
-			const char * color[256];
-			model->QueryStringAttribute("color",color);
-			Model m = newModel(fileName,(char *) *color);
-			modelsMap->insert( std::pair<char*,Model>(fileName,m) );
+
+		if (!fileName) {// if no file name
+			fprintf(stderr,"PARSING FAILURE! NULL filename!\n");
+			return 3;
+		}
+
+		if (modelsMap->find(fileName) == modelsMap->end()) {
+
+			char * color = (char *) model->Attribute("color");
+
+			if (!color) {
+				color = "white"; // default color
+			}
+
+			Model m = newModel(fileName,color);
+			modelsMap->insert(std::pair<char*,Model>(fileName,m));
+
 			int error = parse3D(fileName,m);
-			if (error) // if error in parsing file 3D, don't parse anymore files
+			if (error) { // if error in parsing file 3D, don't parse anymore files
+				fprintf(stderr,"PARSING FAILURE! Error parsing %s file!\n",fileName);
 				return error;
+			}
 			addModel(g,m);
 		}
 		else {
@@ -92,8 +110,10 @@ int parseScale(XMLElement * scale, Group g) {
 
 	scale = scale->NextSiblingElement("scale");
 
-	if (scale) // if more scales, it's invalid and don't parse
+	if (scale) {// if more scales, it's invalid and don't parse
+		fprintf(stderr,"PARSING FAILURE! Cannot have more than 1 scale per generation!\n");
 		return 2;
+	}
 
 	addScale(g,x,y,z);
 	return 0;
@@ -101,7 +121,7 @@ int parseScale(XMLElement * scale, Group g) {
 
 int parseRotation(XMLElement * rotate, Group g){
 
-	int angle;
+	float angle;
 	float x,y,z;
 	x=y=z=0.0f; //no default axis for rotation
 	angle=0; // default angle is 0
@@ -112,8 +132,10 @@ int parseRotation(XMLElement * rotate, Group g){
 
 	rotate = rotate -> NextSiblingElement("rotate");
 
-	if (rotate) // if more rotates, it's invalid and don't parse
+	if (rotate) {// if more rotates, it's invalid and don't parse
+		fprintf(stderr,"PARSING FAILURE! Cannot have more than 1 rotation per generation!\n");
 		return 2;
+	}
 
 	addRotation(g,angle,x,y,z);
 	return 0;
@@ -130,8 +152,10 @@ int parseTranslate(XMLElement * translate, Group g) {
 
 	translate = translate->NextSiblingElement("translate");
 
-	if (translate) // if more translates, it's invalid and don't parse
+	if (translate) { // if more translates, it's invalid and don't parse
+		fprintf(stderr,"PARSING FAILURE! Cannot have more than 1 translation per generation!\n");
 		return 2;
+	}
 
 	addTranslation(g,x,y,z);
 	return 0;
@@ -143,6 +167,11 @@ int parseGroup(XMLElement * group, Group g, std::map<char*,Model> * models) {
 
 	while(tag != NULL) {
 		char * tagName = const_cast<char *>(tag->Name());
+
+		if (!tagName) {
+			fprintf(stderr,"PARSING FAILURE! Could not retrieve name of tag!\n");
+		}
+
 		int error = 0;
 
 		if (strcmp(tagName,"translate") == 0) {
@@ -163,8 +192,10 @@ int parseGroup(XMLElement * group, Group g, std::map<char*,Model> * models) {
 			error = parseModels(tag,g,models);
 		}
 
-		if (error) // if error stop parsing
+		if (error) { // if error stop parsing
+			fprintf(stderr,"PARSING FAILURE! Error parsing a group!\n");
 			return error;
+		}
 
 		tag = tag->NextSiblingElement(NULL);
 	}
@@ -179,16 +210,24 @@ int parseGroup(XMLElement * group, Group g, std::map<char*,Model> * models) {
  * @return 0 if success
  * */
 int loadXML(char * fname, std::vector<Group> * groups) {
+
+	if (fname)
+		printf("Loading %s\n",fname);
+
 	XMLDocument doc;
 	std::map<char*,Model> * models= new std::map<char*,Model>();
 
 	XMLError err = doc.LoadFile(fname);
-	if (err)
+	if (err) {
+		fprintf(stderr,"TINYXML FAILURE! Error code: %d\n",err);
 		return err;
+	}
 
 	XMLElement* scene = doc.FirstChildElement("scene");
-	if (!scene)
+	if (!scene) {
+		fprintf(stderr,"TINYXML FAILURE! Error code: %d\n",XML_ERROR_PARSING_ELEMENT);
 		return XML_ERROR_PARSING_ELEMENT;
+	}
 
 	XMLElement* group = scene->FirstChildElement("group");
 

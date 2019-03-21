@@ -4,7 +4,7 @@
 
 struct rotation{
 
-    int angle;
+    float angle;
     Operation3f axis;
 
 };
@@ -18,7 +18,7 @@ Rotation newRotation(){
     return r;
 }
 
-void setAngle(Rotation r, int angle) {
+void setAngle(Rotation r, float angle) {
     if (r) {
         r->angle = angle;
     }
@@ -42,18 +42,32 @@ void setZ(Rotation r, float z){
     }
 }
 
-void setOrder(Rotation r, int i) {
-    if (r) {
-        setOrder(r->axis,i);
-    }
+float getAngle(Rotation r) {
+    if (r)
+        return r->angle;
+    else
+        return 0;
 }
 
-int getOrder(Rotation r) {
-    if (r) {
-        getOrder(r->axis);
-    }
+float getX(Rotation r) {
+    if (r)
+        return getX(r->axis);
     else
-        return -1;
+        return 0;
+}
+
+float getY(Rotation r) {
+    if (r)
+        return getY(r->axis);
+    else
+        return 0;
+}
+
+float getZ(Rotation r) {
+    if (r)
+        return getZ(r->axis);
+    else
+        return 0;
 }
 
 

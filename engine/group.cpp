@@ -1,5 +1,6 @@
 #include "headers/group.h"
 #include <stdlib.h>
+#include <map>
 
 struct group {
 	std::vector<Model> * models;
@@ -8,6 +9,7 @@ struct group {
 	Translation translation;
 	Rotation rotation;
 	int transformationCount;
+	std::map<int,char*> * transformationOrder;
 };
 
 Group newGroup() {
@@ -29,6 +31,7 @@ Group newGroup() {
 			setY(g->translation,0);
 			setZ(g->translation,0);
 		}
+		g->transformationOrder = new std::map<int,char*>();
 	}
 	return g;
 }
@@ -50,17 +53,17 @@ void addScale(Group g, float x, float y, float z) {
 		setX(g->scale,x);
 		setY(g->scale,y);
 		setZ(g->scale,z);
-		setOrder(g->scale,g->transformationCount++);
+		g->transformationOrder->insert(std::pair<int,char*>(g->transformationCount++,"scale"));
 	}
 }
 
-void addRotation(Group g, int angle, float x, float y, float z){
+void addRotation(Group g, float angle, float x, float y, float z){
 	if(g){
 		setAngle(g->rotation,angle);
 		setX(g->rotation,x);
 		setY(g->rotation,y);
 		setZ(g->rotation,z);
-		setOrder(g->rotation,g->transformationCount++);
+		g->transformationOrder->insert(std::pair<int,char*>(g->transformationCount++,"rotation"));
 	}
 }
 
@@ -69,7 +72,7 @@ void addTranslation(Group g, float x, float y, float z) {
 		setX(g->translation,x);
 		setY(g->translation,y);
 		setZ(g->translation,z);
-		setOrder(g->translation,g->transformationCount++);
+		g->transformationOrder->insert(std::pair<int,char*>(g->transformationCount++,"translation"));
 	}
 }
 
@@ -112,6 +115,13 @@ Scale getScale(Group g) {
 Rotation getRotation(Group g) {
 	if (g)
 		return g->rotation;
+	else
+		return NULL;
+}
+
+char * getNthTransformation(Group g, int n) {
+	if (g && n >= 0 && n < g->transformationOrder->size())
+		return g->transformationOrder->at(n);
 	else
 		return NULL;
 }

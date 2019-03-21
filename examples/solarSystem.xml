@@ -1,0 +1,83 @@
+<scene>
+    <group>
+        <models>
+            <model file="sphere.3d" color="sun"/>
+        </models>
+        <group>
+            <translate X="1"/>
+            <scale X="0.001" Y="0.001" Z="0.001"/>
+            <group>
+                <translate X="41.633"/>
+                <scale X="3.4" Y="3.4" Z="3.4"/>
+                <models>
+                    <model file="sphere.3d" color="mercury"/>
+                </models>
+            </group>
+            <group>
+                <translate X="77.67"/>
+                <scale X="8.6" Y="8.6" Z="8.6"/>
+                <models>
+                    <model file="sphere.3d" color="venus"/>
+                </models>
+            </group>
+            <group>
+                <translate X="107.457"/>
+                <scale X="9.1" Y="9.1" Z="9.1"/>
+                <models>
+                    <model file="sphere.3d" color="earth"/>
+                </models>
+            </group>
+            <group>
+                <translate X="163.689"/>
+                <scale X="4.8" Y="4.8" Z="4.8"/>
+                <models>
+                    <model file="sphere.3d" color="mars"/>
+                </models>
+            </group>
+            <group>
+                <translate X="559.048"/>
+                <scale X="102.7" Y="102.7" Z="102.7"/>
+                <models>
+                    <model file="sphere.3d" color="jupiter"/>
+                </models>
+            </group>
+            <group>
+                <translate X="1025.217"/>
+                <scale X="183.6" Y="183.6" Z="183.6"/>
+                <group>
+                    <models>
+                        <model file="sphere.3d" color="saturn"/>
+                    </models>
+                </group>
+                <group>
+                    <scale X="1.4" Y="1.4" Z="1.4"/>
+                    <models>
+                        <model file="disc.3d" color="white"/>
+                    </models>
+                </group>
+            </group>
+            <group>
+                <translate X="2062.145"/>
+                <scale X="33.7" Y="33.7" Z="33.7"/>
+                <models>
+                    <model file="sphere.3d" color="uranus"/>
+                </models>
+            </group>
+            <group>
+                <translate X="3232.919"/>
+                <scale X="32.6" Y="32.6" Z="32.6"/>
+                <models>
+                    <model file="sphere.3d" color="neptune"/>
+                </models>
+            </group>
+            <group>
+                <translate X="4248.15"/>
+                <scale X="1.6" Y="1.6" Z="1.6"/>
+                <models>
+                    <model file="sphere.3d" color="pluto"/>
+                </models>
+            </group>
+
+        </group>
+    </group>
+</scene>

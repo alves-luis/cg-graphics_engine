@@ -14,9 +14,25 @@
 #include "headers/model.h"
 #include "headers/parser.h"
 #include "headers/group.h"
+#define _USE_MATH_DEFINES
+#include <math.h>
+
+#define PAINT_WHITE glColor3f(1,1,1);
+#define PAINT_SUN glColor3f(0.9f,1,0);
+#define PAINT_MERCURY glColor3f(0.4f,0.4f,0.4f);
+#define PAINT_VENUS glColor3f(0.9f,0.8f,0.4f);
+#define PAINT_EARTH glColor3f(0,0.6f,0);
+#define PAINT_MARS glColor3f(0.8f,0.3f,0);
+#define PAINT_JUPITER glColor3f(0.9f,0.6f,0.8f);
+#define PAINT_SATURN glColor3f(0.9f,0.8f,0.3f);
+#define PAINT_URANUS glColor3f(0.8f,0.8f,1.0f);
+#define PAINT_NEPTUNE glColor3f(0.5f,0.5f,1.0f);
+#define PAINT_PLUTO glColor3f(0.5f,0.3f,0.2f);
 
 /** Stores the groups in a vector*/
 std::vector<Group> groups;
+
+float alfa = 0.0f, beta = 0.5f, radius = 10.0f;
 
 void changeSize(int w, int h) {
 
@@ -46,12 +62,35 @@ void changeSize(int w, int h) {
 void drawModel(Model m) {
 	int size = getSize(m);
 
+	char * color = getColor(m);
+
+	if (strcmp(color,"white") == 0)
+	    PAINT_WHITE
+    else if (strcmp(color,"sun") == 0)
+        PAINT_SUN
+	else if (strcmp(color,"mercury") == 0)
+	    PAINT_MERCURY
+    else if (strcmp(color,"venus") == 0)
+        PAINT_VENUS
+	else if (strcmp(color,"earth") == 0)
+	    PAINT_EARTH
+    else if (strcmp(color,"mars") == 0)
+        PAINT_MARS
+    else if (strcmp(color,"jupiter") == 0)
+        PAINT_JUPITER
+    else if (strcmp(color,"saturn") == 0)
+        PAINT_SATURN
+    else if (strcmp(color,"uranus") == 0)
+        PAINT_URANUS
+    else if (strcmp(color,"neptune") == 0)
+        PAINT_NEPTUNE
+    else if (strcmp(color,"pluto") == 0)
+        PAINT_PLUTO
+	else
+	    glColor3f(1.0f,0,0);
+
     glBegin(GL_TRIANGLES);
 	for(int j = 0; j < size; j++) {
-
-		if (j % 2) glColor3f(1,1,0);
-		else glColor3f(0,0,1);
-
 		Vertex v = getVertex(m,j);
 		glVertex3f(getX(v), getY(v), getZ(v));
 	}
@@ -68,8 +107,11 @@ void drawGroup(Group g) {
     Scale scale = getScale(g);
     Rotation rotation = getRotation(g);
 
-    for(int i = 0; i < 2; i++) {
+
+    for(int i = 0; i < 3; i++) {
         char * op = getNthTransformation(g,i);
+        if(!op) // if no op, stop
+            break;
         if(strcmp("translation",op) == 0)
             glTranslatef(getX(translation), getY(translation), getZ(translation));
         else if(strcmp("rotation",op) == 0)
@@ -102,10 +144,18 @@ void renderScene(void) {
 
   // set the camera
   glLoadIdentity();
-  gluLookAt(5.0,5.0,5.0,
+
+  float camX, camY, camZ;
+
+  camX = radius * cos(beta) * sin(alfa);
+  camY = radius * sin(beta);
+  camZ = radius * cos(beta) * cos(alfa);
+
+  gluLookAt(camX,camY,camZ,
             0.0,0.0,0.0,
             0.0f,1.0f,0.0f);
 
+  glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 
   // put drawing instructions here
   for(int i = 0; i < groups.size(); i++) {
@@ -117,8 +167,46 @@ void renderScene(void) {
   glutSwapBuffers();
 }
 
+void processSpecialKeys(int key, int xx, int yy) {
+
+    switch (key) {
+
+        case GLUT_KEY_RIGHT:
+            alfa -= 0.1; break;
+
+        case GLUT_KEY_LEFT:
+            alfa += 0.1; break;
+
+        case GLUT_KEY_UP:
+            beta += 0.1f;
+            if (beta > 1.5f)
+                beta = 1.5f;
+            break;
+
+        case GLUT_KEY_DOWN:
+            beta -= 0.1f;
+            if (beta < -1.5f)
+                beta = -1.5f;
+            break;
+
+        case GLUT_KEY_PAGE_DOWN: radius -= 0.5f;
+            if (radius < 1.0f)
+                radius = 1.0f;
+            break;
+
+        case GLUT_KEY_PAGE_UP: radius += 0.5f; break;
+    }
+    glutPostRedisplay();
+
+}
+
+void printInfo() {
+    printf("You can use PAGE_UP/PAGE_DOWN to increase/decrease distance to center\n");
+    printf("Use ARROWS to shift model around\n");
+}
 
 void initialize(int argc, char** argv) {
+    srand(23);
     //init GLUT and the window
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
@@ -130,18 +218,21 @@ void initialize(int argc, char** argv) {
     glutDisplayFunc(renderScene);
     glutReshapeFunc(changeSize);
 
+    glutSpecialFunc(processSpecialKeys);
+
   //  OpenGL settings
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
   // enter GLUT's main cycle
+    printInfo();
     glutMainLoop();
 }
 
 int main(int argc, char** argv) {
 
   if (argc < 2) {
-    printf("Invalid configuration file!\n");
+    fprintf(stderr,"Invalid configuration file!\n");
     return 1;
   }
   int error = loadXML(argv[1],&groups);

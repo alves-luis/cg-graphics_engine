@@ -6,16 +6,18 @@
 
 struct model {
     std::vector<Vertex> * vertexes;
+    char * color;
     char * modelName;
 };
 
-Model newModel(char * name) {
+Model newModel(char * name, char * color) {
   Model m = (Model) malloc(sizeof(struct model));
   m->vertexes = new std::vector<Vertex>();
   if (!m)
     return NULL;
 
   m->modelName = strdup(name);
+  m->color = strdup(color);
   return m;
 }
 
@@ -30,6 +32,20 @@ Vertex getVertex(Model m, int i) {
     Vertex v = m->vertexes->at(i);
     return v;
   }
+  else
+    return NULL;
+}
+
+char * getName(Model m) {
+  if (m)
+    return m->modelName;
+  else
+    return NULL;
+}
+
+char * getColor(Model m) {
+  if (m)
+    return m->color;
   else
     return NULL;
 }
