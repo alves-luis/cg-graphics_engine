@@ -146,7 +146,7 @@ int main(int argc, char** argv) {
     printf("Invalid configuration file!\n");
     return 1;
   }
-  int error = loadXML(argv[1],&groups,&models);
+  int error = loadXML(argv[1],&groups);
   if (!error)
     initialize(argc, argv);
   else

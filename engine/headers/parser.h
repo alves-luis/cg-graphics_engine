@@ -6,7 +6,7 @@
 #include <vector>
 #include <map>
 
-int loadXML(char * fname, std::vector<Group> * groups, std::map<char*,Model> * models);
+int loadXML(char * fname, std::vector<Group> * groups);
 
 
 #endif
