@@ -8,6 +8,7 @@ struct group {
 	std::vector<Group> * children;
 	Scale scale;
 	Translation translation;
+	int transformationCount;
 };
 
 Group newGroup() {
@@ -15,6 +16,7 @@ Group newGroup() {
 	if (g) {
 		g->models = new std::vector<Model>();
 		g->children = new std::vector<Group>();
+		g->transformationCount = 0;
 		g->scale = newOperation3f();
 		if (g->scale) { // set default scales to 1
 			setX(g->scale,1);
@@ -48,6 +50,7 @@ void addScale(Group g, float x, float y, float z) {
 		setX(g->scale,x);
 		setY(g->scale,y);
 		setZ(g->scale,z);
+		setOrder(g->scale,g->transformationCount++);
 	}
 }
 
@@ -56,5 +59,42 @@ void addTranslation(Group g, float x, float y, float z) {
 		setX(g->translation,x);
 		setY(g->translation,y);
 		setZ(g->translation,z);
+		setOrder(g->translation,g->transformationCount++);
+	}
+}
+
+std::vector<Model> * getModels(Group g) {
+	if (g) {
+		return g->models;
+	}
+	else {
+		return NULL;
+	}
+}
+
+std::vector<Group> * getGroups(Group g) {
+	if (g) {
+		return g->children;
+	}
+	else {
+		return NULL;
+	}
+}
+
+Translation getTranslation(Group g) {
+	if (g) {
+		return g->translation;
+	}
+	else {
+		return NULL;
+	}
+}
+
+Scale getScale(Group g) {
+	if (g) {
+		return g->scale;
+	}
+	else {
+		return NULL;
 	}
 }
