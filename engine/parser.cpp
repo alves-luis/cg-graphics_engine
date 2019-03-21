@@ -90,6 +90,28 @@ int parseScale(XMLElement * scale, Group g) {
 	return 0;
 }
 
+int parseRotation(XMLElement * rotate, Group g){
+
+	int angle;
+	float x,y,z;
+	x=y=z=0.0f; //no default axis for rotation
+	angle=0; // default angle is 0
+	rotate->QueryAttribute("angle",&angle);
+	rotate->QueryAttribute("axisX",&x);
+	rotate->QueryAttribute("axisY",&y);
+	rotate->QueryAttribute("axisZ",&z);
+
+	rotate= rotate -> NextSiblingElement("rotate");
+
+	if (rotate) // if more rotates, it's invalid and don't parse
+		return 2;
+
+	addRotation(g,angle,x,y,z);
+	return 0;
+}
+
+
+
 int parseTranslate(XMLElement * translate, Group g) {
 	float x,y,z;
 	x = y = z = 0.0f; // default translation is 0
@@ -118,7 +140,7 @@ int parseGroup(XMLElement * group, Group g) {
 			error = parseTranslate(tag,g);
 		}
 		else if (strcmp(tagName,"rotate") == 0) {
-
+			error=parseRotation(tag,g);
 		}
 		else if (strcmp(tagName,"scale") == 0) {
 			error = parseScale(tag,g);

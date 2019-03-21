@@ -7,4 +7,5 @@
 
 int loadXML(char * fname, std::vector<Group> * groups);
 
+
 #endif

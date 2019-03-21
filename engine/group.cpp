@@ -1,5 +1,6 @@
 #include "headers/group.h"
 #include "headers/scale.h"
+#include "headers/rotation.h"
 #include "headers/translation.h"
 #include <stdlib.h>
 
@@ -9,6 +10,7 @@ struct group {
 	Scale scale;
 	Translation translation;
 	int transformationCount;
+	Rotation rotation;
 };
 
 Group newGroup() {
@@ -23,6 +25,7 @@ Group newGroup() {
 			setY(g->scale,1);
 			setZ(g->scale,1);
 		}
+		g->rotation= newRotation();
 		g->translation = newOperation3f();
 		if (g->translation) { // set default translation to 0
 			setX(g->translation,0);
@@ -51,6 +54,15 @@ void addScale(Group g, float x, float y, float z) {
 		setY(g->scale,y);
 		setZ(g->scale,z);
 		setOrder(g->scale,g->transformationCount++);
+	}
+}
+
+void addRotation(Group g, int angle, float x, float y, float z){
+	if(g){
+		setAngle(g->rotation,angle);
+		setX(g->rotation,x);
+		setY(g->rotation,y);
+		setZ(g->rotation,z);
 	}
 }
 
