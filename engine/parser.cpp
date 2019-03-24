@@ -58,8 +58,15 @@ int parse3D(char * fname, Model m) {
 	return 0;
 }
 
+/**
+ * Given an XMLElement (a group of <models>), parses all the <model> tags and adds them to Group g
+ * Also, maintains a map modelsMap of already loaded Models.
+ * @param models current tag
+ * @param g Group to store the models to
+ * @param modelsMap map of Models, to avoid reloading .3d files
+ * @return 0 if all went good
+ * */
 int parseModels(XMLElement * models, Group g, std::map<char*,Model> * modelsMap) {
-
 
 	XMLElement * model = models->FirstChildElement("model");
 
@@ -142,8 +149,6 @@ int parseRotation(XMLElement * rotate, Group g){
 	return 0;
 }
 
-
-
 int parseTranslate(XMLElement * translate, Group g) {
 	float x,y,z;
 	x = y = z = 0.0f; // default translation is 0
@@ -202,14 +207,6 @@ int parseGroup(XMLElement * group, Group g, std::map<char*,Model> * models) {
 	}
 }
 
-/**
- * This function, given a file name, loads its XML content using
- * tinyxml2
- * @param fname file name
- * @param groups vetor with all the groups in the file
- * @param models map whit the name of the model and respective model
- * @return 0 if success
- * */
 int loadXML(char * fname, std::vector<Group> * groups) {
 
 	if (fname)
