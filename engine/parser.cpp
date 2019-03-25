@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <map>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
 #include "headers/parser.h"
 #include "headers/model.h"
 #include "headers/vertex.h"
@@ -17,22 +21,9 @@ using namespace tinyxml2;
  * @return 0 if success
  * */
 int parse3D(char * fname, Model m) {
-	FILE * file = fopen(fname,"r");
+	std::ifstream file (fname);
 
-	if (file == NULL) {
-		fprintf(stderr,"File is NULL!\n");
-		return 1;
-	}
-
-	float x, y, z;
-	char * line = (char *) malloc(sizeof(char)*1024);
-
-	if (line == NULL) {
-		fprintf(stderr,"PARSING FAILURE! Could not allocate enough memory for buffering line reading!\n");
-		return 2;
-	}
-
-	size_t size;
+	std::string line;
 
 	if (m == NULL) {
 		fprintf(stderr,"PARSING FAILURE! Cannot add vertices to NULL Model!\n");
@@ -40,9 +31,12 @@ int parse3D(char * fname, Model m) {
 	}
 
 	Vertex v;
-	while((getline(&line, &size, file)) > 0) {
-		int suc = sscanf(line,"%f %f %f",&x,&y,&z);
-		if (suc != 3) {// if can't get 3 axis, can't parse and return failure;
+	while(std::getline(file,line)) {
+		std::istringstream stringStream(line);
+
+		float x, y, z;
+
+		if (!(stringStream >> x >> y >> z)) {
 			freeModel(m);
 			fprintf(stderr,"PARSING FAILURE! Could not retrieve 3 floats!\n");
 			return 4;
@@ -53,7 +47,8 @@ int parse3D(char * fname, Model m) {
 		setZ(v,z);
 		addVertex(m,v);
 	}
-	free(line);
+
+	file.close();
 
 	return 0;
 }
