@@ -177,13 +177,12 @@ void processSpecialKeys(int key, int xx, int yy) {
             camX += 0.1; break;
 
         case GLUT_KEY_UP:
-            camZ -= 0.1; break;
-
-        case GLUT_KEY_DOWN:
             camZ += 0.1; break;
-        case GLUT_KEY_F1:
+        case GLUT_KEY_DOWN:
+            camZ -= 0.1; break;
+        case GLUT_KEY_PAGE_UP:
             camY -= 0.1; break;
-        case GLUT_KEY_F2:
+        case GLUT_KEY_PAGE_DOWN:
             camY += 0.1; break;
     }
     glutPostRedisplay();
@@ -191,8 +190,8 @@ void processSpecialKeys(int key, int xx, int yy) {
 }
 
 void printInfo() {
-    printf("You can use PAGE_UP/PAGE_DOWN to increase/decrease distance to center\n");
-    printf("Use ARROWS to shift model around\n");
+    printf("You can use PAGE_UP/PAGE_DOWN to increase/decrease altitude\n");
+    printf("Use ARROWS to shift model around XZ axis\n");
 }
 
 void initialize(int argc, char** argv) {
