@@ -6,76 +6,156 @@
         <group>
             <translate X="1"/>
             <scale X="0.001" Y="0.001" Z="0.001"/>
+            <!--Mercúrio-->
             <group>
-                <translate X="41.633"/>
-                <scale X="3.4" Y="3.4" Z="3.4"/>
+                <translate X="83.265"/>
+                <scale X="6.9" Y="6.9" Z="6.9"/>
                 <models>
                     <model file="sphere.3d" color="mercury"/>
                 </models>
             </group>
+            <!--Vénus-->
             <group>
-                <translate X="77.67"/>
-                <scale X="8.6" Y="8.6" Z="8.6"/>
+                <translate X="155.3415"/>
+                <scale X="17.3" Y="17.3" Z="17.3"/>
                 <models>
                     <model file="sphere.3d" color="venus"/>
                 </models>
             </group>
+            <!--Terra-->
             <group>
-                <translate X="107.457"/>
-                <scale X="9.1" Y="9.1" Z="9.1"/>
-                <models>
-                    <model file="sphere.3d" color="earth"/>
-                </models>
-            </group>
-            <group>
-                <translate X="163.689"/>
-                <scale X="4.8" Y="4.8" Z="4.8"/>
-                <models>
-                    <model file="sphere.3d" color="mars"/>
-                </models>
-            </group>
-            <group>
-                <translate X="559.048"/>
-                <scale X="102.7" Y="102.7" Z="102.7"/>
-                <models>
-                    <model file="sphere.3d" color="jupiter"/>
-                </models>
-            </group>
-            <group>
-                <translate X="1025.217"/>
-                <scale X="183.6" Y="183.6" Z="183.6"/>
+                <translate X="214.9145"/>
                 <group>
-                    <models>
-                        <model file="sphere.3d" color="saturn"/>
+                  <scale X="18.3" Y="18.3" Z="18.3"/>
+                  <models>
+                      <model file="sphere.3d" color="earth"/>
                     </models>
                 </group>
+                <!--Lua da Terra-->
                 <group>
-                    <scale X="1.4" Y="1.4" Z="1.4"/>
-                    <models>
-                        <model file="disc.3d" color="white"/>
-                    </models>
+                  <translate X="17.98" Y="17.98"/>
+                  <scale X="4.922" Y="4.922" Z="4.922"/>
+                  <models>
+                      <model file="sphere.3d"/>
+                  </models>
                 </group>
             </group>
+            <!--Marte-->
             <group>
-                <translate X="2062.145"/>
-                <scale X="33.7" Y="33.7" Z="33.7"/>
-                <models>
-                    <model file="sphere.3d" color="uranus"/>
-                </models>
+                <translate X="327.3795"/>
+                <group>
+                  <scale X="9.7" Y="9.7" Z="9.7"/>
+                  <models>
+                      <model file="sphere.3d" color="mars"/>
+                  </models>
+                </group>
+                <!--Lua de Marte (Deimos)-->
+                <group>
+                  <translate X="6.97" Y="6.97"/>
+                  <scale X="0.014" Y="0.014" Z="0.014"/>
+                  <models>
+                      <model file="sphere.3d"/>
+                  </models>
+                </group>
             </group>
+            <!--Júpiter-->
             <group>
-                <translate X="3232.919"/>
-                <scale X="32.6" Y="32.6" Z="32.6"/>
-                <models>
-                    <model file="sphere.3d" color="neptune"/>
-                </models>
+                <translate X="1118.0975"/>
+                <group>
+                  <scale X="205.4" Y="205.4" Z="205.4"/>
+                  <models>
+                      <model file="sphere.3d" color="jupiter"/>
+                  </models>
+                </group>
+                <!--Lua de Júpiter (Ganymede) -->
+                <group>
+                  <translate X="154.95" Y="154.95"/>
+                  <scale X="7.583" Y="7.583" Z="7.583"/>
+                  <models>
+                      <model file="sphere.3d"/>
+                  </models>
+                </group>
             </group>
+            <!--Saturno-->
             <group>
-                <translate X="4248.15"/>
-                <scale X="1.6" Y="1.6" Z="1.6"/>
-                <models>
-                    <model file="sphere.3d" color="pluto"/>
-                </models>
+                <translate X="2050.4345"/>
+                <group>
+                  <scale X="167.3" Y="167.3" Z="167.3"/>
+                  <group>
+                      <models>
+                          <model file="sphere.3d" color="saturn"/>
+                      </models>
+                  </group>
+                  <!--Anel de Saturno-->
+                  <group>
+                      <scale X="1.7" Y="1.7" Z="1.7"/>
+                      <models>
+                          <model file="disc.3d" color="white"/>
+                      </models>
+                  </group>
+                </group>
+                <!--Lua de Saturno (Titan) -->
+                <group>
+                  <translate X="128.46" Y="128.46"/>
+                  <scale X="7.353" Y="7.353" Z="7.353"/>
+                  <models>
+                      <model file="sphere.3d"/>
+                  </models>
+                </group>
+            </group>
+            <!--Urano-->
+            <group>
+                <translate X="4124.20"/>
+                <group>
+                  <scale X="67.4" Y="67.4" Z="67.4"/>
+                  <models>
+                      <model file="sphere.3d" color="uranus"/>
+                  </models>
+                </group>
+                <!--Lua de Urano (Titania)-->
+                <group>
+                  <translate X="50.46" Y="50.46"/>
+                  <scale X="1.436" Y="1.436" Z="1.436"/>
+                  <models>
+                      <model file="sphere.3d"/>
+                  </models>
+                </group>
+            </group>
+            <!--Nepturno-->
+            <group>
+                <translate X="6465.838"/>
+                <group>
+                  <scale X="65.2" Y="65.2" Z="65.2"/>
+                  <models>
+                      <model file="sphere.3d" color="neptune"/>
+                  </models>
+                </group>
+                <!--Lua de Nepturno (Triton)-->
+                <group>
+                  <translate X="51.62" Y="51.62"/>
+                  <scale X="5.768" Y="5.768" Z="5.768"/>
+                  <models>
+                      <model file="sphere.3d"/>
+                  </models>
+                </group>
+            </group>
+            <!--Pluto-->
+            <group>
+                <translate X="8496.3"/>
+                <group>
+                  <scale X="3.2" Y="3.2" Z="3.2"/>
+                  <models>
+                      <model file="sphere.3d" color="pluto"/>
+                  </models>
+                </group>
+                <!--Lua de Plutão (Charon)-->
+                <group>
+                  <translate X="3.86" Y="3.86"/>
+                  <scale X="2.154" Y="2.154" Z="2.154"/>
+                  <models>
+                      <model file="sphere.3d"/>
+                  </models>
+                </group>
             </group>
 
         </group>

@@ -32,7 +32,9 @@
 /** Stores the groups in a vector*/
 std::vector<Group> groups;
 
-float alfa = 0.0f, beta = 0.5f, radius = 10.0f;
+float camX = 0;
+float camY = 0;
+float camZ = 0;
 
 void changeSize(int w, int h) {
 
@@ -145,17 +147,14 @@ void renderScene(void) {
   // set the camera
   glLoadIdentity();
 
-  float camX, camY, camZ;
 
-  camX = radius * cos(beta) * sin(alfa);
-  camY = radius * sin(beta);
-  camZ = radius * cos(beta) * cos(alfa);
-
-  gluLookAt(camX,camY,camZ,
-            0.0,0.0,0.0,
+  gluLookAt(0,0,5,
+            0,0,0.0,
             0.0f,1.0f,0.0f);
 
   glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+
+  glTranslatef(camX,camY,camZ);
 
   // put drawing instructions here
   for(int i = 0; i < groups.size(); i++) {
@@ -172,29 +171,20 @@ void processSpecialKeys(int key, int xx, int yy) {
     switch (key) {
 
         case GLUT_KEY_RIGHT:
-            alfa -= 0.1; break;
+            camX -= 0.1; break;
 
         case GLUT_KEY_LEFT:
-            alfa += 0.1; break;
+            camX += 0.1; break;
 
         case GLUT_KEY_UP:
-            beta += 0.1f;
-            if (beta > 1.5f)
-                beta = 1.5f;
-            break;
+            camZ -= 0.1; break;
 
         case GLUT_KEY_DOWN:
-            beta -= 0.1f;
-            if (beta < -1.5f)
-                beta = -1.5f;
-            break;
-
-        case GLUT_KEY_PAGE_DOWN: radius -= 0.5f;
-            if (radius < 1.0f)
-                radius = 1.0f;
-            break;
-
-        case GLUT_KEY_PAGE_UP: radius += 0.5f; break;
+            camZ += 0.1; break;
+        case GLUT_KEY_F1:
+            camY -= 0.1; break;
+        case GLUT_KEY_F2:
+            camY += 0.1; break;
     }
     glutPostRedisplay();
 
