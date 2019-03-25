@@ -21,4 +21,5 @@ int createPlane(float size, char * fname) {
     writeToFile(x,0,z,file);
     writeToFile(x,0,-z,file);
     closeFile(file);
+    return 0;
 }
