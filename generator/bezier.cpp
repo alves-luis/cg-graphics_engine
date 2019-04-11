@@ -4,6 +4,55 @@
 #include <fstream>
 #include <sstream>
 
+float bezierM[4][4] = {{ -1.0f, 3.0f, -3.0f, 1.0f},
+					   { 3.0f, -6.0f, 3.0f, 0.0f},
+					   { -3.0f, 3.0f, 0.0f, 0.0f},
+					   { 1.0f, 0.0f, 0.0f, 0.0f}};
+
+void multMatrixVector(float *m, float *v, float *res) {
+
+	for (int j = 0; j < 4; ++j) {
+		res[j] = 0;
+		for (int k = 0; k < 4; ++k) {
+			res[j] += v[k] * m[j * 4 + k];
+		}
+	}
+}
+
+void multVectorMatrix(float *v, float *m, float *res) {
+	for(int i = 0; i < 4; ++i) {
+		res[i] = 0;
+		for(int j = 0; j < 4; ++j) {
+			res[i] += v[j] * m[j*4+i];
+		}
+	}
+}
+
+void getBezier(float u, float v, float ** pX, float ** pY, float ** pZ, float * coords) {
+	float U[4] = { u*u*u, u*u, u, 1};
+	float V[4] = { v*v*v, v*v, v, 1};
+
+	float UM[4]; // U*M
+	multVectorMatrix(U,*bezierM,UM);
+
+	float UMP[3][4]; // U*M*P
+	multVectorMatrix(UM,(float *)pX,UMP[0]);
+	multVectorMatrix(UM,(float *)pY,UMP[1]);
+	multVectorMatrix(UM,(float *)pZ,UMP[2]);
+
+	float VM_t[4]; // (VM) transposed
+	multMatrixVector(*bezierM,V,VM_t);
+
+	for(int i = 0; i < 3; i++) {
+		coords[i] = 0;
+
+		for(int j = 0; j < 4; j++) {
+			coords[i] += VM_t[j] * UMP[i][j];
+		}
+	}
+}
+
+
 int parseBezierPatch(char * fileName, std::vector<Vertex> * controlPoints, std::vector<int> * indices) {
 	std::ifstream file (fileName);
 	std::string line;
