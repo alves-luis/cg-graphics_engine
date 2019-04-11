@@ -1,8 +1,11 @@
 #include "sphere.h"
 #include "writetofile.h"
+#include "vertex.h"
+
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <stdio.h>
+#include <vector>
 
 /**
  * This function, given a radius beta and alpha, returns the cartesian X
@@ -12,7 +15,7 @@
  * @return X
  * */
 float calcX(float rad, float beta, float alpha) {
-  return rad * sin(beta) * sin(alpha);
+  return rad * sin(beta) * cos(alpha);
 }
 
 /**
@@ -34,54 +37,7 @@ float calcY(float rad, float beta) {
  * @return Z
  * */
 float calcZ(float rad, float beta, float alpha) {
-  return rad * sin(beta) * cos(alpha);
-}
-
-/**
- * This function draws a rectangle based on current beta, alpha, stack and slice
- * Rectangle looks like this:
- * A --- D
- * B --- C
- * @param rad radius of sphere
- * @param beta current vertical displacement
- * @param alpha current horizontal displacement
- * @param stack current stack
- * @param slice current slice
- * @param baseAlpha size of 1 alfa
- * @param baseBeta size of 1 beta
- * @param file file pointer to write the points of the rectangle
- * */
-void draw(float rad, float beta, float alpha, int stack, int slice, float baseAlpha, float baseBeta, FILE * file) {
-  // start drawing rectangles
-  float xA, yA, zA, xB, yB, zB, xC, yC, zC, xD, yD, zD;
-
-  // A --- D
-  // B --- C
-  xA = calcX(rad,beta,alpha);
-  yA = calcY(rad,beta);
-  zA = calcZ(rad,beta,alpha);
-
-  alpha = (slice+1)*baseAlpha;
-  xD = calcX(rad,beta,alpha);
-  yD = yA;
-  zD = calcZ(rad,beta,alpha);
-
-  beta = (stack+1)*baseBeta;
-  xC = calcX(rad,beta,alpha);
-  yC = calcY(rad,beta);
-  zC = calcZ(rad,beta,alpha);
-
-  alpha = slice*baseAlpha;
-  xB = calcX(rad,beta,alpha);
-  yB = yC;
-  zB = calcZ(rad,beta,alpha);
-
-  writeToFile(xB,yB,zB,file);
-  writeToFile(xC,yC,zC,file);
-  writeToFile(xD,yD,zD,file);
-  writeToFile(xB,yB,zB,file);
-  writeToFile(xD,yD,zD,file);
-  writeToFile(xA,yA,zA,file);
+  return rad * sin(beta) * sin(alpha);
 }
 
 int createSphere(float rad, int slices, int stacks, char * fname) {
@@ -90,17 +46,67 @@ int createSphere(float rad, int slices, int stacks, char * fname) {
   if (rad < 0 || slices < 1 || stacks < 1)
     return 1;
 
-  float horiStep = static_cast<float>((M_PI * 2) / slices);
-  float vertStep = static_cast<float>((M_PI) / stacks);
+  float baseAlpha = static_cast<float>((M_PI * 2) / slices);
+  float baseBeta = static_cast<float>((M_PI) / stacks);
 
-  for(int i = 0; i < stacks; i++) {
-    float beta = i * vertStep; // current vertical angle
-    for(int j = 0; j < slices; j++) {
-      float alpha = j * horiStep; // current horizontal angle
-      draw(rad,beta,alpha,i,j,horiStep,vertStep,file);
+  std::vector<Vertex> vertices;
+  std::vector<int> indexes;
 
+  // until stacks + 1 so that no need to do if checking
+  // it repeats the first vertex of a stack and slice at the end
+  int numVertices = 0;
+  for(int stack = 0; stack <= stacks; stack++) {
+
+    float beta = stack * baseBeta; // current vertical angle
+
+    for(int slice = 0; slice <= slices; slice++) {
+
+      float alpha = slice * baseAlpha; // current horizontal angle
+
+      float x,y,z;
+
+      x = calcX(rad,beta,alpha);
+      y = calcY(rad,beta);
+      z = calcZ(rad,beta,alpha);
+
+      Vertex v = newVertex();
+      setX(v,x);
+      setY(v,y);
+      setZ(v,z);
+      vertices.push_back(v);
+      numVertices++;
     }
   }
+
+  for(int stack = 0; stack < stacks; stack++) {
+  	for(int slice = 0; slice < slices; slice++) {
+  		// A --- C
+  		// B --- D
+  		int indexA, indexB, indexC, indexD;
+  		indexA = stack * (slices + 1) + slice;
+  		indexB = (stack + 1) * (slices + 1) + slice;
+  		indexC = indexA + 1;
+  		indexD = indexB + 1;
+
+  		indexes.push_back(indexA);
+		indexes.push_back(indexB);
+		indexes.push_back(indexC);
+
+		indexes.push_back(indexB);
+		indexes.push_back(indexD);
+		indexes.push_back(indexC);
+  	}
+  }
+
+  // Write on top of file numOfVertices
+  writeIndexToFile(numVertices, file);
+
+  for(Vertex v : vertices)
+  	writeVertexToFile(getX(v),getY(v),getZ(v),file);
+
+  for(int i : indexes)
+  	writeIndexToFile(i,file);
+
   closeFile(file);
 
   return 0;

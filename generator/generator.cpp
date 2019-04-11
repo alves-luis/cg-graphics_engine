@@ -2,6 +2,7 @@
 #include "plane.h"
 #include "box.h"
 #include "cone.h"
+#include "bezier.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -149,6 +150,12 @@ int main(int argc, char** argv) {
       createBox(args->floats[0],args->floats[1],args->floats[2],1,argv[2+BOX_ARGS]);
 
     free(args);
+  }
+  else if(strcmp(prim,"bezier") == 0) {
+    auto * controlPoints = new std::vector<Vertex>();
+    auto * indices = new std::vector<int>();
+  	int error = parseBezierPatch(argv[2],controlPoints,indices);
+  	error = generateBezierModel(controlPoints,indices,atoi(argv[3]),argv[4]);
   }
 
   return 0;
