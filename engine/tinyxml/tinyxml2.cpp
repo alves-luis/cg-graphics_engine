@@ -35,24 +35,24 @@ distribution.
 #if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && (!defined WINCE)
 	// Microsoft Visual Studio, version 2005 and higher. Not WinCE.
 	/*int _snprintf_s(
-	   char *buffer,
+	   char *index_buffer,
 	   size_t sizeOfBuffer,
 	   size_t count,
 	   const char *format [,
 		  argument] ...
 	);*/
-	static inline int TIXML_SNPRINTF( char* buffer, size_t size, const char* format, ... )
+	static inline int TIXML_SNPRINTF( char* index_buffer, size_t size, const char* format, ... )
 	{
 		va_list va;
 		va_start( va, format );
-		int result = vsnprintf_s( buffer, size, _TRUNCATE, format, va );
+		int result = vsnprintf_s( index_buffer, size, _TRUNCATE, format, va );
 		va_end( va );
 		return result;
 	}
 
-	static inline int TIXML_VSNPRINTF( char* buffer, size_t size, const char* format, va_list va )
+	static inline int TIXML_VSNPRINTF( char* index_buffer, size_t size, const char* format, va_list va )
 	{
-		int result = vsnprintf_s( buffer, size, _TRUNCATE, format, va );
+		int result = vsnprintf_s( index_buffer, size, _TRUNCATE, format, va );
 		return result;
 	}
 
@@ -2226,7 +2226,7 @@ XMLError XMLDocument::LoadFile( FILE* fp )
     TIXMLASSERT( filelength >= 0 );
 
     if ( !LongFitsIntoSizeTMinusOne<>::Fits( filelength ) ) {
-        // Cannot handle files which won't fit in buffer together with null terminator
+        // Cannot handle files which won't fit in index_buffer together with null terminator
         SetError( XML_ERROR_FILE_READ_ERROR, 0, 0 );
         return _errorID;
     }

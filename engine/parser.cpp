@@ -30,22 +30,27 @@ int parse3D(char * fname, Model m) {
 		return 3;
 	}
 
-	Vertex v;
+	bool indexes = false;
 	while(std::getline(file,line)) {
 		std::istringstream stringStream(line);
 
 		float x, y, z;
-
-		if (!(stringStream >> x >> y >> z)) {
-			freeModel(m);
-			fprintf(stderr,"PARSING FAILURE! Could not retrieve 3 floats!\n");
-			return 4;
+		if (!indexes) {
+			if (!(stringStream >> x >> y >> z)) {
+				// could not get 3 floats, so they're indexes
+				indexes = true;
+				addIndex(m, static_cast<unsigned int>(x));
+			} else {
+				addVertex(m, x);
+				addVertex(m, y);
+				addVertex(m, z);
+			}
 		}
-		v = newVertex();
-		setX(v,x);
-		setY(v,y);
-		setZ(v,z);
-		addVertex(m,v);
+		else {
+			unsigned int index;
+			stringStream >> index;
+			addIndex(m,index);
+		}
 	}
 
 	file.close();

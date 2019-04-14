@@ -125,3 +125,12 @@ char * getNthTransformation(Group g, int n) {
 	else
 		return NULL;
 }
+
+void initializeVBO(Group g) {
+	if (g) {
+		for(Model m : *getModels(g))
+			initializeVBO(m);
+		for(Group child : *getGroups(g))
+			initializeVBO(child);
+	}
+}

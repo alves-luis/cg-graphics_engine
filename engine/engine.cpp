@@ -1,6 +1,7 @@
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
+#include <GL/glew.h>
 #include <GL/glut.h>
 #endif
 
@@ -62,7 +63,6 @@ void changeSize(int w, int h) {
 }
 
 void drawModel(Model m) {
-	int size = getSize(m);
 
 	char * color = getColor(m);
 
@@ -91,12 +91,7 @@ void drawModel(Model m) {
 	else
 	    glColor3f(1.0f,0,0);
 
-    glBegin(GL_TRIANGLES);
-	for(int j = 0; j < size; j++) {
-		Vertex v = getVertex(m,j);
-		glVertex3f(getX(v), getY(v), getZ(v));
-	}
-	glEnd();
+    drawVBO(m);
 }
 
 void drawGroup(Group g) {
@@ -130,7 +125,7 @@ void drawGroup(Group g) {
     }
 
     if (children) {
-        for(Group g : *children) {
+        for(Group child : *children) {
             drawGroup(g);
         }
     }
@@ -194,14 +189,21 @@ void printInfo() {
     printf("Use ARROWS to shift model around XZ axis\n");
 }
 
+void initializeVBOS() {
+	for(Group g: groups)
+		initializeVBO(g);
+}
+
 void initialize(int argc, char** argv) {
-    srand(23);
     //init GLUT and the window
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
     glutInitWindowPosition(100,100);
     glutInitWindowSize(800,800);
     glutCreateWindow("CG@DI-UM");
+    glewInit();
+    glEnableClientState(GL_VERTEX_ARRAY);
+    initializeVBOS();
 
   // Required callback registry
     glutDisplayFunc(renderScene);

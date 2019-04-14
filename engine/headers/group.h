@@ -105,4 +105,10 @@ Rotation getRotation(Group g);
  * */
 char * getNthTransformation(Group g, int n);
 
+/**
+ * Generates all the buffers of the models in that group
+ * @param g Group
+ * */
+void initializeVBO(Group g);
+
 #endif
