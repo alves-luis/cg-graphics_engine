@@ -102,10 +102,8 @@ void initializeVBO(Model m) {
 }
 
 void drawVBO(Model m) {
-	puts("ola");
 	glBindBuffer(GL_ARRAY_BUFFER,m->buffers[0]);
 	glVertexPointer(3,GL_FLOAT,0,&m->vertexes[0]);
-	puts("oi");
 	glColor3f(0,0,1);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,m->buffers[1]);
 	glDrawElements(GL_TRIANGLES, m->indexes->size(),GL_UNSIGNED_INT,NULL);
