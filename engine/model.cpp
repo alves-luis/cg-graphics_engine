@@ -15,7 +15,8 @@
 struct model {
     std::vector<float> * vertexes;
     std::vector<unsigned int> * indexes;
-    unsigned int buffers[2];
+    GLuint vertexBuffer[1];
+    GLuint indexBuffer[1];
     char * color;
     char * modelName;
 };
@@ -93,18 +94,22 @@ void freeModel(Model m) {
 
 void initializeVBO(Model m) {
   if (m) {
-    glGenBuffers(2,m->buffers);
-    glBindBuffer(GL_ARRAY_BUFFER,m->buffers[0]);
-    glBufferData(GL_ARRAY_BUFFER,m->vertexes->size() * sizeof(float),&m->vertexes[0],GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,m->buffers[1]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER,m->indexes->size() * sizeof(unsigned int), &m->indexes[0],GL_STATIC_DRAW);
+  	std::vector<float> vertexes = *m->vertexes;
+  	std::vector<unsigned int> indexes = *m->indexes;
+  	float * vertex = &vertexes[0];
+  	unsigned int * index = &indexes[0];
+    glGenBuffers(1,m->vertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER,m->vertexBuffer[0]);
+    glBufferData(GL_ARRAY_BUFFER,m->vertexes->size() * sizeof(float),vertex,GL_STATIC_DRAW);
+    glGenBuffers(1,m->indexBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,m->indexBuffer[0]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,m->indexes->size() * sizeof(unsigned int), index,GL_STATIC_DRAW);
   }
 }
 
 void drawVBO(Model m) {
-	glBindBuffer(GL_ARRAY_BUFFER,m->buffers[0]);
-	glVertexPointer(3,GL_FLOAT,0,&m->vertexes[0]);
-	glColor3f(0,0,1);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,m->buffers[1]);
+	glBindBuffer(GL_ARRAY_BUFFER,m->vertexBuffer[0]);
+	glVertexPointer(3,GL_FLOAT,0,0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,m->indexBuffer[0]);
 	glDrawElements(GL_TRIANGLES, m->indexes->size(),GL_UNSIGNED_INT,NULL);
 }

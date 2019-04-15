@@ -1,0 +1,16 @@
+<scene>
+    <group>
+        <translate X="2"/>
+        <scale X="2" Y="2" Z="2"/>
+        <models>
+            <model file="sphere.3d"/>
+        </models>
+    </group>
+    <group>
+        <scale X="2" Y="2" Z="2"/>
+        <translate X="2"/>
+        <models>
+            <model file="sphere.3d"/>
+        </models>
+    </group>
+</scene>
