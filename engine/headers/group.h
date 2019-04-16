@@ -68,11 +68,9 @@ void addRotation(Group g, float angle, float x, float y, float z);
 /**
  * Given a group, adds a Translation to the group
  * @param g Group to add the Translation to
- * @param x translation value in the xAxis
- * @param y translation value in the yAxis
- * @param z translation value in the zAxis
+ * @param t Translation
  * */
-void addTranslation(Group g, float x, float y, float z);
+void addTranslation(Group g, Translation t);
 
 /**
  * Given a group, returns the translation associated with that group

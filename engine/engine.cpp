@@ -110,7 +110,7 @@ void drawGroup(Group g) {
         if(!op) // if no op, stop
             break;
         if(strcmp("translation",op) == 0)
-            glTranslatef(getX(translation), getY(translation), getZ(translation));
+        	drawTranslation(translation);
         else if(strcmp("rotation",op) == 0)
             glRotatef(getAngle(rotation), getX(rotation),getY(rotation),getZ(rotation));
         else if (strcmp("scale",op) == 0)
@@ -143,7 +143,7 @@ void renderScene(void) {
   glLoadIdentity();
 
 
-  gluLookAt(5,5,5,
+  gluLookAt(0,0,20,
             0,0,0.0,
             0.0f,1.0f,0.0f);
 
@@ -207,6 +207,7 @@ void initialize(int argc, char** argv) {
 
   // Required callback registry
     glutDisplayFunc(renderScene);
+    glutIdleFunc(renderScene);
     glutReshapeFunc(changeSize);
 
     glutSpecialFunc(processSpecialKeys);

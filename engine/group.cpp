@@ -25,7 +25,7 @@ Group newGroup() {
 			setZ(g->scale,1);
 		}
 		g->rotation = newRotation();
-		g->translation = newOperation3f();
+		g->translation = newTranslation(false);
 		if (g->translation) { // set default translation to 0
 			setX(g->translation,0);
 			setY(g->translation,0);
@@ -67,11 +67,9 @@ void addRotation(Group g, float angle, float x, float y, float z){
 	}
 }
 
-void addTranslation(Group g, float x, float y, float z) {
+void addTranslation(Group g, Translation t) {
 	if (g) {
-		setX(g->translation,x);
-		setY(g->translation,y);
-		setZ(g->translation,z);
+		g->translation = t;
 		g->transformationOrder->insert(std::pair<int,char*>(g->transformationCount++,"translation"));
 	}
 }

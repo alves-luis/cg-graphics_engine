@@ -150,11 +150,42 @@ int parseRotation(XMLElement * rotate, Group g){
 }
 
 int parseTranslate(XMLElement * translate, Group g) {
-	float x,y,z;
-	x = y = z = 0.0f; // default translation is 0
-	translate->QueryAttribute("X",&x);
-	translate->QueryAttribute("Y",&y);
-	translate->QueryAttribute("Z",&z);
+	Translation t;
+	float time;
+	time = 0.0f; // default translation is 0
+
+	XMLError timeAttribute = translate->QueryFloatAttribute("time",&time);
+	// if no attribute, static translation
+	if (timeAttribute == XML_NO_ATTRIBUTE) {
+		t = newTranslation(false);
+		float x,y,z;
+		x = y = z; // default translation is 0
+		translate->QueryFloatAttribute("X",&x);
+		translate->QueryFloatAttribute("Y",&y);
+		translate->QueryFloatAttribute("Z",&z);
+		setX(t,x);
+		setY(t,y);
+		setZ(t,z);
+	}
+	// dynamic translation
+	else {
+		t = newTranslation(true);
+		setTime(t,time);
+		XMLElement * point = translate->FirstChildElement(NULL);
+		while(point != NULL) {
+			Vertex v = newVertex();
+			float x, y,z;
+			point->QueryFloatAttribute("X",&x);
+			point->QueryFloatAttribute("Y",&y);
+			point->QueryFloatAttribute("Z",&z);
+			setX(v,x);
+			setY(v,y);
+			setZ(v,z);
+			addPoint(t,v);
+			point = point->NextSiblingElement("point");
+		}
+
+	}
 
 	translate = translate->NextSiblingElement("translate");
 
@@ -162,8 +193,8 @@ int parseTranslate(XMLElement * translate, Group g) {
 		fprintf(stderr,"PARSING FAILURE! Cannot have more than 1 translation per generation!\n");
 		return 2;
 	}
+	addTranslation(g,t);
 
-	addTranslation(g,x,y,z);
 	return 0;
 }
 

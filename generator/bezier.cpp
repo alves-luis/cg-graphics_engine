@@ -103,22 +103,25 @@ void getBezier(float u, float v, float ** pX, float ** pY, float ** pZ, float * 
 	float U[4] = { u*u*u, u*u, u, 1};
 	float V[4] = { v*v*v, v*v, v, 1};
 
-	float UM[4]; // U*M
-	multVectorMatrix(U,*bezierM,UM);
+	// B(u,v) = U * M * P(x,y,z) * M_t * V
+	// M_t = M (symmetric matrix)
+	float MV[4];
+	multMatrixVector(*bezierM,V,MV);
 
-	float UMP[3][4]; // U*M*P
-	multVectorMatrix(UM,(float *)pX,UMP[0]);
-	multVectorMatrix(UM,(float *)pY,UMP[1]);
-	multVectorMatrix(UM,(float *)pZ,UMP[2]);
+	float PMV[3][4];
+	multMatrixVector((float *)pX,MV,PMV[0]);
+	multMatrixVector((float *)pY,MV,PMV[1]);
+	multMatrixVector((float *)pZ,MV,PMV[2]);
 
-	float VM_t[4]; // (VM) transposed
-	multMatrixVector(*bezierM,V,VM_t);
+	float MPMV[3][4];
+	multMatrixVector(*bezierM,PMV[0],MPMV[0]);
+	multMatrixVector(*bezierM,PMV[1],MPMV[1]);
+	multMatrixVector(*bezierM,PMV[2],MPMV[2]);
 
 	for(int i = 0; i < 3; i++) {
 		coords[i] = 0;
-
 		for(int j = 0; j < 4; j++) {
-			coords[i] += VM_t[j] * UMP[i][j];
+			coords[i] += U[j] * MPMV[i][j];
 		}
 	}
 }
@@ -131,7 +134,7 @@ int generateBezierModel(std::vector<Vertex> * controlPoints, std::vector<int> * 
 		return 2;
 	}
 
-	// each vertex has 3 components, 16 vertexes per patch
+	// each vertex has 3 components, 16 floats per patch
 	float pX[4][4];
 	float pY[4][4];
 	float pZ[4][4];
