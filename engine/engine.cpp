@@ -126,7 +126,7 @@ void drawGroup(Group g) {
 
     if (children) {
         for(Group child : *children) {
-            drawGroup(g);
+            drawGroup(child);
         }
     }
 

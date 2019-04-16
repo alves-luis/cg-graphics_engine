@@ -5,6 +5,7 @@
 struct group {
 	std::vector<Model> * models;
 	std::vector<Group> * children;
+	char * color;
 	Scale scale;
 	Translation translation;
 	Rotation rotation;
@@ -26,11 +27,6 @@ Group newGroup() {
 		}
 		g->rotation = newRotation();
 		g->translation = newTranslation(false);
-		if (g->translation) { // set default translation to 0
-			setX(g->translation,0);
-			setY(g->translation,0);
-			setZ(g->translation,0);
-		}
 		g->transformationOrder = new std::map<int,char*>();
 	}
 	return g;
@@ -126,9 +122,14 @@ char * getNthTransformation(Group g, int n) {
 
 void initializeVBO(Group g) {
 	if (g) {
-		for(Model m : *getModels(g))
-			initializeVBO(m);
-		for(Group child : *getGroups(g))
-			initializeVBO(child);
+		std::vector<Model> * models = g->models;
+		std::vector<Group> * children = g->children;
+		if (models)
+			for(Model m : *models) {
+				initializeVBO(m);
+			}
+		if (children)
+			for(Group child : *children)
+				initializeVBO(child);
 	}
 }

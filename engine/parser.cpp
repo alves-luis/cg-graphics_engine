@@ -20,7 +20,7 @@ using namespace tinyxml2;
  * @param m Model to add the vertices to
  * @return 0 if success
  * */
-int parse3D(char * fname, Model m) {
+int parse3D(std::string fname, Model m) {
 	std::ifstream file (fname);
 
 	std::string line;
@@ -52,6 +52,8 @@ int parse3D(char * fname, Model m) {
 			addIndex(m,index);
 		}
 	}
+	if (!indexes) // never seen indexes
+		return 4;
 
 	file.close();
 
@@ -66,39 +68,36 @@ int parse3D(char * fname, Model m) {
  * @param modelsMap map of Models, to avoid reloading .3d files
  * @return 0 if all went good
  * */
-int parseModels(XMLElement * models, Group g, std::map<char*,Model> * modelsMap) {
+int parseModels(XMLElement * models, Group g, std::map<std::string,Model> * modelsMap) {
 
 	XMLElement * model = models->FirstChildElement("model");
 
 	while(model != NULL) {
 
-		char * fileName = (char *) model->Attribute("file");
-
-		if (!fileName) {// if no file name
-			fprintf(stderr,"PARSING FAILURE! NULL filename!\n");
-			return 3;
-		}
+		std::string fileName = std::string(model->Attribute("file"));
 
 		Model m;
+		char * color = (char *) model->Attribute("color");
+
+		if (!color) {
+			color = "white"; // default color
+		}
 		if (modelsMap->find(fileName) == modelsMap->end()) {
-
-			char * color = (char *) model->Attribute("color");
-
-			if (!color) {
-				color = "white"; // default color
-			}
 
 			m = newModel(fileName,color);
 
 			int error = parse3D(fileName,m);
 			if (error) { // if error in parsing file 3D, don't parse anymore files
-				fprintf(stderr,"PARSING FAILURE! Error parsing %s file!\n",fileName);
+				fprintf(stderr,"PARSING FAILURE! Error parsing %s file!\n",fileName.c_str());
 				return error;
 			}
-			modelsMap->insert(std::pair<char*,Model>(fileName,m));
+			modelsMap->insert(std::pair<std::string,Model>(fileName,m));
 		}
 		else {
-			m = modelsMap->find(fileName)->second;
+			Model old = modelsMap->find(fileName)->second;
+			m = newModel(fileName,color);
+			setVertexes(m,getVertexes(old));
+			setIndexes(m,getIndexes(old));
 		}
 
 		addModel(g,m);
@@ -198,7 +197,7 @@ int parseTranslate(XMLElement * translate, Group g) {
 	return 0;
 }
 
-int parseGroup(XMLElement * group, Group g, std::map<char*,Model> * models) {
+int parseGroup(XMLElement * group, Group g, std::map<std::string,Model> * models) {
 
 	XMLElement * tag = group->FirstChildElement(NULL);
 
@@ -244,7 +243,7 @@ int loadXML(char * fname, std::vector<Group> * groups) {
 		printf("Loading %s\n",fname);
 
 	XMLDocument doc;
-	std::map<char*,Model> * models= new std::map<char*,Model>();
+	std::map<std::string,Model> * models= new std::map<std::string,Model>();
 
 	XMLError err = doc.LoadFile(fname);
 	if (err) {

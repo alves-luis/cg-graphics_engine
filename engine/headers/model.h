@@ -1,6 +1,8 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include <string>
+#include <vector>
 #include "vertex.h"
 
 /**
@@ -14,7 +16,7 @@ typedef struct model * Model;
  * @param color Color name
  * @return Pointer to the model
  * */
-Model newModel(char * name, char * color);
+Model newModel(std::string name, char * color);
 
 /**
  * Adds a vertex to a model
@@ -51,7 +53,7 @@ int getIndex(Model m, int i);
  * @param m Model to retrieve the name from
  * @return name of model or NULL if invalid model
  * */
-char * getName(Model m);
+std::string getName(Model m);
 
 /**
  * Returns the color of the model
@@ -90,4 +92,21 @@ void initializeVBO(Model m);
  * @param m Model
  * */
 void drawVBO(Model m);
+
+/**
+ * Returns a pointer to the indexes of this model
+ * @param m Model
+ * @return vector of indexes
+ * */
+std::vector<unsigned int> * getIndexes(Model m);
+
+/**
+ * Returns a pointer to the vertexes of this model
+ * @param m Model
+ * @return vector of floats
+ * */
+std::vector<float> * getVertexes(Model m);
+
+void setIndexes(Model m, std::vector<unsigned int> * in);
+void setVertexes(Model m, std::vector<float> * ver);
 #endif
