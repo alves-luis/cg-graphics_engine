@@ -87,12 +87,12 @@
                       </models>
                   </group>
                   <!--Anel de Saturno-->
-                  <group>
+                  <!--<group>
                       <scale X="1.7" Y="1.7" Z="1.7"/>
                       <models>
                           <model file="disc.3d" color="white"/>
                       </models>
-                  </group>
+                  </group>-->
                 </group>
                 <!--Lua de Saturno (Titan) -->
                 <group>

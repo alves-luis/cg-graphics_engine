@@ -49,12 +49,9 @@ int createSphere(float rad, int slices, int stacks, char * fname) {
   float baseAlpha = static_cast<float>((M_PI * 2) / slices);
   float baseBeta = static_cast<float>((M_PI) / stacks);
 
-  std::vector<Vertex> vertices;
-  std::vector<int> indexes;
 
   // until stacks + 1 so that no need to do if checking
   // it repeats the first vertex of a stack and slice at the end
-  int numVertices = 0;
   for(int stack = 0; stack <= stacks; stack++) {
 
     float beta = stack * baseBeta; // current vertical angle
@@ -69,12 +66,7 @@ int createSphere(float rad, int slices, int stacks, char * fname) {
       y = calcY(rad,beta);
       z = calcZ(rad,beta,alpha);
 
-      Vertex v = newVertex();
-      setX(v,x);
-      setY(v,y);
-      setZ(v,z);
-      vertices.push_back(v);
-      numVertices++;
+      writeVertexToFile(x,y,z,file);
     }
   }
 
@@ -88,24 +80,15 @@ int createSphere(float rad, int slices, int stacks, char * fname) {
   		indexC = indexA + 1;
   		indexD = indexB + 1;
 
-  		indexes.push_back(indexA);
-		indexes.push_back(indexB);
-		indexes.push_back(indexC);
+  		writeIndexToFile(indexA,file);
+		writeIndexToFile(indexB,file);
+		writeIndexToFile(indexC,file);
 
-		indexes.push_back(indexB);
-		indexes.push_back(indexD);
-		indexes.push_back(indexC);
+		writeIndexToFile(indexB,file);
+		writeIndexToFile(indexD,file);
+		writeIndexToFile(indexC,file);
   	}
   }
-
-  // Write on top of file numOfVertices
-  writeIndexToFile(numVertices, file);
-
-  for(Vertex v : vertices)
-  	writeVertexToFile(getX(v),getY(v),getZ(v),file);
-
-  for(int i : indexes)
-  	writeIndexToFile(i,file);
 
   closeFile(file);
 

@@ -9,6 +9,7 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <cstdio>
+#include <string>
 
 #endif
 
@@ -18,16 +19,16 @@ struct model {
     GLuint vertexBuffer[1];
     GLuint indexBuffer[1];
     char * color;
-    char * modelName;
+    std::string * modelName;
 };
 
-Model newModel(char * name, char * color) {
+Model newModel(std::string name, char * color) {
   Model m = (Model) malloc(sizeof(struct model));
   if (!m)
     return NULL;
   m->vertexes = new std::vector<float>();
   m->indexes = new std::vector<unsigned int>();
-  m->modelName = strdup(name);
+  m->modelName = new std::string(name);
   m->color = strdup(color);
   return m;
 }
@@ -50,7 +51,7 @@ float getVertex(Model m, int i) {
     return v;
   }
   else
-    return NULL;
+    return -1;
 }
 
 int getIndex(Model m, int i) {
@@ -60,9 +61,9 @@ int getIndex(Model m, int i) {
     return -1;
 }
 
-char * getName(Model m) {
+std::string getName(Model m) {
   if (m)
-    return m->modelName;
+    return *(m->modelName);
   else
     return NULL;
 }
@@ -86,10 +87,33 @@ int getNumIndexes(Model m) {
 
 void freeModel(Model m) {
   if (m) {
-    free(m->modelName);
     m->vertexes->clear();
     m->indexes->clear();
   }
+}
+
+std::vector<float> * getVertexes(Model m) {
+  if (m)
+    return m->vertexes;
+  else
+    return NULL;
+}
+
+std::vector<unsigned int> * getIndexes(Model m) {
+  if (m)
+    return m->indexes;
+  else
+    return NULL;
+}
+
+void setVertexes(Model m, std::vector<float> * ver) {
+  if (m)
+    m->vertexes = ver;
+}
+
+void setIndexes(Model m, std::vector<unsigned int> * in) {
+  if (m)
+    m->indexes = in;
 }
 
 void initializeVBO(Model m) {

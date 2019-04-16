@@ -1,7 +1,13 @@
 <scene>
 	<group>
+		<translate time="10">
+			<point X="2" Y="0" Z="2" />
+			<point X="2" Y="0" Z="-2" />
+			<point X="-2" Y="0" Z="-2" />
+			<point X="-2" Y="0" Z="2" />
+		</translate>
 		<models>
-			<model file="bezier.3d" />
+			<model file="teapot.3d"/>
 		</models>
 	</group>
 </scene>
