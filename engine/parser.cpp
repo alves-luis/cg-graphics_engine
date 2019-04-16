@@ -235,6 +235,7 @@ int parseGroup(XMLElement * group, Group g, std::map<std::string,Model> * models
 
 		tag = tag->NextSiblingElement(NULL);
 	}
+	return 0;
 }
 
 int loadXML(char * fname, std::vector<Group> * groups) {
