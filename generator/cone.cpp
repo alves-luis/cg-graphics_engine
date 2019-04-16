@@ -3,6 +3,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <stdio.h>
+#include <vector>
 
 
 
@@ -22,6 +23,10 @@
  */
 int createCone(float botRad, float height, int slices, int stacks, char * fname){
     FILE * file = openFile(fname);
+
+    std::vector<int> indexes;
+
+
     if (slices < 0 || stacks < 0)
         return 1;
 
@@ -29,71 +34,68 @@ int createCone(float botRad, float height, int slices, int stacks, char * fname)
     float division=height/stacks;
     float baseY = height/2;
 
+    writeToFile(0.0f, 0.0f - baseY, 0.0f, file);
 
-    for(int i=0; i<slices; i++) {
+    for(int i=0; i<= slices;i++){
 
-        //   Centro
-        //  /      \
-        // b2      b1
-        float bx1 = botRad * cos(i * angle);
-        float bz1 = botRad * sin(i * angle);
-
-        float bx2 = botRad * cos((i + 1) * angle);
-        float bz2 = botRad * sin((i + 1) * angle);
-
-        // base triangle
-        writeToFile(0.0f, 0.0f - baseY, 0.0f, file);
-        writeToFile(bx1, 0.0f - baseY, bz1, file);
-        writeToFile(bx2, 0.0f - baseY, bz2, file);
-
-
-        for (int j = 0; j < stacks; j++) {
+        for (int j = 0; j < stacks +1; j++) {
 
             //radius for j stacks
             float div = (float) j / stacks;
             float radiusD = (float) (1.0 - (div)) * botRad;
 
-            //radius for j+1 stacks
-            div = (float) (j + 1) / stacks;
-            float radiusU = (float) (1.0 - (div)) * botRad;
+
 
             //d -> level j
-            //u -> level j+1
-            // ux2 -- ux1
-            //  |      |
-            //  |      |
-            // dx2 -- dx1
+            // ux1
+            //  |
+            //  |
+            // dx1
 
-            // coordinates of the vertex that is on the right and bottom
+
             float dx1 = radiusD * cos(i * angle);
             float dz1 = radiusD * sin(i * angle);
-
-            // coordinates of the vertex that is on the left and bottom
-            float dx2 = radiusD * cos((i + 1) * angle);
-            float dz2 = radiusD * sin((i + 1) * angle);
-
-            // coordinates of the vertex that is on the right and up
-            float ux1 = radiusU * cos(i * angle);
-            float uz1 = radiusU * sin(i * angle);
-
-            // coordinates of the vertex that is on the left and up
-            float ux2 = radiusU * cos((i + 1) * angle);
-            float uz2 = radiusU * sin((i + 1) * angle);
-
             float dy = j * division - baseY;
-            float uy = (j + 1) * division - baseY;
+
 
             // one triangle [dx1,ux1,dx2]
             writeToFile(dx1, dy, dz1, file);
-            writeToFile(ux1, uy, uz1, file);
-            writeToFile(dx2, dy, dz2, file);
-
-            //another triangle [dx2,ux1,ux2]
-            writeToFile(dx2, dy, dz2, file);
-            writeToFile(ux1, uy, uz1, file);
-            writeToFile(ux2, uy, uz2, file);
 
         }
+    }
+
+    int iA,iB,iC,iD,l;
+    int k=stacks+1;
+    for(int i=0;i<k;i++){
+        if (i == slices)
+            l = 0;
+        else
+            l = i;
+        indexes.push_back(0);
+        indexes.push_back(k*l+1);
+        indexes.push_back(k*(l+1)+1);
+
+        for(int j=1;j<stacks+1;j++){
+
+            iA= k*l+j;
+            iB= k*l+j+1;
+            iC= k*(l+1)+j;
+            iD= k*(l+1)+j+1;
+
+            indexes.push_back(iA);
+            indexes.push_back(iB);
+            indexes.push_back(iC);
+
+            indexes.push_back(iC);
+            indexes.push_back(iB);
+            indexes.push_back(iD);
+
+        }
+
+    }
+
+    for(int i : indexes) {
+        writeIndexToFile(i, file);
     }
     return 0;
 }
