@@ -25,7 +25,7 @@ void normalize(float *a) {
 	a[2] = a[2]/l;
 }
 
-void multMatrixVector(float *m, float *v, float *res) {
+void multMatrixVector(const float *m, const float *v, float *res) {
 
 	for (int j = 0; j < 4; ++j) {
 		res[j] = 0;
@@ -36,7 +36,7 @@ void multMatrixVector(float *m, float *v, float *res) {
 
 }
 
-float getCatmullRomPoint(float t, float * p0, float * p1, float * p2, float * p3, float * pos, float * deriv) {
+void getCatmullRomPoint(float t, float * p0, float * p1, float * p2, float * p3, float * pos, float * deriv) {
 	float m[4][4] = { {-0.5f, 1.5f,-1.5f, 0.5f},
 					  { 1.0f,-2.5f, 2.0f,-0.5f},
 					  {-0.5f, 0.0f, 0.5f, 0.0f},

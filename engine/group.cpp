@@ -25,7 +25,7 @@ Group newGroup() {
 			setY(g->scale,1);
 			setZ(g->scale,1);
 		}
-		g->rotation = newRotation();
+		g->rotation = newRotation(false);
 		g->translation = newTranslation(false);
 		g->transformationOrder = new std::map<int,char*>();
 	}
@@ -53,12 +53,9 @@ void addScale(Group g, float x, float y, float z) {
 	}
 }
 
-void addRotation(Group g, float angle, float x, float y, float z){
+void addRotation(Group g, Rotation r){
 	if(g){
-		setAngle(g->rotation,angle);
-		setX(g->rotation,x);
-		setY(g->rotation,y);
-		setZ(g->rotation,z);
+		g->rotation = r;
 		g->transformationOrder->insert(std::pair<int,char*>(g->transformationCount++,"rotation"));
 	}
 }

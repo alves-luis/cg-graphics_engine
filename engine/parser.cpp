@@ -72,7 +72,7 @@ int parseModels(XMLElement * models, Group g, std::map<std::string,Model> * mode
 
 	XMLElement * model = models->FirstChildElement("model");
 
-	while(model != NULL) {
+	while(model != nullptr) {
 
 		std::string fileName = std::string(model->Attribute("file"));
 
@@ -80,7 +80,7 @@ int parseModels(XMLElement * models, Group g, std::map<std::string,Model> * mode
 		char * color = (char *) model->Attribute("color");
 
 		if (!color) {
-			color = "white"; // default color
+			color = strdup("white"); // default color
 		}
 		if (modelsMap->find(fileName) == modelsMap->end()) {
 
@@ -130,12 +130,28 @@ int parseRotation(XMLElement * rotate, Group g){
 
 	float angle;
 	float x,y,z;
-	x=y=z=0.0f; //no default axis for rotation
-	angle=0; // default angle is 0
-	rotate->QueryAttribute("angle",&angle);
+	x = y = z = 0.0f; //no default axis for rotation
+	angle = 0; // default angle is 0
+	Rotation r;
+
+	XMLError timeAttribute = rotate->QueryAttribute("time",&angle);
+	// if does not have time, should have angle
+	if (timeAttribute == XML_NO_ATTRIBUTE) {
+		rotate->QueryAttribute("angle",&angle);
+		r = newRotation(false);
+		setAngle(r,angle);
+	}
+	// if has time, set time
+	else {
+		r = newRotation(true);
+		setTime(r,angle);
+	}
 	rotate->QueryAttribute("axisX",&x);
 	rotate->QueryAttribute("axisY",&y);
 	rotate->QueryAttribute("axisZ",&z);
+	setX(r,x);
+	setY(r,y);
+	setZ(r,z);
 
 	rotate = rotate -> NextSiblingElement("rotate");
 
@@ -144,7 +160,7 @@ int parseRotation(XMLElement * rotate, Group g){
 		return 2;
 	}
 
-	addRotation(g,angle,x,y,z);
+	addRotation(g,r);
 	return 0;
 }
 
@@ -153,15 +169,15 @@ int parseTranslate(XMLElement * translate, Group g) {
 	float time;
 	time = 0.0f; // default translation is 0
 
-	XMLError timeAttribute = translate->QueryFloatAttribute("time",&time);
+	XMLError timeAttribute = translate->QueryAttribute("time",&time);
 	// if no attribute, static translation
 	if (timeAttribute == XML_NO_ATTRIBUTE) {
 		t = newTranslation(false);
 		float x,y,z;
-		x = y = z; // default translation is 0
-		translate->QueryFloatAttribute("X",&x);
-		translate->QueryFloatAttribute("Y",&y);
-		translate->QueryFloatAttribute("Z",&z);
+		x = y = z = 0; // default translation is 0
+		translate->QueryAttribute("X",&x);
+		translate->QueryAttribute("Y",&y);
+		translate->QueryAttribute("Z",&z);
 		setX(t,x);
 		setY(t,y);
 		setZ(t,z);
@@ -170,13 +186,13 @@ int parseTranslate(XMLElement * translate, Group g) {
 	else {
 		t = newTranslation(true);
 		setTime(t,time);
-		XMLElement * point = translate->FirstChildElement(NULL);
-		while(point != NULL) {
+		XMLElement * point = translate->FirstChildElement(nullptr);
+		while(point != nullptr) {
 			Vertex v = newVertex();
 			float x, y,z;
-			point->QueryFloatAttribute("X",&x);
-			point->QueryFloatAttribute("Y",&y);
-			point->QueryFloatAttribute("Z",&z);
+			point->QueryAttribute("X",&x);
+			point->QueryAttribute("Y",&y);
+			point->QueryAttribute("Z",&z);
 			setX(v,x);
 			setY(v,y);
 			setZ(v,z);
@@ -199,9 +215,9 @@ int parseTranslate(XMLElement * translate, Group g) {
 
 int parseGroup(XMLElement * group, Group g, std::map<std::string,Model> * models) {
 
-	XMLElement * tag = group->FirstChildElement(NULL);
+	XMLElement * tag = group->FirstChildElement(nullptr);
 
-	while(tag != NULL) {
+	while(tag != nullptr) {
 		char * tagName = const_cast<char *>(tag->Name());
 
 		if (!tagName) {
@@ -233,7 +249,7 @@ int parseGroup(XMLElement * group, Group g, std::map<std::string,Model> * models
 			return error;
 		}
 
-		tag = tag->NextSiblingElement(NULL);
+		tag = tag->NextSiblingElement(nullptr);
 	}
 	return 0;
 }
@@ -244,7 +260,7 @@ int loadXML(char * fname, std::vector<Group> * groups) {
 		printf("Loading %s\n",fname);
 
 	XMLDocument doc;
-	std::map<std::string,Model> * models= new std::map<std::string,Model>();
+	auto * models= new std::map<std::string,Model>();
 
 	XMLError err = doc.LoadFile(fname);
 	if (err) {
@@ -260,7 +276,7 @@ int loadXML(char * fname, std::vector<Group> * groups) {
 
 	XMLElement* group = scene->FirstChildElement("group");
 
-	while(group != NULL) {
+	while(group != nullptr) {
 		Group parsedGroup = newGroup();
 		int error = parseGroup(group,parsedGroup,models);
 		if (error) // if error in parsing group, don't parse anymore
