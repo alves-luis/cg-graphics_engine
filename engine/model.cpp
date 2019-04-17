@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "headers/model.h"
 #include "headers/vertex.h"
 #include <vector>
@@ -23,12 +25,12 @@ struct model {
 };
 
 Model newModel(std::string name, char * color) {
-  Model m = (Model) malloc(sizeof(struct model));
+  auto m = (Model) malloc(sizeof(struct model));
   if (!m)
-    return NULL;
+    return nullptr;
   m->vertexes = new std::vector<float>();
   m->indexes = new std::vector<unsigned int>();
-  m->modelName = new std::string(name);
+  m->modelName = new std::string(std::move(name));
   m->color = strdup(color);
   return m;
 }
@@ -65,24 +67,28 @@ std::string getName(Model m) {
   if (m)
     return *(m->modelName);
   else
-    return NULL;
+    return nullptr;
 }
 
 char * getColor(Model m) {
   if (m)
     return m->color;
   else
-    return NULL;
+    return nullptr;
 }
 
 int getSize(Model m) {
   if (m)
     return (int) m->vertexes->size();
+  else
+    return 0;
 }
 
 int getNumIndexes(Model m) {
   if (m)
     return (int) m->indexes->size();
+  else
+    return 0;
 }
 
 void freeModel(Model m) {
@@ -96,14 +102,14 @@ std::vector<float> * getVertexes(Model m) {
   if (m)
     return m->vertexes;
   else
-    return NULL;
+    return nullptr;
 }
 
 std::vector<unsigned int> * getIndexes(Model m) {
   if (m)
     return m->indexes;
   else
-    return NULL;
+    return nullptr;
 }
 
 void setVertexes(Model m, std::vector<float> * ver) {
@@ -133,7 +139,7 @@ void initializeVBO(Model m) {
 
 void drawVBO(Model m) {
 	glBindBuffer(GL_ARRAY_BUFFER,m->vertexBuffer[0]);
-	glVertexPointer(3,GL_FLOAT,0,0);
+	glVertexPointer(3,GL_FLOAT,0,nullptr);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,m->indexBuffer[0]);
 	glDrawElements(GL_TRIANGLES, m->indexes->size(),GL_UNSIGNED_INT,NULL);
 }

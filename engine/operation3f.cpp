@@ -8,7 +8,7 @@ struct operation3f {
 };
 
 Operation3f newOperation3f() {
-	Operation3f r = (Operation3f) (malloc(sizeof(struct operation3f)));
+	auto r = (Operation3f) (malloc(sizeof(struct operation3f)));
 	if (r) {
 		r->x = 0;
 		r->y = 0;

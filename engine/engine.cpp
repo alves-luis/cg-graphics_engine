@@ -112,7 +112,7 @@ void drawGroup(Group g) {
         if(strcmp("translation",op) == 0)
         	drawTranslation(translation);
         else if(strcmp("rotation",op) == 0)
-            glRotatef(getAngle(rotation), getX(rotation),getY(rotation),getZ(rotation));
+        	drawRotation(rotation);
         else if (strcmp("scale",op) == 0)
             glScalef(getX(scale), getY(scale), getZ(scale));
     }
@@ -134,7 +134,7 @@ void drawGroup(Group g) {
 }
 
 
-void renderScene(void) {
+void renderScene() {
 
   // clear buffers
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -152,8 +152,7 @@ void renderScene(void) {
   glTranslatef(camX,camY,camZ);
 
   // put drawing instructions here
-  for(int i = 0; i < groups.size(); i++) {
-      Group g = groups.at(i);
+  for (auto g : groups) {
       drawGroup(g);
   }
 

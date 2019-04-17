@@ -58,12 +58,9 @@ void addScale(Group g, float x, float y, float z);
 /**
  * Given a group, adds a Rotation of a given angle by a given vector
  * @param g Group to add the Rotation to
- * @param angle rotate x degrees
- * @param x component of the vector
- * @param y component of the vector
- * @param z component of the vector
+ * @param r Pointer to the rotation
  * */
-void addRotation(Group g, float angle, float x, float y, float z);
+void addRotation(Group g, Rotation r);
 
 /**
  * Given a group, adds a Translation to the group

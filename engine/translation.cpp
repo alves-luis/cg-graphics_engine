@@ -13,9 +13,9 @@ struct translation {
 };
 
 Translation newTranslation(bool extended) {
-	Translation result = (Translation) malloc(sizeof(struct translation));
+	auto result = (Translation) malloc(sizeof(struct translation));
 	if (!result)
-		return NULL;
+		return nullptr;
 
 	result->baseTranslation = newOperation3f();
 
@@ -31,6 +31,7 @@ Translation newTranslation(bool extended) {
 	else {
 		result->extended = false;
 	}
+	return result;
 }
 
 void addPoint(Translation f, Vertex v) {
@@ -44,7 +45,7 @@ Vertex getPoint(Translation t, int i) {
 		return t->points->at(i);
 	}
 	else
-		return NULL;
+		return nullptr;
 }
 
 void setTime(Translation t, float time) {
@@ -106,7 +107,7 @@ void getGlobalCatmullRomPoint(Translation trans, float gt, float * pos, float * 
 	if (trans && trans->extended) {
 		int number_of_points = trans->points->size();
 		float t = gt * number_of_points; // this is the real global t
-		int index = floor(t); // which segment
+		int index = static_cast<int>(floor(t)); // which segment
 		t = t - index; // where within the segment
 
 		// indices store the points
