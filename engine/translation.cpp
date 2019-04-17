@@ -1,5 +1,4 @@
 #include <vector>
-#include <malloc.h>
 #include <cmath>
 #include "headers/translation.h"
 #include "headers/catmull.h"

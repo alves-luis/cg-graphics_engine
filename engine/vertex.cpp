@@ -8,9 +8,9 @@ struct vertex {
 };
 
 Vertex newVertex() {
-  auto v = (Vertex) malloc(sizeof(struct vertex));
+  Vertex v = (Vertex) malloc(sizeof(struct vertex));
   if (!v)
-    return nullptr;
+    return NULL;
   v->x = 0;
   v->y = 0;
   v->z = 0;

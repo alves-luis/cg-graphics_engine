@@ -25,9 +25,9 @@ struct model {
 };
 
 Model newModel(std::string name, char * color) {
-  auto m = (Model) malloc(sizeof(struct model));
+  Model m = (Model) malloc(sizeof(struct model));
   if (!m)
-    return nullptr;
+    return NULL;
   m->vertexes = new std::vector<float>();
   m->indexes = new std::vector<unsigned int>();
   m->modelName = new std::string(std::move(name));
@@ -67,7 +67,7 @@ std::string getName(Model m) {
   if (m)
     return *(m->modelName);
   else
-    return nullptr;
+    return NULL;
 }
 
 char * getColor(Model m) {
@@ -109,7 +109,7 @@ std::vector<unsigned int> * getIndexes(Model m) {
   if (m)
     return m->indexes;
   else
-    return nullptr;
+    return NULL;
 }
 
 void setVertexes(Model m, std::vector<float> * ver) {
