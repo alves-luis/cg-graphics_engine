@@ -4,11 +4,19 @@
             <model file="sphere.3d" color="sun"/>
         </models>
         <group>
-            <translate X="1"/>
             <scale X="0.001" Y="0.001" Z="0.001"/>
             <!--Mercúrio-->
             <group>
-                <translate X="83.265"/>
+                <translate time="2">
+                  <point X="1083.265" Y="0" Z="0"/>
+                  <point X="765.984" Y="0" Z="-765.984"/>
+                  <point X="0" Y="0" Z="-1083.265"/>
+                  <point X="-765.984" Y="0" Z="-765.984"/>
+                  <point X="-1083.265" Y="0" Z="0"/>
+                  <point X="-765.984" Y="0" Z="765.984"/>
+                  <point X="0" Y="0" Z="1083.265"/>
+                  <point X="765.984" Y="0" Z="765.984"/>
+                </translate>
                 <scale X="6.9" Y="6.9" Z="6.9"/>
                 <models>
                     <model file="sphere.3d" color="mercury"/>
@@ -16,7 +24,16 @@
             </group>
             <!--Vénus-->
             <group>
-                <translate X="155.3415"/>
+              <translate time="4">
+                <point X="1155.3415" Y="0" Z="0"/>
+                <point X="816.949" Y="0" Z="-816.949"/>
+                <point X="0" Y="0" Z="-1155.3415"/>
+                <point X="-816.949" Y="0" Z="-816.949"/>
+                <point X="-1155.3415" Y="0" Z="0"/>
+                <point X="-816.949" Y="0" Z="816.949"/>
+                <point X="0" Y="0" Z="1155.3415"/>
+                <point X="816.949" Y="0" Z="816.949"/>
+              </translate>
                 <scale X="17.3" Y="17.3" Z="17.3"/>
                 <models>
                     <model file="sphere.3d" color="venus"/>
@@ -24,7 +41,16 @@
             </group>
             <!--Terra-->
             <group>
-                <translate X="214.9145"/>
+              <translate time="7">
+                <point X="1214.9145" Y="0" Z="0"/>
+                <point X="859.074" Y="0" Z="-859.074"/>
+                <point X="0" Y="0" Z="-1214.9145"/>
+                <point X="-859.074" Y="0" Z="-859.074"/>
+                <point X="-1214.9145" Y="0" Z="0"/>
+                <point X="-859.074" Y="0" Z="859.074"/>
+                <point X="0" Y="0" Z="1214.9145"/>
+                <point X="859.074" Y="0" Z="859.074"/>
+              </translate>
                 <group>
                   <scale X="18.3" Y="18.3" Z="18.3"/>
                   <models>
@@ -42,7 +68,16 @@
             </group>
             <!--Marte-->
             <group>
-                <translate X="327.3795"/>
+                <translate time="3">
+                  <point X="1327.3795" Y="0" Z="0"/>
+                  <point X="938.599" Y="0" Z="-938.599"/>
+                  <point X="0" Y="0" Z="-1327.3795"/>
+                  <point X="-938.599" Y="0" Z="-938.599"/>
+                  <point X="-1327.3795" Y="0" Z="0"/>
+                  <point X="-938.599" Y="0" Z="938.599"/>
+                  <point X="0" Y="0" Z="1327.3795"/>
+                  <point X="938.599" Y="0" Z="938.599"/>
+                </translate>
                 <group>
                   <scale X="9.7" Y="9.7" Z="9.7"/>
                   <models>
@@ -60,7 +95,16 @@
             </group>
             <!--Júpiter-->
             <group>
-                <translate X="1118.0975"/>
+                <translate time="6">
+                  <point X="2118.0975" Y="0" Z="0"/>
+                  <point X="1497.7211" Y="0" Z="-1497.7211"/>
+                  <point X="0" Y="0" Z="-2118.0975"/>
+                  <point X="-1497.7211" Y="0" Z="-1497.7211"/>
+                  <point X="-2118.0975" Y="0" Z="0"/>
+                  <point X="-1497.7211" Y="0" Z="1497.7211"/>
+                  <point X="0" Y="0" Z="2118.0975"/>
+                  <point X="1497.7211" Y="0" Z="1497.7211"/>
+                </translate>
                 <group>
                   <scale X="205.4" Y="205.4" Z="205.4"/>
                   <models>
@@ -78,7 +122,16 @@
             </group>
             <!--Saturno-->
             <group>
-                <translate X="2050.4345"/>
+                <translate time="4">
+                  <point X="3050.4345" Y="0" Z="0"/>
+                  <point X="2156.9829" Y="0" Z="-2156.9829"/>
+                  <point X="0" Y="0" Z="-3050.4345"/>
+                  <point X="-2156.9829" Y="0" Z="-2156.9829"/>
+                  <point X="-3050.4345" Y="0" Z="0"/>
+                  <point X="-2156.9829" Y="0" Z="2156.9829"/>
+                  <point X="0" Y="0" Z="3050.4345"/>
+                  <point X="2156.9829" Y="0" Z="2156.9829"/>
+                </translate>
                 <group>
                   <scale X="167.3" Y="167.3" Z="167.3"/>
                   <group>
@@ -87,12 +140,12 @@
                       </models>
                   </group>
                   <!--Anel de Saturno-->
-                  <!--<group>
+                  <group>
                       <scale X="1.7" Y="1.7" Z="1.7"/>
                       <models>
                           <model file="disc.3d" color="white"/>
                       </models>
-                  </group>-->
+                  </group>
                 </group>
                 <!--Lua de Saturno (Titan) -->
                 <group>
@@ -105,7 +158,16 @@
             </group>
             <!--Urano-->
             <group>
-                <translate X="4124.20"/>
+                <translate time="2">
+                  <point X="5124.20" Y="0" Z="0"/>
+                  <point X="3623.3565" Y="0" Z="-3623.3565"/>
+                  <point X="0" Y="0" Z="-5124.20"/>
+                  <point X="-3623.3565" Y="0" Z="-3623.3565"/>
+                  <point X="-5124.20" Y="0" Z="0"/>
+                  <point X="-3623.3565" Y="0" Z="3623.3565"/>
+                  <point X="0" Y="0" Z="5124.20"/>
+                  <point X="3623.3565" Y="0" Z="3623.3565"/>
+                </translate>
                 <group>
                   <scale X="67.4" Y="67.4" Z="67.4"/>
                   <models>
@@ -123,7 +185,16 @@
             </group>
             <!--Nepturno-->
             <group>
-                <translate X="6465.838"/>
+                <translate time="5">
+                  <point X="7465.838" Y="0" Z="0"/>
+                  <point X="5279.1446" Y="0" Z="-5279.1446"/>
+                  <point X="0" Y="0" Z="-7465.838"/>
+                  <point X="-5279.1446" Y="0" Z="-5279.1446"/>
+                  <point X="-7465.838" Y="0" Z="0"/>
+                  <point X="-5279.1446" Y="0" Z="5279.1446"/>
+                  <point X="0" Y="0" Z="7465.838"/>
+                  <point X="5279.1446" Y="0" Z="5279.1446"/>
+                </translate>
                 <group>
                   <scale X="65.2" Y="65.2" Z="65.2"/>
                   <models>
@@ -141,7 +212,16 @@
             </group>
             <!--Pluto-->
             <group>
-                <translate X="8496.3"/>
+                <translate time="5">
+                  <point X="9496.3" Y="0" Z="0"/>
+                  <point X="6714.8981" Y="0" Z="-6714.8981"/>
+                  <point X="0" Y="0" Z="-9496.3"/>
+                  <point X="-6714.8981" Y="0" Z="-6714.8981"/>
+                  <point X="-9496.3" Y="0" Z="0"/>
+                  <point X="-6714.8981" Y="0" Z="6714.8981"/>
+                  <point X="0" Y="0" Z="9496.3"/>
+                  <point X="6714.8981" Y="0" Z="6714.8981"/>
+                </translate>
                 <group>
                   <scale X="3.2" Y="3.2" Z="3.2"/>
                   <models>
@@ -157,7 +237,6 @@
                   </models>
                 </group>
             </group>
-
         </group>
     </group>
 </scene>
