@@ -20,12 +20,12 @@ using namespace tinyxml2;
  * @param m Model to add the vertices to
  * @return 0 if success
  * */
-int parse3D(std::string fname, Model m) {
+int parse3D(const std::string &fname, Model m) {
 	std::ifstream file (fname);
 
 	std::string line;
 
-	if (m == NULL) {
+	if (m == nullptr) {
 		fprintf(stderr,"PARSING FAILURE! Cannot add vertices to NULL Model!\n");
 		return 3;
 	}
