@@ -200,7 +200,9 @@ void initialize(int argc, char** argv) {
     glutInitWindowPosition(100,100);
     glutInitWindowSize(800,800);
     glutCreateWindow("CG@DI-UM");
+	#ifndef __APPLE__
     glewInit();
+	#endif
     glEnableClientState(GL_VERTEX_ARRAY);
     initializeVBOS();
 
