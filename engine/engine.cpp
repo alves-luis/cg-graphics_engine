@@ -33,9 +33,12 @@
 /** Stores the groups in a vector*/
 std::vector<Group> groups;
 
-float camX = 0;
-float camY = 0;
-float camZ = 0;
+float camX;
+float camY;
+float camZ;
+float viewX;
+float viewY;
+float viewZ;
 
 void changeSize(int w, int h) {
 
@@ -143,7 +146,7 @@ void renderScene() {
   glLoadIdentity();
 
 
-  gluLookAt(0,0,20,
+  gluLookAt(viewX,viewY,viewZ,
             0,0,0.0,
             0.0f,1.0f,0.0f);
 
@@ -178,6 +181,21 @@ void processSpecialKeys(int key, int xx, int yy) {
             camY -= 0.1; break;
         case GLUT_KEY_PAGE_DOWN:
             camY += 0.1; break;
+        case GLUT_KEY_F1:
+            viewX=0;
+            viewY=0;
+            viewZ=10;
+            break;
+        case GLUT_KEY_F2:
+            viewX=1;
+            viewY=10;
+            viewZ=0;
+            break;
+        case GLUT_KEY_F3:
+            viewX=1;
+            viewY=-10;
+            viewZ=0;
+            break;
     }
     glutPostRedisplay();
 
@@ -186,6 +204,9 @@ void processSpecialKeys(int key, int xx, int yy) {
 void printInfo() {
     printf("You can use PAGE_UP/PAGE_DOWN to increase/decrease altitude\n");
     printf("Use ARROWS to shift model around XZ axis\n");
+    printf("Use F1 to see sideways\n");
+    printf("Use F2 to see from above\n");
+    printf("Use F3 to see from bottom\n");
 }
 
 void initializeVBOS() {
@@ -205,6 +226,9 @@ void initialize(int argc, char** argv) {
 	#endif
     glEnableClientState(GL_VERTEX_ARRAY);
     initializeVBOS();
+    viewX=0;
+    viewY=0;
+    viewZ=10;
 
   // Required callback registry
     glutDisplayFunc(renderScene);

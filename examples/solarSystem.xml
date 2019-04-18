@@ -5,9 +5,22 @@
         </models>
         <group>
             <scale X="0.001" Y="0.001" Z="0.001"/>
+            <!--Cometa Teapot-->
+            <group>
+                <translate time="10">
+                  <point X="-2000" Y="0" Z="-1000"/>
+                  <point X="100" Y="2000" Z="100"/>
+                  <point X="4500" Y="200" Z="4500"/>
+                  <point X="-100" Y="-2000" Z="-100"/>
+                </translate>
+                <scale X="50.9" Y="50.9" Z="50.9"/>
+                <models>
+                    <model file="teapot.3d" color="uranus"/>
+                </models>
+            </group>
             <!--Mercúrio-->
             <group>
-                <translate time="2">
+                <translate time="10">
                   <point X="1083.265" Y="0" Z="0"/>
                   <point X="765.984" Y="0" Z="-765.984"/>
                   <point X="0" Y="0" Z="-1083.265"/>
@@ -17,6 +30,7 @@
                   <point X="0" Y="0" Z="1083.265"/>
                   <point X="765.984" Y="0" Z="765.984"/>
                 </translate>
+
                 <scale X="6.9" Y="6.9" Z="6.9"/>
                 <models>
                     <model file="sphere.3d" color="mercury"/>
@@ -52,6 +66,7 @@
                 <point X="859.074" Y="0" Z="859.074"/>
               </translate>
                 <group>
+                  <rotate time="5" axisX="0" axisY="1" axisZ="0"/>
                   <scale X="18.3" Y="18.3" Z="18.3"/>
                   <models>
                       <model file="sphere.3d" color="earth"/>
@@ -79,6 +94,7 @@
                   <point X="938.599" Y="0" Z="938.599"/>
                 </translate>
                 <group>
+                  <rotate time="7" axisX="0" axisY="1" axisZ="0"/>
                   <scale X="9.7" Y="9.7" Z="9.7"/>
                   <models>
                       <model file="sphere.3d" color="mars"/>
@@ -95,7 +111,7 @@
             </group>
             <!--Júpiter-->
             <group>
-                <translate time="6">
+                <translate time="10">
                   <point X="2118.0975" Y="0" Z="0"/>
                   <point X="1497.7211" Y="0" Z="-1497.7211"/>
                   <point X="0" Y="0" Z="-2118.0975"/>
@@ -105,6 +121,7 @@
                   <point X="0" Y="0" Z="2118.0975"/>
                   <point X="1497.7211" Y="0" Z="1497.7211"/>
                 </translate>
+                <rotate time="3" axisX="0" axisY="1" axisZ="0"/>
                 <group>
                   <scale X="205.4" Y="205.4" Z="205.4"/>
                   <models>
@@ -113,7 +130,12 @@
                 </group>
                 <!--Lua de Júpiter (Ganymede) -->
                 <group>
-                  <translate X="154.95" Y="154.95"/>
+                  <translate time="6">
+                    <point X="154.95" Y="154.95" Z="0"/>
+                    <point X="-154.95" Y="154.95" Z="-154.95"/>
+                    <point X="-154.95" Y="-154.95" Z="0"/>
+                    <point X="154.95" Y="-154.95" Z="154.95"/>
+                  </translate>
                   <scale X="7.583" Y="7.583" Z="7.583"/>
                   <models>
                       <model file="sphere.3d"/>
@@ -134,6 +156,7 @@
                 </translate>
                 <group>
                   <scale X="167.3" Y="167.3" Z="167.3"/>
+                  <rotate time="3" axisX="0" axisY="0" axisZ="1"/>
                   <group>
                       <models>
                           <model file="sphere.3d" color="saturn"/>
@@ -170,6 +193,7 @@
                 </translate>
                 <group>
                   <scale X="67.4" Y="67.4" Z="67.4"/>
+                  <rotate time="6" axisX="0" axisY="0" axisZ="1"/>
                   <models>
                       <model file="sphere.3d" color="uranus"/>
                   </models>
@@ -196,6 +220,7 @@
                   <point X="5279.1446" Y="0" Z="5279.1446"/>
                 </translate>
                 <group>
+                  <rotate time="3" axisX="1" axisY="1" axisZ="1"/>
                   <scale X="65.2" Y="65.2" Z="65.2"/>
                   <models>
                       <model file="sphere.3d" color="neptune"/>
@@ -205,6 +230,7 @@
                 <group>
                   <translate X="51.62" Y="51.62"/>
                   <scale X="5.768" Y="5.768" Z="5.768"/>
+                  <rotate time="7" axisX="0" axisY="1" axisZ="0"/>
                   <models>
                       <model file="sphere.3d"/>
                   </models>
@@ -223,6 +249,7 @@
                   <point X="6714.8981" Y="0" Z="6714.8981"/>
                 </translate>
                 <group>
+                  <rotate time="3" axisX="" axisY="1" axisZ="0"/>
                   <scale X="3.2" Y="3.2" Z="3.2"/>
                   <models>
                       <model file="sphere.3d" color="pluto"/>
