@@ -24,8 +24,6 @@
 int createCone(float botRad, float height, int slices, int stacks, char * fname){
     FILE * file = openFile(fname);
 
-    std::vector<int> indexes;
-
 
     if (slices < 0 || stacks < 0)
         return 1;
@@ -40,40 +38,33 @@ int createCone(float botRad, float height, int slices, int stacks, char * fname)
 
         for (int j = 0; j < stacks +1; j++) {
 
-            //radius for j stacks
             float div = (float) j / stacks;
-            float radiusD = (float) (1.0 - (div)) * botRad;
+            float radius = (float) (1.0 - (div)) * botRad;
 
+            float x = radius * cos(i * angle);
+            float y = j * division - baseY;
+            float z = radius * sin(i * angle);
 
-
-            //d -> level j
-            // ux1
-            //  |
-            //  |
-            // dx1
-
-
-            float dx1 = radiusD * cos(i * angle);
-            float dz1 = radiusD * sin(i * angle);
-            float dy = j * division - baseY;
-
-
-            // one triangle [dx1,ux1,dx2]
-            writeToFile(dx1, dy, dz1, file);
+            writeToFile(x, y, z, file);
 
         }
     }
 
-    int iA,iB,iC,iD,l;
+    int b1,b2,b3,iA,iB,iC,iD,l;
     int k=stacks+1;
     for(int i=0;i<k;i++){
+        //para ligar última slice à primeira
         if (i == slices)
             l = 0;
         else
             l = i;
-        indexes.push_back(0);
-        indexes.push_back(k*l+1);
-        indexes.push_back(k*(l+1)+1);
+
+        b1=0;
+        b2=k*l+1;
+        b3=k*(l+1)+1;
+        writeIndexToFile(b1,file);
+        writeIndexToFile(b2,file);
+        writeIndexToFile(b3,file);
 
         for(int j=1;j<stacks+1;j++){
 
@@ -82,20 +73,15 @@ int createCone(float botRad, float height, int slices, int stacks, char * fname)
             iC= k*(l+1)+j;
             iD= k*(l+1)+j+1;
 
-            indexes.push_back(iA);
-            indexes.push_back(iB);
-            indexes.push_back(iC);
+            writeIndexToFile(iA,file);
+            writeIndexToFile(iB,file);
+            writeIndexToFile(iC,file);
 
-            indexes.push_back(iC);
-            indexes.push_back(iB);
-            indexes.push_back(iD);
-
+            writeIndexToFile(iC,file);
+            writeIndexToFile(iB,file);
+            writeIndexToFile(iD,file);
         }
-
     }
 
-    for(int i : indexes) {
-        writeIndexToFile(i, file);
-    }
     return 0;
 }
