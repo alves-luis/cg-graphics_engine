@@ -148,10 +148,7 @@ void drawTranslation(Translation t) {
 		cross((float *) z, (float *) deriv, t->previousY);
 		normalize(t->previousY);
 
-		float rotateMatrix[4][4];/* = {{deriv[0], deriv[1], deriv[2], 0},
-									{t->previousY[0], t->previousY[1], t->previousY[2], 0},
-									{z[0], z[1], z[2], 0},
-									{pos[0], pos[1], pos[2], 1}};*/
+		float rotateMatrix[4][4];
 		buildRotMatrix((float *) deriv,t->previousY,(float *) z,(float *) rotateMatrix);
 
 		glMultMatrixf((float *) rotateMatrix);
