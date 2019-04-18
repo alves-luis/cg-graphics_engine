@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <vector>
 #include <cmath>
 #include "headers/translation.h"
@@ -12,9 +13,9 @@ struct translation {
 };
 
 Translation newTranslation(bool extended) {
-	auto result = (Translation) malloc(sizeof(struct translation));
+	Translation result = (Translation) malloc(sizeof(struct translation));
 	if (!result)
-		return nullptr;
+		return NULL;
 
 	result->baseTranslation = newOperation3f();
 
