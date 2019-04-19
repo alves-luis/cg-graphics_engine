@@ -1,5 +1,5 @@
 #include "box.h"
-#include "writeToFile.h"
+#include "writetofile.h"
 #include <stdio.h>
 
 #define _USE_MATH_DEFINES
@@ -33,7 +33,7 @@ void drawXZ(float x0, float y0, float z0, float nx, float nz, int div, FILE * fi
     
       writeVertexToFile(x + nx, y0, z + nz,file);
     
-      writeVertexToFile(x + nx,  y0, z + nz,file);
+      writeVertexToFile(x + nx,  y0, z,file);
     
     }
   }
@@ -152,8 +152,8 @@ int createBox(float x, float y, float z, int div, char * name) {
       
       indexD=indexC+1;
       writeIndexToFile(indexA,file);
+      writeIndexToFile(indexC,file);
       writeIndexToFile(indexD,file);
-      writeIndexToFile(indexB,file);
     }
   }
   for(int t = 0; t < div; t++) {
@@ -181,8 +181,8 @@ int createBox(float x, float y, float z, int div, char * name) {
       
       indexD=indexC+1;
       writeIndexToFile(indexA,file);
-      writeIndexToFile(indexC,file);
       writeIndexToFile(indexD,file);
+      writeIndexToFile(indexB,file);
     }
   }
   for(int t = 0; t < div; t++) {
@@ -209,9 +209,9 @@ int createBox(float x, float y, float z, int div, char * name) {
       writeIndexToFile(indexC,file);
       
       indexD=indexC+1;
+      writeIndexToFile(indexC,file);
       writeIndexToFile(indexB,file);
       writeIndexToFile(indexD,file);
-      writeIndexToFile(indexC,file);
     }
   }
   return 0;
