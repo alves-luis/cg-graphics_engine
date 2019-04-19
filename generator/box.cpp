@@ -5,6 +5,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+int indexA, indexB, indexC, indexD;
+
 void drawXZ(float x0, float y0, float z0, float nx, float nz, int div, FILE * file) {
 
   for(int t = 0; t < div; t++) {
@@ -17,19 +19,38 @@ void drawXZ(float x0, float y0, float z0, float nx, float nz, int div, FILE * fi
 
 
       writeVertexToFile(x, -y0, z,file);
+      indexA=0;
       writeVertexToFile(x + nx, -y0, z + nz,file);
+      indexB=indexA+1;
       writeVertexToFile(x, -y0, z + nz,file);
-
+      indexC=indexB+1;
+      writeIndexToFile(indexA,file);
+      writeIndexToFile(indexB,file);
+      writeIndexToFile(indexC,file);
+	  
       writeVertexToFile(x + nx, -y0, z,file);
-
-
+      indexD=indexC+1;
+      writeIndexToFile(indexA,file);
+      writeIndexToFile(indexD,file);
+      writeIndexToFile(indexB,file);
+	    
       // Face de cima
 
       writeVertexToFile(x, y0, z,file);
+      indexA=indexD+1;
       writeVertexToFile(x, y0,  z + nz,file);
+      indexB=indexA+1;
       writeVertexToFile(x + nx, y0, z + nz,file);
+      indexC=indexB+1;
+      writeIndexToFile(indexA,file);
+      writeIndexToFile(indexB,file);
+      writeIndexToFile(indexC,file);
+	    
       writeVertexToFile(x + nx,  y0, z + nz,file);
-
+      indexD=indexC+1;
+      writeIndexToFile(indexA,file);
+      writeIndexToFile(indexD,file);
+      writeIndexToFile(indexB,file);
     }
   }
 }
@@ -43,21 +64,40 @@ void drawYZ(float x0, float y0, float z0, float ny, float nz, int div, FILE * fi
       float z = nz*i - z0;
 
       // Face da esquerda
-
+	
       writeVertexToFile(-x0, y, z,file);
+      indexA=indexD+1;
       writeVertexToFile(-x0, y, z + nz,file);
+      indexB=indexA+1;
       writeVertexToFile(-x0, y + ny, z + nz,file);
+      indexC=indexB+1;
+      writeIndexToFile(indexA,file);
+      writeIndexToFile(indexB,file);
+      writeIndexToFile(indexC,file);
 
-
-      writeVertexToFile(-x0,y + ny, z,file);
+      writeVertexToFile(-x0,y + ny, z,file); 
+      indexD=indexC+1;
+      writeIndexToFile(indexA,file);
+      writeIndexToFile(indexC,file);
+      writeIndexToFile(indexD,file);
 
       // Face da direita
 
       writeVertexToFile(x0, y, z,file);
+      indexA=indexD+1;
       writeVertexToFile(x0, y + ny, z + nz,file);
+      indexB=indexA+1;
       writeVertexToFile(x0, y, z + nz,file);
+      indexC=indexB+1;
+      writeIndexToFile(indexA,file);
+      writeIndexToFile(indexB,file);
+      writeIndexToFile(indexC,file);
+	    
       writeVertexToFile(x0, y + ny, z,file);
-
+      indexD=indexC+1;
+      writeIndexToFile(indexA,file);
+      writeIndexToFile(indexC,file);
+      writeIndexToFile(indexD,file);
     }
   }
 }
@@ -72,20 +112,38 @@ void drawXY(float x0, float y0, float z0, float nx, float ny, int div, FILE * fi
       // Face de tras
 
       writeVertexToFile(x, y, -z0,file);
+      indexA=indexD+1;
       writeVertexToFile(x, y + ny, -z0,file);
+      indexB=indexA+1;
       writeVertexToFile(x + nx, y, -z0,file);
-
+      indexC=indexB+1;
+      writeIndexToFile(indexA,file);
+      writeIndexToFile(indexB,file);
+      writeIndexToFile(indexC,file);
 
       writeVertexToFile(x + nx, y + ny, -z0,file);
-
+      indexD=indexC+1;
+      writeIndexToFile(indexB,file);
+      writeIndexToFile(indexD,file);
+      writeIndexToFile(indexC,file);
 
       // Face da frente
 
       writeVertexToFile(x, y, z0,file);
+      indexA=indexD+1;
       writeVertexToFile(x + nx, y, z0,file);
+      indexB=indexA+1;
       writeVertexToFile(x, y + ny, z0,file);
-      writeVertexToFile(x + nx, y + ny, z0,file);
+      indexC=indexB+1;
+      writeIndexToFile(indexA,file);
+      writeIndexToFile(indexB,file);
+      writeIndexToFile(indexC,file);
 
+      writeVertexToFile(x + nx, y + ny, z0,file);
+      indexD=indexC+1;
+      writeIndexToFile(indexB,file);
+      writeIndexToFile(indexD,file);
+      writeIndexToFile(indexC,file);
     }
   }
 }
@@ -110,28 +168,6 @@ int createBox(float x, float y, float z, int div, char * name) {
   drawYZ(x0,y0,z0,ny,nz,div,file);
   drawXY(x0,y0,z0,nx,ny,div,file);
 
- /**
-  for (int t = 0; t < div; t++) {
 
-
-    for (int i = 0; i < div; i++) {
-  		// A --- C
-  		// B --- D
-  		int indexA, indexB, indexC, indexD;
-  		indexA = stack * (slices + 1) + slice;
-  		indexB = (stack + 1) * (slices + 1) + slice;
-  		indexC = indexA + 1;
-  		indexD = indexB + 1;
-
-  		writeIndexToFile(indexA,file);
-	  	writeIndexToFile(indexB,file);
-	  	writeIndexToFile(indexC,file);
-
-	   	writeIndexToFile(indexB,file);
-	  	writeIndexToFile(indexD,file);
-	  	writeIndexToFile(indexC,file);
-     }
-  }
-  * */
   return 0;
 }
