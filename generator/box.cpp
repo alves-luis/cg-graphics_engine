@@ -1,5 +1,5 @@
 #include "box.h"
-#include "writeVertexToFile.h"
+#include "writeToFile.h"
 #include <stdio.h>
 
 #define _USE_MATH_DEFINES
