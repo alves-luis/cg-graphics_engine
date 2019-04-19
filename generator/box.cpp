@@ -127,10 +127,11 @@ int createBox(float x, float y, float z, int div, char * name) {
   drawYZ(x0,y0,z0,ny,nz,div,file);
   drawXY(x0,y0,z0,nx,ny,div,file);
 
+  indexA=0;
   for(int t = 0; t < div; t++) {
     for(int i = 0; i < div; i++) {
     
-      indexA=0;
+      if (t!=0) indexA=indexD+1;
       indexB=indexA+1;
       indexC=indexB+1;
       writeIndexToFile(indexA,file);
