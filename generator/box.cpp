@@ -49,15 +49,16 @@ void drawXY(float x0, float y0, float z0, float nx, float ny, int div, FILE * fi
 		}
 	}
 }
-void generateIndices(int * currentIndex, int div, FILE * file) {
+void generateIndices(int div, FILE * file) {
+	int currentIndex = 0;
 	for(int numPlanos = 0; numPlanos < 3; numPlanos++) {
 		// Face para fora
 		// D -- C
 		// B -- A
 		for (int i = 0; i < div; i++) {
 			for (int j = 0; j < div; j++) {
-				int indexA = i * (div + 1) + j + *currentIndex;
-				int indexB = (i + 1) * (div + 1) + j + *currentIndex;
+				int indexA = i * (div + 1) + j + currentIndex;
+				int indexB = (i + 1) * (div + 1) + j + currentIndex;
 				int indexC = indexA + 1;
 				int indexD = indexB + 1;
 				writeIndexToFile(indexA, file);
@@ -69,14 +70,14 @@ void generateIndices(int * currentIndex, int div, FILE * file) {
 				writeIndexToFile(indexD, file);
 			}
 		}
-		*currentIndex += (div + 1) * (div + 1);
+		currentIndex += (div + 1) * (div + 1);
 		// Face com orientaçao contraria
 		// D -- C
 		// B -- A
 		for (int i = 0; i < div; i++) {
 			for (int j = 0; j < div; j++) {
-				int indexA = i * (div + 1) + j + *currentIndex;
-				int indexB = (i + 1) * (div + 1) + j + *currentIndex;
+				int indexA = i * (div + 1) + j + currentIndex;
+				int indexB = (i + 1) * (div + 1) + j + currentIndex;
 				int indexC = indexA + 1;
 				int indexD = indexB + 1;
 
@@ -89,7 +90,7 @@ void generateIndices(int * currentIndex, int div, FILE * file) {
 				writeIndexToFile(indexB, file);
 			}
 		}
-		*currentIndex += (div + 1) * (div + 1);
+		currentIndex += (div + 1) * (div + 1);
 	}
 }
 
@@ -112,9 +113,6 @@ int createBox(float x, float y, float z, int div, char * name) {
 	drawXZ(x0,y0,z0,nx,nz,div,file);
 	drawYZ(x0,y0,z0,ny,nz,div,file);
 	drawXY(x0,y0,z0,nx,ny,div,file);
-	int * indexCount = (int *) malloc(sizeof(int));
-	*indexCount = 0;
-	generateIndices(indexCount,div,file);
-	free(indexCount);
+	generateIndices(div,file);
 	return 0;
 }
