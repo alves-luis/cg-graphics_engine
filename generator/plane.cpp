@@ -12,14 +12,19 @@ int createPlane(float size, char * fname) {
     x = size / 2;
     z = size / 2;
 
-    // 1º Triângulo
-    writeToFile(x,0,z,file);
-    writeToFile(-x,0,-z,file);
-    writeToFile(-x,0,z,file);
-    // 2º Triângulo
-    writeToFile(-x,0,-z,file);
-    writeToFile(x,0,z,file);
-    writeToFile(x,0,-z,file);
+    //
+    writeVertexToFile(x,0,z,file);
+    writeVertexToFile(-x,0,-z,file);
+    writeVertexToFile(-x,0,z,file);
+    writeVertexToFile(x,0,-z,file);
+
+    writeIndexToFile(0,file);
+    writeIndexToFile(1,file);
+    writeIndexToFile(2,file);
+    writeIndexToFile(1,file);
+    writeIndexToFile(0,file);
+    writeIndexToFile(3,file);
+
     closeFile(file);
     return 0;
 }
