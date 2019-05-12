@@ -102,4 +102,10 @@ std::vector<float> * getVertexes(Model m);
 
 void setIndexes(Model m, std::vector<unsigned int> * in);
 void setVertexes(Model m, std::vector<float> * ver);
+void setDiffuse(Model m, float * dif);
+void setSpecular(Model m, float * spec);
+void setEmissive(Model m, float * em);
+void setAmbient(Model m, float * am);
+void setTexture(Model m, std::string texture);
+void loadTexture(Model m);
 #endif

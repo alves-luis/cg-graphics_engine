@@ -15,6 +15,46 @@
 using namespace tinyxml2;
 
 
+int parseTexture(Model m, XMLElement * model) {
+	if (!m || !model)
+		return 1;
+
+	std::string texture = std::string(model->Attribute("texture"));
+	if (texture != "") {
+		loadTexture(m);
+	}
+}
+
+int parseColor(Model m, XMLElement * model) {
+	float dif[3], spec[3], em[3], am[3];
+
+	if (!m || !model)
+		return 1;
+
+	model->QueryAttribute("diffR",dif);
+	model->QueryAttribute("diffG",dif + 1);
+	model->QueryAttribute("diffB",dif + 2);
+
+	model->QueryAttribute("specR",spec);
+	model->QueryAttribute("specG",spec + 1);
+	model->QueryAttribute("specB",spec + 2);
+
+	model->QueryAttribute("emR", em);
+	model->QueryAttribute("emG", em + 1);
+	model->QueryAttribute("emB", em + 2);
+
+	model->QueryAttribute("amR", am);
+	model->QueryAttribute("amG", am + 1);
+	model->QueryAttribute("amB", am + 2);
+
+	setDiffuse(m,dif);
+	setSpecular(m,spec);
+	setEmissive(m,em);
+	setAmbient(m,am);
+
+	return 0;
+}
+
 int parseLights(XMLElement * lights, std::vector<Light> * vecL) {
 	XMLElement * light = lights->FirstChildElement("light");
 
@@ -153,6 +193,19 @@ int parseModels(XMLElement * models, Group g, std::map<std::string,Model> * mode
 			m = newModel(fileName);
 			setVertexes(m,getVertexes(old));
 			setIndexes(m,getIndexes(old));
+		}
+
+		// parse texture and colors
+		int error = parseColor(m,model);
+		if (error) {
+			fprintf(stderr,"PARSING FAILURE! Error parsing colors of %s file!\n",fileName.c_str());
+			return error;
+		}
+
+		error = parseTexture(m,model);
+		if (error) {
+			fprintf(stderr,"PARSING FAILURE! Error parsing texture of %s file!\n",fileName.c_str());
+			return error;
 		}
 
 		addModel(g,m);

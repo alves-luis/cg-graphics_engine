@@ -23,6 +23,8 @@ struct model {
     GLuint vertexBuffer[1];
     GLuint indexBuffer[1];
     std::string * texture;
+    GLuint textureID;
+    bool hasTexture;
     std::string * modelName;
     Color color;
 };
@@ -35,6 +37,7 @@ Model newModel(std::string name) {
   m->indexes = new std::vector<unsigned int>();
   m->modelName = new std::string(std::move(name));
   m->color = newColor();
+  m->hasTexture = false;
   return m;
 }
 
@@ -136,6 +139,41 @@ void initializeVBO(Model m) {
 void drawVBO(Model m) {
 	glBindBuffer(GL_ARRAY_BUFFER,m->vertexBuffer[0]);
 	glVertexPointer(3,GL_FLOAT,0,nullptr);
+    drawColor(m->color);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,m->indexBuffer[0]);
 	glDrawElements(GL_TRIANGLES, m->indexes->size(),GL_UNSIGNED_INT,NULL);
+}
+
+void setDiffuse(Model m, float * dif) {
+  if (!m)
+    return;
+  setDiffuse(m->color,dif);
+}
+
+void setSpecular(Model m, float * spec) {
+  if (!m)
+    return;
+  setSpecular(m->color,spec);
+}
+
+void setEmissive(Model m, float * em) {
+  if (!m)
+    return;
+  setEmissive(m->color,em);
+}
+
+void setAmbient(Model m, float * am) {
+  if (!m)
+    return;
+  setAmbient(m->color,am);
+}
+
+void setTexture(Model m, std::string texture) {
+  if (m) {
+    m->texture = new std::string(std::move(texture));
+  }
+}
+
+void loadTexture(Model m) {
+  
 }
