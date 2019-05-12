@@ -16,7 +16,7 @@ typedef struct model * Model;
  * @param color Color name
  * @return Pointer to the model
  * */
-Model newModel(std::string name, char * color);
+Model newModel(std::string name);
 
 /**
  * Adds a vertex to a model
@@ -54,13 +54,6 @@ int getIndex(Model m, int i);
  * @return name of model or NULL if invalid model
  * */
 std::string getName(Model m);
-
-/**
- * Returns the color of the model
- * @param m Model to retrieve the color from
- * @return name of color or NULL if invalid model
- * */
-char * getColor(Model m);
 
 /**
  * Returns the number of vertexes in the model

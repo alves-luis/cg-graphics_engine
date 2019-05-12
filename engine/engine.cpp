@@ -18,20 +18,11 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-#define PAINT_WHITE glColor3f(1,1,1);
-#define PAINT_SUN glColor3f(0.9f,1,0);
-#define PAINT_MERCURY glColor3f(0.4f,0.4f,0.4f);
-#define PAINT_VENUS glColor3f(0.9f,0.8f,0.4f);
-#define PAINT_EARTH glColor3f(0,0.6f,0);
-#define PAINT_MARS glColor3f(0.8f,0.3f,0);
-#define PAINT_JUPITER glColor3f(0.9f,0.6f,0.8f);
-#define PAINT_SATURN glColor3f(0.9f,0.8f,0.3f);
-#define PAINT_URANUS glColor3f(0.8f,0.8f,1.0f);
-#define PAINT_NEPTUNE glColor3f(0.5f,0.5f,1.0f);
-#define PAINT_PLUTO glColor3f(0.5f,0.3f,0.2f);
-
-/** Stores the groups in a vector*/
+/** Stores the groups in a vector */
 std::vector<Group> groups;
+
+/** Stores the lights in a vector */
+std::vector<Light> lights;
 
 float camX;
 float camY;
@@ -66,33 +57,6 @@ void changeSize(int w, int h) {
 }
 
 void drawModel(Model m) {
-
-	char * color = getColor(m);
-
-	if (strcmp(color,"white") == 0)
-	    PAINT_WHITE
-    else if (strcmp(color,"sun") == 0)
-        PAINT_SUN
-	else if (strcmp(color,"mercury") == 0)
-	    PAINT_MERCURY
-    else if (strcmp(color,"venus") == 0)
-        PAINT_VENUS
-	else if (strcmp(color,"earth") == 0)
-	    PAINT_EARTH
-    else if (strcmp(color,"mars") == 0)
-        PAINT_MARS
-    else if (strcmp(color,"jupiter") == 0)
-        PAINT_JUPITER
-    else if (strcmp(color,"saturn") == 0)
-        PAINT_SATURN
-    else if (strcmp(color,"uranus") == 0)
-        PAINT_URANUS
-    else if (strcmp(color,"neptune") == 0)
-        PAINT_NEPTUNE
-    else if (strcmp(color,"pluto") == 0)
-        PAINT_PLUTO
-	else
-	    glColor3f(1.0f,0,0);
 
     drawVBO(m);
 }
@@ -145,14 +109,19 @@ void renderScene() {
   // set the camera
   glLoadIdentity();
 
+  glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+
 
   gluLookAt(viewX,viewY,viewZ,
             0,0,0.0,
             0.0f,1.0f,0.0f);
 
-  glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 
   glTranslatef(camX,camY,camZ);
+
+  for(auto l : lights) {
+      drawLight(l);
+  }
 
   // put drawing instructions here
   for (auto g : groups) {
@@ -161,6 +130,12 @@ void renderScene() {
 
   // End of frame
   glutSwapBuffers();
+}
+
+void processKeys(unsigned char c, int xx, int yy) {
+    float k = 0.5f;
+    float upX, upY, upZ;
+    upX = upZ = 0.0f;
 }
 
 void processSpecialKeys(int key, int xx, int yy) {
@@ -252,7 +227,7 @@ int main(int argc, char** argv) {
     fprintf(stderr,"Invalid configuration file!\n");
     return 1;
   }
-  int error = loadXML(argv[1],&groups);
+  int error = loadXML(argv[1],&groups,&lights);
   if (!error)
     initialize(argc, argv);
   else

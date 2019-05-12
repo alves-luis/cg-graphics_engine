@@ -10,8 +10,67 @@
 #include "headers/vertex.h"
 #include "tinyxml/tinyxml2.h"
 #include "headers/group.h"
+#include "headers/light.h"
 
 using namespace tinyxml2;
+
+
+int parseLights(XMLElement * lights, std::vector<Light> * vecL) {
+	XMLElement * light = lights->FirstChildElement("light");
+
+	int currentLight = 0;
+	while (light != NULL) {
+		const char *type = light->Attribute("type");
+
+		float pos[4] = { 0.0f, 0.0f, 0.0f, 1.0f }; // default is a point
+		float amb[4] = { 0.0f, 0.0f, 0.0f, 1.0f }; // opengl default
+		float dif[4] = { 1.0f, 1.0f, 1.0f, 1.0f }; //opengl default
+		float spec[4] = { 1.0f, 1.0f, 1.0f, 1.0f}; // opengl default
+		float spotD[3] = { 0.0f, 0.0f, -1.0f }; // opengl default
+		float spotExp = 0.0f; // opengl default, uniform light dist
+		float spotCut = 180.0f; // opengl default, uniform light dist
+
+		light->QueryAttribute("posX", pos);
+		light->QueryAttribute("posY", pos + 1);
+		light->QueryAttribute("posZ", pos + 2);
+		// if directional, it's vector
+		if (strcmp(type,"DIRECTIONAL") == 0)
+			pos[3] = 0.0f;
+
+		light->QueryAttribute("ambR",amb);
+		light->QueryAttribute("ambG",amb + 1);
+		light->QueryAttribute("ambB",amb + 2);
+
+		light->QueryAttribute("diffR",dif);
+		light->QueryAttribute("diffG",dif + 1);
+		light->QueryAttribute("diffB",dif + 2);
+
+		light->QueryAttribute("specR",spec);
+		light->QueryAttribute("specG",spec + 1);
+		light->QueryAttribute("specB",spec + 2);
+
+		light->QueryAttribute("dX", spotD);
+		light->QueryAttribute("dY",spotD + 1);
+		light->QueryAttribute("dZ", spotD + 2);
+
+		light->QueryAttribute("exp",&spotExp);
+		light->QueryAttribute("cut",&spotCut);
+
+		GLenum i = GL_LIGHT0 + currentLight;
+		glEnable(i);
+		Light l = newLight(i,pos,amb,dif,spec,spotD,spotExp,spotCut);
+		vecL->push_back(l);
+		currentLight++;
+
+
+		light = light->NextSiblingElement("light");
+	}
+
+	if (currentLight < 8)
+		return 0;
+	else
+		return 1;
+}
 
 /**
  * This function, given a filename, reads its vertices in a .3d format
@@ -77,14 +136,10 @@ int parseModels(XMLElement * models, Group g, std::map<std::string,Model> * mode
 		std::string fileName = std::string(model->Attribute("file"));
 
 		Model m;
-		char * color = (char *) model->Attribute("color");
 
-		if (!color) {
-			color = strdup("white"); // default color
-		}
 		if (modelsMap->find(fileName) == modelsMap->end()) {
 
-			m = newModel(fileName,color);
+			m = newModel(fileName);
 
 			int error = parse3D(fileName,m);
 			if (error) { // if error in parsing file 3D, don't parse anymore files
@@ -95,7 +150,7 @@ int parseModels(XMLElement * models, Group g, std::map<std::string,Model> * mode
 		}
 		else {
 			Model old = modelsMap->find(fileName)->second;
-			m = newModel(fileName,color);
+			m = newModel(fileName);
 			setVertexes(m,getVertexes(old));
 			setIndexes(m,getIndexes(old));
 		}
@@ -254,13 +309,13 @@ int parseGroup(XMLElement * group, Group g, std::map<std::string,Model> * models
 	return 0;
 }
 
-int loadXML(char * fname, std::vector<Group> * groups) {
+int loadXML(char * fname, std::vector<Group> * groups, std::vector<Light> * lights) {
 
 	if (fname)
 		printf("Loading %s\n",fname);
 
 	XMLDocument doc;
-	auto * models= new std::map<std::string,Model>();
+	auto * models = new std::map<std::string,Model>();
 
 	XMLError err = doc.LoadFile(fname);
 	if (err) {
@@ -272,6 +327,16 @@ int loadXML(char * fname, std::vector<Group> * groups) {
 	if (!scene) {
 		fprintf(stderr,"TINYXML FAILURE! Error code: %d\n",XML_ERROR_PARSING_ELEMENT);
 		return XML_ERROR_PARSING_ELEMENT;
+	}
+
+	// lights should be at the start of the xml
+	XMLElement* light = scene->FirstChildElement("lights");
+	if (light != NULL) {// if there are any
+		int error = parseLights(light, lights);
+		if (error) {
+			fprintf(stderr,"Maximum number of lights exceeded!");
+			return error;
+		}
 	}
 
 	XMLElement* group = scene->FirstChildElement("group");

@@ -2,6 +2,8 @@
 
 #include "headers/model.h"
 #include "headers/vertex.h"
+#include "headers/scale.h"
+#include "headers/color.h"
 #include <vector>
 #include <stdlib.h>
 #include <string.h>
@@ -20,18 +22,19 @@ struct model {
     std::vector<unsigned int> * indexes;
     GLuint vertexBuffer[1];
     GLuint indexBuffer[1];
-    char * color;
+    std::string * texture;
     std::string * modelName;
+    Color color;
 };
 
-Model newModel(std::string name, char * color) {
+Model newModel(std::string name) {
   Model m = (Model) malloc(sizeof(struct model));
   if (!m)
     return NULL;
   m->vertexes = new std::vector<float>();
   m->indexes = new std::vector<unsigned int>();
   m->modelName = new std::string(std::move(name));
-  m->color = strdup(color);
+  m->color = newColor();
   return m;
 }
 
@@ -68,13 +71,6 @@ std::string getName(Model m) {
     return *(m->modelName);
   else
     return NULL;
-}
-
-char * getColor(Model m) {
-  if (m)
-    return m->color;
-  else
-    return nullptr;
 }
 
 int getSize(Model m) {

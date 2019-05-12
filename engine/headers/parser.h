@@ -2,6 +2,7 @@
 #define PARSER_H
 
 #include "group.h"
+#include "light.h"
 #include <vector>
 
 /**
@@ -12,6 +13,6 @@
  * @param groups pointer to store the parsed data
  * @return 0 if all went good
  * */
-int loadXML(char * fname, std::vector<Group> * groups);
+int loadXML(char * fname, std::vector<Group> * groups, std::vector<Light> * lights);
 
 #endif

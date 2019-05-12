@@ -5,7 +5,6 @@
 struct group {
 	std::vector<Model> * models;
 	std::vector<Group> * children;
-	char * color;
 	Scale scale;
 	Translation translation;
 	Rotation rotation;
