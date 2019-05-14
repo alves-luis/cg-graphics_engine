@@ -156,42 +156,42 @@ void generateNormals(int div, FILE * file) {
 		// Face da frente
 		for (int i = 0; i <= div; i++) {
 			for (int j = 0; j <= div; j++) {
-				writeTextToFile(k + t * i, k + t * j, file);
+				writeTextureToFile(k + t * i, k + t * j, file);
 			}
 		}
 		k= 1 / 6;
 		// Face de tras
 		for (int i = 0; i <= div; i++) {
 			for (int j = 0; j <= div; j++) {
-				writeTextToFile(k + t * i, k + t * j, file);
+				writeTextureToFile(k + t * i, k + t * j, file);
 			}
 		}
 		k = 2 / 6;
 		// Face da frente
 		for (int i = 0; i <= div; i++) {
 			for (int j = 0; j <= div; j++) {
-				writeTextToFile(k + t * i, k + t * j, file);
+				writeTextureToFile(k + t * i, k + t * j, file);
 			}
 		}
 		k = 3 / 6;
 		// Face de tras
 		for (int i = 0; i <= div; i++) {
 			for (int j = 0; j <= div; j++) {
-				writeTextToFile(k + t * i, k + t * j, file);
+				writeTextureToFile(k + t * i, k + t * j, file);
 			}
 		}
 		k = 4 / 6;
 		// Face da frente
 		for (int i = 0; i <= div; i++) {
 			for (int j = 0; j <= div; j++) {
-				writeTextToFile(k + t * i, k + t * j, file);
+				writeTextureToFile(k + t * i, k + t * j, file);
 			}
 		}
 		k = 5 / 6;
 		// Face de tras
 		for (int i = 0; i <= div; i++) {
 			for (int j = 0; j <= div; j++) {
-				writeTextToFile(k + t * i, k + t * j, file);
+				writeTextureToFile(k + t * i, k + t * j, file);
 			}
 		}
 	}
