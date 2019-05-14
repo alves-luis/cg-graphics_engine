@@ -94,6 +94,110 @@ void generateIndices(int div, FILE * file) {
 	}
 }
 
+
+void generateNormals(int div, FILE * file) {
+
+		for (int i = 0; i < div; i++) { //xz cima
+			for (int j = 0; j < div; j++) {
+				for (int a = 0; a < 6; a++) {
+					writeNormalToFile(0, 1, 0,file);
+				}
+			}
+		}
+		
+		for (int i = 0; i < div; i++) { //xz baixo
+			for (int j = 0; j < div; j++) {
+				for (int a = 0; a < 6; a++) {
+					writeNormalToFile(0, -1, 0,file);
+				}
+			}
+		}
+
+		for (int i = 0; i < div; i++) { //yz esquerda
+			for (int j = 0; j < div; j++) {
+				for (int a = 0; a < 6; a++) {
+					writeNormalToFile(-1, 0, 0,file);
+				}
+			}
+		}
+
+		for (int i = 0; i < div; i++) { //yz direita
+			for (int j = 0; j < div; j++) {
+				for (int a = 0; a < 6; a++) {
+					writeNormalToFile(1, 0, 0,file);
+				}
+			}
+		}
+
+		for (int i = 0; i < div; i++) { //xz frente
+			for (int j = 0; j < div; j++) {
+				for (int a = 0; a < 6; a++) {
+					writeNormalToFile(0, 0, 1,file);
+				}
+			}
+		}
+
+		for (int i = 0; i < div; i++) { //xz trás
+			for (int j = 0; j < div; j++) {
+				for (int a = 0; a < 6; a++) {
+					writeNormalToFile(0, 0, -1,file);
+				}
+			}
+		}
+}
+
+	
+
+	void drawTextCoords(int div, FILE * file) {
+		int n = 1 / 6;
+		int t = n/div;
+		int k = 0;
+		
+		// Face da frente
+		for (int i = 0; i <= div; i++) {
+			for (int j = 0; j <= div; j++) {
+				writeTextToFile(k + t * i, k + t * j, file);
+			}
+		}
+		k= 1 / 6;
+		// Face de tras
+		for (int i = 0; i <= div; i++) {
+			for (int j = 0; j <= div; j++) {
+				writeTextToFile(k + t * i, k + t * j, file);
+			}
+		}
+		k = 2 / 6;
+		// Face da frente
+		for (int i = 0; i <= div; i++) {
+			for (int j = 0; j <= div; j++) {
+				writeTextToFile(k + t * i, k + t * j, file);
+			}
+		}
+		k = 3 / 6;
+		// Face de tras
+		for (int i = 0; i <= div; i++) {
+			for (int j = 0; j <= div; j++) {
+				writeTextToFile(k + t * i, k + t * j, file);
+			}
+		}
+		k = 4 / 6;
+		// Face da frente
+		for (int i = 0; i <= div; i++) {
+			for (int j = 0; j <= div; j++) {
+				writeTextToFile(k + t * i, k + t * j, file);
+			}
+		}
+		k = 5 / 6;
+		// Face de tras
+		for (int i = 0; i <= div; i++) {
+			for (int j = 0; j <= div; j++) {
+				writeTextToFile(k + t * i, k + t * j, file);
+			}
+		}
+	}
+
+
+
 int createBox(float x, float y, float z, int div, char * name) {
 	FILE * file = openFile(name);
 	// invalid arguments
@@ -114,5 +218,7 @@ int createBox(float x, float y, float z, int div, char * name) {
 	drawYZ(x0,y0,z0,ny,nz,div,file);
 	drawXY(x0,y0,z0,nx,ny,div,file);
 	generateIndices(div,file);
+	generateNormals(div, file);
+	drawTextCoords(div, file);
 	return 0;
 }
