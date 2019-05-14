@@ -42,6 +42,9 @@ float calcZ(float rad, float beta, float alpha) {
 
 int createSphere(float rad, int slices, int stacks, char * fname) {
   FILE * file = openFile(fname);
+  std::vector<float> vertexes; //vector with vertexes to calculate normals
+  std::vector<int> indexes; //vector with indexes to calculate normals
+
   // invalid arguments
   if (rad < 0 || slices < 1 || stacks < 1)
     return 1;
@@ -67,6 +70,10 @@ int createSphere(float rad, int slices, int stacks, char * fname) {
       z = calcZ(rad,beta,alpha);
 
       writeVertexToFile(x,y,z,file);
+
+      vertexes.push_back(x);
+      vertexes.push_back(y);
+      vertexes.push_back(z);
     }
   }
 
@@ -81,14 +88,23 @@ int createSphere(float rad, int slices, int stacks, char * fname) {
   		indexD = indexB + 1;
 
   		writeIndexToFile(indexA,file);
-		writeIndexToFile(indexB,file);
-		writeIndexToFile(indexC,file);
+	  	writeIndexToFile(indexB,file);
+		  writeIndexToFile(indexC,file);
 
-		writeIndexToFile(indexB,file);
-		writeIndexToFile(indexD,file);
-		writeIndexToFile(indexC,file);
+  		writeIndexToFile(indexB,file);
+	  	writeIndexToFile(indexD,file);
+	  	writeIndexToFile(indexC,file);
+
+      indexes.push_back(indexA);
+      indexes.push_back(indexB);
+      indexes.push_back(indexC);
+      indexes.push_back(indexB);
+      indexes.push_back(indexD);
+      indexes.push_back(indexC);
   	}
   }
+
+  writeNormals(vertexes, indexes, file);
 
   closeFile(file);
 
