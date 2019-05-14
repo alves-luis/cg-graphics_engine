@@ -129,3 +129,17 @@ void initializeVBO(Group g) {
 				initializeVBO(child);
 	}
 }
+
+void loadTexture(Group g) {
+	if (g) {
+		std::vector<Model> * models = g->models;
+		std::vector<Group> * children = g->children;
+		if (models)
+			for(Model m : *models) {
+				loadTexture(m);
+			}
+		if (children)
+			for(Group child : *children)
+				loadTexture(child);
+	}
+}

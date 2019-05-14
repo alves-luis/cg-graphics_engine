@@ -200,7 +200,18 @@ void initialize(int argc, char** argv) {
     glewInit();
 	#endif
     glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    if (lights.size() > 0)
+    	glEnable(GL_LIGHTING);
+    for(auto l : lights) {
+        enableLight(l);
+    }
     initializeVBOS();
+    glEnable(GL_TEXTURE_2D);
+    for(auto g : groups) {
+        loadTexture(g);
+    }
     viewX=0;
     viewY=0;
     viewZ=10;

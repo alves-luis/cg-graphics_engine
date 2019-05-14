@@ -106,4 +106,6 @@ char * getNthTransformation(Group g, int n);
  * */
 void initializeVBO(Group g);
 
+void loadTexture(Group g);
+
 #endif

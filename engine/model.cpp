@@ -14,6 +14,7 @@
 #include <GL/glut.h>
 #include <cstdio>
 #include <string>
+#include <IL/il.h>
 
 #endif
 
@@ -26,6 +27,7 @@ struct model {
     GLuint textureID;
     bool hasTexture;
     std::string * modelName;
+    bool hasColor;
     Color color;
 };
 
@@ -38,6 +40,7 @@ Model newModel(std::string name) {
   m->modelName = new std::string(std::move(name));
   m->color = newColor();
   m->hasTexture = false;
+  m->hasColor = false;
   return m;
 }
 
@@ -139,41 +142,78 @@ void initializeVBO(Model m) {
 void drawVBO(Model m) {
 	glBindBuffer(GL_ARRAY_BUFFER,m->vertexBuffer[0]);
 	glVertexPointer(3,GL_FLOAT,0,nullptr);
-    drawColor(m->color);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,m->indexBuffer[0]);
+	if (m->hasColor) {
+		drawColor(m->color);
+	}
 	glDrawElements(GL_TRIANGLES, m->indexes->size(),GL_UNSIGNED_INT,NULL);
+	glClearColor(0,0,0,0);
 }
 
 void setDiffuse(Model m, float * dif) {
   if (!m)
     return;
+  m->hasColor = true;
   setDiffuse(m->color,dif);
 }
 
 void setSpecular(Model m, float * spec) {
   if (!m)
     return;
+  m->hasColor = true;
   setSpecular(m->color,spec);
 }
 
 void setEmissive(Model m, float * em) {
   if (!m)
     return;
+  m->hasColor = true;
   setEmissive(m->color,em);
 }
 
 void setAmbient(Model m, float * am) {
   if (!m)
     return;
+  m->hasColor = true;
   setAmbient(m->color,am);
 }
 
 void setTexture(Model m, std::string texture) {
   if (m) {
     m->texture = new std::string(std::move(texture));
+    m->hasTexture = true;
+    m->hasColor = false;
   }
 }
 
 void loadTexture(Model m) {
-  
+	if (m && m->hasTexture) {
+		unsigned int t, tw, th;
+		unsigned char *texData;
+
+		ilInit();
+		ilEnable(IL_ORIGIN_SET);
+		ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+		ilGenImages(1, &t);
+		ilBindImage(t);
+		ilLoadImage((ILstring) m->texture->c_str());
+		tw = ilGetInteger(IL_IMAGE_WIDTH);
+		th = ilGetInteger(IL_IMAGE_HEIGHT);
+		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+		texData = ilGetData();
+
+		glGenTextures(1, &m->textureID);
+
+		glBindTexture(GL_TEXTURE_2D, m->textureID);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
 }

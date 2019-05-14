@@ -5,4 +5,5 @@ typedef struct light * Light;
 
 Light newLight(GLenum i, float * pos, float * amb, float * dif, float * spec, float *sD, float sE, float sC);
 void drawLight(Light l);
+void enableLight(Light l);
 #endif

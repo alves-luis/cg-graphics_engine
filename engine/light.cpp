@@ -34,6 +34,7 @@ Light newLight(GLenum i, float * pos, float * amb, float * dif, float * spec, fl
 void drawLight(Light l) {
 	if (!l)
 		return;
+	glClearColor(0, 0, 0, 0);
 	glLightfv(l->number,GL_POSITION,l->position);
 	glLightfv(l->number,GL_AMBIENT,l->ambient);
 	glLightfv(l->number,GL_DIFFUSE,l->diffuse);
@@ -41,4 +42,10 @@ void drawLight(Light l) {
 	glLightfv(l->number,GL_SPOT_DIRECTION,l->spotDirection);
 	glLightf(l->number,GL_SPOT_EXPONENT,l->spotExponent);
 	glLightf(l->number,GL_SPOT_CUTOFF,l->spotCut);
+}
+
+void enableLight(Light l) {
+	if (!l)
+		return;
+	glEnable(l->number);
 }
