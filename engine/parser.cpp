@@ -14,19 +14,34 @@
 
 using namespace tinyxml2;
 
-
 int parseTexture(Model m, XMLElement * model) {
 	if (!m || !model)
 		return 1;
 
-	std::string texture = std::string(model->Attribute("texture"));
-	if (texture != "") {
-		loadTexture(m);
+	const char * cTexture = model->Attribute("texture");
+
+	if (cTexture) {
+		std::string texture = std::string(cTexture);
+		setTexture(m,texture);
 	}
 }
 
 int parseColor(Model m, XMLElement * model) {
-	float dif[3], spec[3], em[3], am[3];
+	float dif[4], spec[4], em[4], am[4];
+	for(int i = 0; i < 4; i++) {
+		if (i != 3) {
+			dif[i] = 0.8f;
+			spec[i] = 0.0f;
+			em[i] = 0.0f;
+			am[i] = 0.2f;
+		}
+		else {
+			dif[i] = 1.0f;
+			spec[i] = 1.0f;
+			em[i] = 1.0f;
+			am[i] = 1.0f;
+		}
+	}
 
 	if (!m || !model)
 		return 1;
@@ -43,9 +58,9 @@ int parseColor(Model m, XMLElement * model) {
 	model->QueryAttribute("emG", em + 1);
 	model->QueryAttribute("emB", em + 2);
 
-	model->QueryAttribute("amR", am);
-	model->QueryAttribute("amG", am + 1);
-	model->QueryAttribute("amB", am + 2);
+	model->QueryAttribute("ambR", am);
+	model->QueryAttribute("ambG", am + 1);
+	model->QueryAttribute("ambB", am + 2);
 
 	setDiffuse(m,dif);
 	setSpecular(m,spec);
@@ -97,7 +112,6 @@ int parseLights(XMLElement * lights, std::vector<Light> * vecL) {
 		light->QueryAttribute("cut",&spotCut);
 
 		GLenum i = GL_LIGHT0 + currentLight;
-		glEnable(i);
 		Light l = newLight(i,pos,amb,dif,spec,spotD,spotExp,spotCut);
 		vecL->push_back(l);
 		currentLight++;

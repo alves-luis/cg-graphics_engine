@@ -53,8 +53,31 @@ else (WIN32) #Linux and Mac
 
 endif(WIN32)
 
+if (NOT WIN32)
+	find_package(GLUT REQUIRED)
+	include_directories(${GLUT_INCLUDE_DIR})
+	link_directories(${GLUT_LIBRARY_DIRS})
+	add_definitions(${GLUT_DEFINITIONS})
 
+	find_package(DevIL REQUIRED)
+	link_libraries(${IL_LIBRARIES} )
+	include_directories(ยง{IL_INCLUDE_DIR})
+endif(NOT WIN32)
 
-
-
-
+if (NOT APPLE)
+	if (WIN32)
+		set(TOOLKITS_FOLDER "" CACHE PATH "Path to toolkits folder")
+		include_directories(
+			${TOOLKITS_FOLDER}/glew
+			${TOOLKITS_FOLDER}/glut
+			${TOOLKITS_FOLDER}/devil)
+		link_directories(
+			${TOOLKITS_FOLDER}/glew
+			${TOOLKITS_FOLDER}/glut
+			${TOOLKITS_FOLDER}/devil)
+	else(WIN32)
+		find_package(GLEW REQUIRED)
+		include_directories(${GLEW_INCLUDE_DIRS})
+		link_libraries(${GLEW_LIBRARIES})
+	endif(WIN32)
+endif(NOT APPLE)

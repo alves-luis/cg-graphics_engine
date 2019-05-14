@@ -36,6 +36,17 @@ int writeVertexToFile(float x, float y, float z, FILE * file) {
   return 0;
 }
 
+int writeTextureToFile(float x, float y, FILE * file) {
+
+	if(file == NULL)
+	{
+		printf("Error!");
+		return 1;
+	}
+	fprintf(file, "%f %f\n",x,y);
+	return 0;
+}
+
 int writeIndexToFile(int i, FILE * file) {
   if (file == NULL) {
     printf("Error!");

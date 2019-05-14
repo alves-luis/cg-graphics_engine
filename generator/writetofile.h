@@ -23,6 +23,16 @@ int writeVertexToFile(float x, float y, float z, FILE * fName);
 int writeIndexToFile(int i, FILE * fName);
 
 /**
+ * Esta funçao, dadas as coordenadas de textura, escreve no formato  x y
+ * numa nova linha do ficheiro fName
+ * @param x coordenada x
+ * @param y coordenada y
+ * @param fName ficheiro para escrever
+ * @return 0 se sucesso*/
+int writeTextureToFile(float x, float y, FILE * fName);
+
+
+/**
  * Esta função, dado um ficheiro, devolve um pointer para este (aberto)
  * @param fname nome do ficheiro
  * @return NULL if can't open, or actual pointer if successful
