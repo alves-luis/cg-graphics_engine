@@ -1,7 +1,10 @@
 <scene>
+    <lights>
+        <light type="POINT" posX="0" posY="0" posZ="0"/>
+    </lights>
     <group>
         <models>
-            <model file="sphere.3d" color="sun"/>
+            <model file="sphere.3d"/>
         </models>
         <group>
             <scale X="0.001" Y="0.001" Z="0.001"/>
@@ -15,7 +18,7 @@
                 </translate>
                 <scale X="50.9" Y="50.9" Z="50.9"/>
                 <models>
-                    <model file="teapot.3d" color="uranus"/>
+                    <model file="teapot.3d"/>
                 </models>
             </group>
             <!--Mercúrio-->

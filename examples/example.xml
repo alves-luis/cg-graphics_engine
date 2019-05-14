@@ -1,0 +1,12 @@
+<scene>
+ <lights>
+ <light type="POINT" posX="0" posY="10" posZ="0" />
+ </lights>
+ <group>
+ <translate X="5" Y="0" Z="2" />
+ <rotate angle="45" axisX="0" axisY="1" axisZ="0" />
+ <models>
+ <model file="sphere.3d"  diffR="0.8" diffG="0.8" diffB="0.15" />
+ </models>
+ </group>
+</scene>

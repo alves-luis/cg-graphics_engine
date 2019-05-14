@@ -24,6 +24,7 @@ int parseTexture(Model m, XMLElement * model) {
 		std::string texture = std::string(cTexture);
 		setTexture(m,texture);
 	}
+	return 0;
 }
 
 int parseColor(Model m, XMLElement * model) {

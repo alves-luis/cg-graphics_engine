@@ -114,6 +114,10 @@ std::vector<unsigned int> * getIndexes(Model m);
  * */
 std::vector<float> * getVertexes(Model m);
 
+std::vector<float> * getNormals(Model m);
+
+std::vector<float> * getTextureCoords(Model m);
+
 void setIndexes(Model m, std::vector<unsigned int> * in);
 void setVertexes(Model m, std::vector<float> * ver);
 void setDiffuse(Model m, float * dif);

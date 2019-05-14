@@ -25,6 +25,8 @@ struct model {
     std::vector<float> * normals;
     GLuint vertexBuffer[1];
     GLuint indexBuffer[1];
+    GLuint normalBuffer[1];
+    GLuint textureBuffer[1];
     std::string * texture;
     GLuint textureID;
     bool hasTexture;
@@ -130,6 +132,20 @@ std::vector<unsigned int> * getIndexes(Model m) {
     return NULL;
 }
 
+std::vector<float> * getNormals(Model m) {
+	if (m)
+		return m->normals;
+	else
+		return NULL;
+}
+
+std::vector<float> * getTextureCoords(Model m) {
+	if (m)
+		return m->textureCoords;
+	else
+		return NULL;
+}
+
 void setVertexes(Model m, std::vector<float> * ver) {
   if (m)
     m->vertexes = ver;
@@ -144,26 +160,56 @@ void initializeVBO(Model m) {
   if (m) {
   	std::vector<float> vertexes = *m->vertexes;
   	std::vector<unsigned int> indexes = *m->indexes;
+  	std::vector<float> normals = *m->normals;
+  	std::vector<float> textureCds = *m->textureCoords;
   	float * vertex = &vertexes[0];
   	unsigned int * index = &indexes[0];
-    glGenBuffers(1,m->vertexBuffer);
+  	float * norm = &normals[0];
+  	float * tex = &textureCds[0];
+
+  	glGenBuffers(1,m->vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER,m->vertexBuffer[0]);
     glBufferData(GL_ARRAY_BUFFER,m->vertexes->size() * sizeof(float),vertex,GL_STATIC_DRAW);
+
     glGenBuffers(1,m->indexBuffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,m->indexBuffer[0]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER,m->indexes->size() * sizeof(unsigned int), index,GL_STATIC_DRAW);
+
+    glGenBuffers(1,m->normalBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER,m->normalBuffer[0]);
+    glBufferData(GL_ARRAY_BUFFER,m->normals->size() * sizeof(float), norm,GL_STATIC_DRAW);
+
+    if (m->hasTexture) {
+    	glGenBuffers(1,m->textureBuffer);
+    	glBindBuffer(GL_ARRAY_BUFFER,m->textureBuffer[0]);
+    	glBufferData(GL_ARRAY_BUFFER,m->textureCoords->size() * sizeof(float), tex, GL_STATIC_DRAW);
+    }
   }
 }
 
 void drawVBO(Model m) {
-	glBindBuffer(GL_ARRAY_BUFFER,m->vertexBuffer[0]);
-	glVertexPointer(3,GL_FLOAT,0,nullptr);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,m->indexBuffer[0]);
 	if (m->hasColor) {
 		drawColor(m->color);
 	}
+
+	glBindBuffer(GL_ARRAY_BUFFER,m->vertexBuffer[0]);
+	glVertexPointer(3,GL_FLOAT,0,nullptr);
+
+	glBindBuffer(GL_ARRAY_BUFFER,m->normalBuffer[0]);
+	glNormalPointer(GL_FLOAT,0,0);
+
+	if (m->hasTexture) {
+		glBindBuffer(GL_ARRAY_BUFFER,m->textureBuffer[0]);
+		glTexCoordPointer(2,GL_FLOAT,0,0);
+		glBindTexture(GL_TEXTURE_2D,m->textureID);
+	}
+
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,m->indexBuffer[0]);
 	glDrawElements(GL_TRIANGLES, m->indexes->size(),GL_UNSIGNED_INT,NULL);
 	glClearColor(0,0,0,0);
+	if (m->hasTexture)
+		glBindTexture(GL_TEXTURE_2D,0);
 }
 
 void setDiffuse(Model m, float * dif) {

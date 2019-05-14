@@ -1,7 +1,8 @@
 <scene>
 	<group>
+		<rotate time="5" axisX="0" axisY="1" axisZ="0"/>
 		<models>
-			<model file="sphereVBO.3d" />
+			<model file="sphere.3d" texture="../examples/earth.jpg"/>
 		</models>
 	</group>
 </scene>

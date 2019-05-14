@@ -1,4 +1,7 @@
 <scene>
+	<lights>
+    <light type="POINT" posX="0" posY="10" posZ="0" />
+    </lights>
 	<group>
 		<translate time="10">
 			<point X="2" Y="0" Z="2" />
@@ -7,7 +10,7 @@
 			<point X="-2" Y="0" Z="2" />
 		</translate>
 		<models>
-			<model file="teapot.3d"/>
+			<model file="teapot.3d" texture="../examples/texture1.jpg"/>
 		</models>
 	</group>
 </scene>
