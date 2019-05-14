@@ -25,6 +25,16 @@ int createPlane(float size, char * fname) {
     writeIndexToFile(0,file);
     writeIndexToFile(3,file);
 
+    for(int i = 0; i < 6; i++){
+    writeNormalToFile(0,1,0,file);
+    }
+
+
+    writeBlankToFile(file);
+
+    //writeTextureToFile();
+
+
     closeFile(file);
     return 0;
 }

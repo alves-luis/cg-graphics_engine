@@ -56,4 +56,10 @@ void closeFile(FILE * f);
  * @return 0 if successful
  * */
 int writeToFile(float x, float y, float z, FILE * fName);
+
+
+int writeBlankToFile(FILE * fName);
+
+int writeNormalToFile(float x, float y, float z, FILE * fName);
+
 #endif
