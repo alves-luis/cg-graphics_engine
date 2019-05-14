@@ -33,6 +33,20 @@ void addVertex(Model m, float v);
 void addIndex(Model m, unsigned int i);
 
 /**
+ * Adds a normal to a model
+ * @param m model to add
+ * @param x coord
+ * */
+void addNormal(Model m, float x);
+
+/**
+ * Adds a texture to a model
+ * @param m model to add
+ * @param x coord to add
+ * */
+void addTexture(Model m, float x);
+
+/**
  * Returns the i-th vertex of a model
  * @param m Model to retrieve the vertex from
  * @param i index of the vertex

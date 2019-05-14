@@ -21,6 +21,8 @@
 struct model {
     std::vector<float> * vertexes;
     std::vector<unsigned int> * indexes;
+    std::vector<float> * textureCoords;
+    std::vector<float> * normals;
     GLuint vertexBuffer[1];
     GLuint indexBuffer[1];
     std::string * texture;
@@ -37,6 +39,8 @@ Model newModel(std::string name) {
     return NULL;
   m->vertexes = new std::vector<float>();
   m->indexes = new std::vector<unsigned int>();
+  m->textureCoords = new std::vector<float>();
+  m->normals = new std::vector<float>();
   m->modelName = new std::string(std::move(name));
   m->color = newColor();
   m->hasTexture = false;
@@ -54,6 +58,18 @@ void addIndex(Model m, unsigned int i) {
   if (m) {
     m->indexes->push_back(i);
   }
+}
+
+void addTexture(Model m, float x) {
+	if (m) {
+		m->textureCoords->push_back(x);
+	}
+}
+
+void addNormal(Model m, float x) {
+	if (m) {
+		m->normals->push_back(x);
+	}
 }
 
 float getVertex(Model m, int i) {

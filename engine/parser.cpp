@@ -143,30 +143,57 @@ int parse3D(const std::string &fname, Model m) {
 		return 3;
 	}
 
-	bool indexes = false;
+	int state = 0;
+	// state = 0 => vertices (3)
+	// state = 1 => indices (1)
+	// state = 2 => normals (3)
+	// state = 3 => textures (2)
 	while(std::getline(file,line)) {
 		std::istringstream stringStream(line);
 
 		float x, y, z;
-		if (!indexes) {
-			if (!(stringStream >> x >> y >> z)) {
-				// could not get 3 floats, so they're indexes
-				indexes = true;
-				addIndex(m, static_cast<unsigned int>(x));
-			} else {
-				addVertex(m, x);
-				addVertex(m, y);
-				addVertex(m, z);
-			}
-		}
-		else {
-			unsigned int index;
-			stringStream >> index;
-			addIndex(m,index);
+		switch (state) {
+			case 0: if (!(stringStream >> x >> y >> z)) {
+						state = 1;
+						addIndex(m,static_cast<unsigned int>(x));
+					}
+					else {
+						addVertex(m,x);
+						addVertex(m,y);
+						addVertex(m,z);
+					}
+					break;
+			case 1: if (stringStream >> x >> y >> z) {
+						state = 2;
+						addNormal(m,x);
+						addNormal(m,y);
+						addNormal(m,z);
+					}
+					else {
+						addIndex(m,static_cast<unsigned int>(x));
+					}
+					break;
+			case 2: if (!(stringStream >> x >> y >> z)) {
+						state = 3;
+						addTexture(m,x);
+						addTexture(m,y);
+					}
+					else {
+						addNormal(m,x);
+						addNormal(m,y);
+						addNormal(m,z);
+					}
+					break;
+			case 3: if (!(stringStream >> x >> y)) {
+						break;
+					}
+					else {
+						addTexture(m,x);
+						addTexture(m,y);
+					}
+			default: break;
 		}
 	}
-	if (!indexes) // never seen indexes
-		return 4;
 
 	file.close();
 
