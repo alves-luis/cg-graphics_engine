@@ -30,9 +30,10 @@ int createPlane(float size, char * fname) {
     }
 
 
-    writeBlankToFile(file);
-
-    //writeTextureToFile();
+    writeTextureToFile(0, 0, file);
+	writeTextureToFile(0, 1, file);
+	writeTextureToFile(1, 0, file);
+	writeTextureToFile(1, 1, file);
 
 
     closeFile(file);
