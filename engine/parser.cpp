@@ -121,7 +121,7 @@ int parseLights(XMLElement * lights, std::vector<Light> * vecL) {
 		light = light->NextSiblingElement("light");
 	}
 
-	if (currentLight < 8)
+	if (currentLight < 9)
 		return 0;
 	else
 		return 1;

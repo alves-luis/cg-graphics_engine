@@ -1,10 +1,10 @@
 <scene>
     <lights>
-        <light type="POINT" posX="0" posY="2" posZ="0"/>
+        <light type="POINT" posX="0" posY="0" posZ="0"/>
     </lights>
     <group>
         <models>
-            <model file="sphere.3d" texture="../examples/sun.jpg"/>
+            <model file="sphere.3d" texture="../examples/sun.jpg"  emR="1" emG="1" emB="1"/>
         </models>
         <group>
             <scale X="0.001" Y="0.001" Z="0.001"/>
