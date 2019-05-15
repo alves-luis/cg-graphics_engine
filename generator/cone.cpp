@@ -1,5 +1,7 @@
 #include "cone.h"
 #include "writetofile.h"
+#include "vertex.h"
+
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <stdio.h>
@@ -32,7 +34,45 @@ int createCone(float botRad, float height, int slices, int stacks, char * fname)
     float division=height/stacks;
     float baseY = height/2;
 
-    writeToFile(0.0f, 0.0f - baseY, 0.0f, file);
+    std::vector<Vertex> normals;
+    std::vector<Vertex> texture;
+
+    for(int i = 0; i <= slices; i++) {
+    	// center
+		writeVertexToFile(0,- baseY, 0, file);
+
+		Vertex norm = newVertex();
+		setX(norm,0.0f);
+		setY(norm,-1.0f);
+		setZ(norm,0.0f);
+		normals.push_back(norm);
+
+		Vertex t = newVertex();
+		setX(t,(float) i / slices);
+		setY(t,1);
+		texture.push_back(t);
+
+		// around the center
+		float x = botRad * cos( i * angle);
+		float y = -baseY;
+		float z = botRad * sin( i * angle);
+
+
+		writeVertexToFile(x,y,z,file);
+
+    	Vertex n = newVertex();
+    	setX(n,0.0f);
+    	setY(n,-1.0f);
+    	setZ(n,0.0f);
+    	normals.push_back(n);
+
+    	Vertex tex = newVertex();
+    	setX(tex,(float) i / slices);
+    	setY(tex,0.0f);
+    	texture.push_back(tex);
+    }
+
+    float normY = static_cast<float>(sin(M_PI - atan(height / botRad)));
 
     for(int i=0; i<= slices;i++){
 
@@ -45,33 +85,33 @@ int createCone(float botRad, float height, int slices, int stacks, char * fname)
             float y = j * division - baseY;
             float z = radius * sin(i * angle);
 
-            writeToFile(x, y, z, file);
+			writeToFile(x, y, z, file);
 
+            Vertex norm = newVertex();
+			setX(norm,cos(i * angle));
+			setY(norm, normY);
+			setZ(norm, sin(i * angle));
+            normals.push_back(norm);
         }
     }
 
-    int b1,b2,b3,iA,iB,iC,iD,l;
-    int k=stacks+1;
-    for(int i=0;i<k;i++){
-        //para ligar última slice à primeira
-        if (i == slices)
-            l = 0;
-        else
-            l = i;
+	int b1,b2,b3;
+	for(int i=0;i < slices;i++) {
+		b1 = i * 2;
+		b2 = i * 2 + 3;
+		b3 = i * 2 + 1;
+		writeIndexToFile(b1, file);
+		writeIndexToFile(b2, file);
+		writeIndexToFile(b3, file);
+	}
+    int iA,iB,iC,iD;
+    for(int i=0;i < slices;i++){
+        for(int j=0;j<stacks;j++){
 
-        b1=0;
-        b2=k*l+1;
-        b3=k*(l+1)+1;
-        writeIndexToFile(b1,file);
-        writeIndexToFile(b2,file);
-        writeIndexToFile(b3,file);
-
-        for(int j=1;j<stacks+1;j++){
-
-            iA= k*l+j;
-            iB= k*l+j+1;
-            iC= k*(l+1)+j;
-            iD= k*(l+1)+j+1;
+            iA= (slices + 1)* 2 + i * (slices + 1) + j;
+            iB= (slices + 1)* 2 + i * (slices + 1) + j + 1;
+            iC= (slices + 1)* 2 + (i + 1) * (slices + 1) + j;
+            iD= (slices + 1)* 2 + (i + 1) * (slices + 1) + j + 1;
 
             writeIndexToFile(iA,file);
             writeIndexToFile(iB,file);
@@ -82,6 +122,8 @@ int createCone(float botRad, float height, int slices, int stacks, char * fname)
             writeIndexToFile(iD,file);
         }
     }
+    for(Vertex v : normals)
+    	writeVertexToFile(getX(v),getY(v),getZ(v),file);
 
     return 0;
 }

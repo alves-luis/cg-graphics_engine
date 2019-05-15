@@ -1,10 +1,10 @@
 <scene>
     <lights>
-    <light type="POINT" posX="0" posY="5" posZ="0" />
+    <light type="POINT" posX="0" posY="-55" posZ="0" />
     </lights>
     <group>
         <models>
-            <model file="cone.3d" />
+            <model file="disc.3d" />
         </models>
     </group>
 </scene>
