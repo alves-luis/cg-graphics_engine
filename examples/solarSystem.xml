@@ -1,10 +1,10 @@
 <scene>
     <lights>
-        <light type="POINT" posX="0" posY="0" posZ="0"/>
+        <light type="POINT" posX="0" posY="1" posZ="10"/>
     </lights>
     <group>
         <models>
-            <model file="sphere.3d"/>
+            <model file="sphere.3d" texture="../examples/sun.jpg"/>
         </models>
         <group>
             <scale X="0.001" Y="0.001" Z="0.001"/>
@@ -18,7 +18,7 @@
                 </translate>
                 <scale X="50.9" Y="50.9" Z="50.9"/>
                 <models>
-                    <model file="teapot.3d"/>
+                    <model file="teapot.3d" texture="../examples/teapot.jpg"/>
                 </models>
             </group>
             <!--Mercúrio-->
@@ -36,7 +36,7 @@
 
                 <scale X="6.9" Y="6.9" Z="6.9"/>
                 <models>
-                    <model file="sphere.3d" color="mercury"/>
+                    <model file="sphere.3d" texture="../examples/mercury.jpg"/>
                 </models>
             </group>
             <!--Vénus-->
@@ -53,7 +53,7 @@
               </translate>
                 <scale X="17.3" Y="17.3" Z="17.3"/>
                 <models>
-                    <model file="sphere.3d" color="venus"/>
+                    <model file="sphere.3d" texture="../examples/venus.jpg"/>
                 </models>
             </group>
             <!--Terra-->
@@ -72,7 +72,7 @@
                   <rotate time="5" axisX="0" axisY="1" axisZ="0"/>
                   <scale X="18.3" Y="18.3" Z="18.3"/>
                   <models>
-                      <model file="sphere.3d" color="earth"/>
+                      <model file="sphere.3d" texture="../examples/earth.jpg"/>
                     </models>
                 </group>
                 <!--Lua da Terra-->
@@ -80,7 +80,7 @@
                   <translate X="17.98" Y="17.98"/>
                   <scale X="4.922" Y="4.922" Z="4.922"/>
                   <models>
-                      <model file="sphere.3d"/>
+                      <model file="sphere.3d" texture="../examples/moon.jpg"/>
                   </models>
                 </group>
             </group>
@@ -100,7 +100,7 @@
                   <rotate time="7" axisX="0" axisY="1" axisZ="0"/>
                   <scale X="9.7" Y="9.7" Z="9.7"/>
                   <models>
-                      <model file="sphere.3d" color="mars"/>
+                      <model file="sphere.3d" texture="../examples/mars.jpg"/>
                   </models>
                 </group>
                 <!--Lua de Marte (Deimos)-->
@@ -108,7 +108,7 @@
                   <translate X="6.97" Y="6.97"/>
                   <scale X="0.014" Y="0.014" Z="0.014"/>
                   <models>
-                      <model file="sphere.3d"/>
+                      <model file="sphere.3d" texture="../examples/deimos.jpg"/>
                   </models>
                 </group>
             </group>
@@ -128,7 +128,7 @@
                 <group>
                   <scale X="205.4" Y="205.4" Z="205.4"/>
                   <models>
-                      <model file="sphere.3d" color="jupiter"/>
+                      <model file="sphere.3d" texture="../examples/jupiter.jpg"/>
                   </models>
                 </group>
                 <!--Lua de Júpiter (Ganymede) -->
@@ -141,7 +141,7 @@
                   </translate>
                   <scale X="7.583" Y="7.583" Z="7.583"/>
                   <models>
-                      <model file="sphere.3d"/>
+                      <model file="sphere.3d" texture="../examples/ganymede.jpg"/>
                   </models>
                 </group>
             </group>
@@ -162,14 +162,14 @@
                   <rotate time="3" axisX="0" axisY="0" axisZ="1"/>
                   <group>
                       <models>
-                          <model file="sphere.3d" color="saturn"/>
+                          <model file="sphere.3d" texture="../examples/saturn.jpg"/>
                       </models>
                   </group>
                   <!--Anel de Saturno-->
                   <group>
                       <scale X="1.7" Y="1.7" Z="1.7"/>
                       <models>
-                          <model file="disc.3d" color="white"/>
+                          <model file="disc.3d" diffR="0.1" diffG="0.3" diffB="0.5"/>
                       </models>
                   </group>
                 </group>
@@ -178,7 +178,7 @@
                   <translate X="128.46" Y="128.46"/>
                   <scale X="7.353" Y="7.353" Z="7.353"/>
                   <models>
-                      <model file="sphere.3d"/>
+                      <model file="sphere.3d" texture="../examples/titan.jpg"/>
                   </models>
                 </group>
             </group>
@@ -198,7 +198,7 @@
                   <scale X="67.4" Y="67.4" Z="67.4"/>
                   <rotate time="6" axisX="0" axisY="0" axisZ="1"/>
                   <models>
-                      <model file="sphere.3d" color="uranus"/>
+                      <model file="sphere.3d" texture="../examples/uranus.jpg"/>
                   </models>
                 </group>
                 <!--Lua de Urano (Titania)-->
@@ -226,7 +226,7 @@
                   <rotate time="3" axisX="1" axisY="1" axisZ="1"/>
                   <scale X="65.2" Y="65.2" Z="65.2"/>
                   <models>
-                      <model file="sphere.3d" color="neptune"/>
+                      <model file="sphere.3d" texture="../examples/neptune.jpg"/>
                   </models>
                 </group>
                 <!--Lua de Nepturno (Triton)-->
@@ -255,7 +255,7 @@
                   <rotate time="3" axisX="" axisY="1" axisZ="0"/>
                   <scale X="3.2" Y="3.2" Z="3.2"/>
                   <models>
-                      <model file="sphere.3d" color="pluto"/>
+                      <model file="sphere.3d" texture="../examples/pluto.jpg"/>
                   </models>
                 </group>
                 <!--Lua de Plutão (Charon)-->

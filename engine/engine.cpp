@@ -117,16 +117,18 @@ void renderScene() {
             0.0f,1.0f,0.0f);
 
 
+
   glTranslatef(camX,camY,camZ);
 
-  for(auto l : lights) {
-      drawLight(l);
-  }
+	for(auto l : lights) {
+		drawLight(l);
+	}
 
   // put drawing instructions here
   for (auto g : groups) {
       drawGroup(g);
   }
+
 
   // End of frame
   glutSwapBuffers();

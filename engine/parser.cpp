@@ -235,6 +235,8 @@ int parseModels(XMLElement * models, Group g, std::map<std::string,Model> * mode
 			m = newModel(fileName);
 			setVertexes(m,getVertexes(old));
 			setIndexes(m,getIndexes(old));
+			setNormals(m,getNormals(old));
+			setTextureCoords(m,getTextureCoords(old));
 		}
 
 		// parse texture and colors

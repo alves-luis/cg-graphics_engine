@@ -156,6 +156,15 @@ void setIndexes(Model m, std::vector<unsigned int> * in) {
     m->indexes = in;
 }
 
+void setNormals(Model m, std::vector<float> * n) {
+	if (m)
+		m->normals = n;
+}
+void setTextureCoords(Model m, std::vector<float> * v) {
+	if (m)
+		m->textureCoords = v;
+}
+
 void initializeVBO(Model m) {
   if (m) {
   	std::vector<float> vertexes = *m->vertexes;
@@ -188,9 +197,7 @@ void initializeVBO(Model m) {
 }
 
 void drawVBO(Model m) {
-	if (m->hasColor) {
-		drawColor(m->color);
-	}
+	drawColor(m->color);
 
 	glBindBuffer(GL_ARRAY_BUFFER,m->vertexBuffer[0]);
 	glVertexPointer(3,GL_FLOAT,0,nullptr);
