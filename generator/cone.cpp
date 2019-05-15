@@ -92,6 +92,11 @@ int createCone(float botRad, float height, int slices, int stacks, char * fname)
 			setY(norm, normY);
 			setZ(norm, sin(i * angle));
             normals.push_back(norm);
+
+            Vertex t = newVertex();
+            setX(t,(float) i / slices);
+			setY(t,(float) j / stacks);
+			texture.push_back(t);
         }
     }
 
@@ -124,6 +129,8 @@ int createCone(float botRad, float height, int slices, int stacks, char * fname)
     }
     for(Vertex v : normals)
     	writeVertexToFile(getX(v),getY(v),getZ(v),file);
+    for(Vertex v : texture)
+    	writeTextureToFile(getX(v),getY(v),file);
 
     return 0;
 }

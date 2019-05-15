@@ -4,7 +4,7 @@
     </lights>
     <group>
         <models>
-            <model file="disc.3d" />
+            <model file="disc.3d" texture="../examples/farol.png" />
         </models>
     </group>
 </scene>
