@@ -8,7 +8,7 @@
 int createPlane(float size, char * fname) {
     FILE * file = openFile(fname);
     float x, z;
-    
+
     x = size / 2;
     z = size / 2;
 
